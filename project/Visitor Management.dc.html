@@ -1,0 +1,1161 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet data-dc-atomics="">
+<link rel="stylesheet" href="colors_and_type.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+<link href="https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&amp;display=swap" rel="stylesheet">
+<style>
+  body{margin:0;font-family:var(--font-sans);color:var(--color-text);-webkit-font-smoothing:antialiased;}
+  *{box-sizing:border-box;}
+  input,select,textarea,button{font-family:var(--font-sans);}
+  input:focus,select:focus,textarea:focus{outline:none;border-color:var(--color-link)!important;}
+  ::placeholder{color:var(--gray-6);}
+  @keyframes rFade{from{opacity:0}to{opacity:1}}
+  @keyframes rSlideT{from{opacity:0;transform:translate(-50%,-8px)}to{opacity:1;transform:translate(-50%,0)}}
+  @keyframes rDrawer{from{transform:translateX(24px);opacity:.6}to{transform:translateX(0);opacity:1}}
+  @keyframes rStep{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:translateY(0)}}
+  @keyframes rPop{from{transform:scale(.85);opacity:0}to{transform:scale(1);opacity:1}}
+</style>
+</helmet>
+
+<div style="position:fixed;inset:0;background:var(--color-bg-layout);overflow:hidden;">
+
+  <!-- ============ WEB APP ============ -->
+  <sc-if value="{{ isWeb }}" hint-placeholder-val="{{ true }}">
+  <div data-screen-label="Web app" style="display:flex;height:100%;">
+
+    <!-- Sidebar -->
+    <div style="width:220px;background:var(--navy);height:100%;display:flex;flex-direction:column;flex-shrink:0;">
+      <div style="display:flex;align-items:center;gap:10px;height:64px;padding:0 16px;">
+        <svg width="26" height="21" viewBox="0 0 19.281 15.363"><path fill="#fff" fill-rule="evenodd" d="M 4.552 4.545 C 6.33 1.074 9.889 -1.164 14.006 0.638 C 14.017 0.643 15.547 1.341 16.579 2.992 C 16.848 3.423 17.26 3.746 17.74 3.912 L 18.033 4.013 L 19.281 4.445 C 19.067 4.631 18.854 4.817 18.64 5.003 C 18.263 5.33 17.973 5.714 17.755 6.165 C 17.63 6.423 17.504 6.715 17.457 7.001 C 17.412 7.269 17.379 7.542 17.327 7.811 C 17.206 8.444 17.036 9.068 16.801 9.67 C 15.577 12.246 13.26 14.281 10.281 15.047 C 6.353 16.057 2.37 14.576 0 11.592 C 0.622 11.283 1.334 10.811 1.981 10.108 C 2.216 10.288 2.457 10.462 2.707 10.625 C 4.215 11.612 5.815 12.133 7.298 12.133 C 7.584 12.133 7.868 12.114 8.144 12.075 C 10.242 11.775 12.008 10.204 12.343 8.341 C 12.721 6.239 11.281 3.971 9.257 3.474 C 7.807 2.969 6.521 3.595 5.276 4.202 C 5.037 4.318 4.794 4.437 4.552 4.545 Z M 14.333 3.082 C 14.001 3.082 13.732 3.351 13.731 3.683 C 13.731 4.015 14.001 4.286 14.333 4.286 C 14.665 4.286 14.936 4.015 14.936 3.683 C 14.935 3.351 14.665 3.082 14.333 3.082 Z"></path></svg>
+        <span style="color:#fff;font-weight:700;font-size:20px;letter-spacing:-.02em;">Robin</span>
+      </div>
+      <div style="display:flex;flex-direction:column;gap:4px;padding:4px;flex:1;">
+        <div style="display:flex;align-items:center;gap:12px;height:40px;padding:0 12px;border-radius:6px;color:rgba(255,255,255,.65);font-size:14px;"><i class="fa-solid fa-location-dot" style="width:18px;text-align:center;"></i>Map</div>
+        <div style="display:flex;align-items:center;gap:12px;height:40px;padding:0 12px;border-radius:6px;color:rgba(255,255,255,.65);font-size:14px;"><i class="fa-solid fa-calendar" style="width:18px;text-align:center;"></i>Schedule</div>
+        <div style="display:flex;align-items:center;gap:12px;height:40px;padding:0 12px;border-radius:6px;color:rgba(255,255,255,.65);font-size:14px;"><i class="fa-solid fa-users" style="width:18px;text-align:center;"></i>People</div>
+        <div style="display:flex;align-items:center;gap:12px;height:40px;padding:0 12px;border-radius:6px;color:rgba(255,255,255,.65);font-size:14px;"><i class="fa-solid fa-door-open" style="width:18px;text-align:center;"></i>Meeting spaces</div>
+        <div style="display:flex;align-items:center;gap:12px;height:40px;padding:0 12px;border-radius:6px;background:rgba(255,255,255,.10);color:#fff;font-size:14px;font-weight:500;"><i class="fa-solid fa-id-badge" style="width:18px;text-align:center;"></i>Visitors</div>
+        <div style="display:flex;align-items:center;gap:12px;height:40px;padding:0 12px;border-radius:6px;color:rgba(255,255,255,.65);font-size:14px;"><i class="fa-solid fa-chart-line" style="width:18px;text-align:center;"></i>Analytics</div>
+        <div style="display:flex;align-items:center;gap:12px;height:40px;padding:0 12px;border-radius:6px;color:rgba(255,255,255,.65);font-size:14px;"><i class="fa-solid fa-gear" style="width:18px;text-align:center;"></i>Manage</div>
+      </div>
+      <div style="border-top:1px solid var(--navy-border);padding:8px;display:flex;align-items:center;gap:10px;height:56px;">
+        <span style="width:32px;height:32px;border-radius:50%;background:var(--magenta-6);color:#fff;display:inline-flex;align-items:center;justify-content:center;font-weight:600;font-size:13px;">TY</span>
+        <div style="flex:1;min-width:0;"><div style="color:#fff;font-size:13px;font-weight:500;">Tiffany Yu</div><div style="color:rgba(255,255,255,.55);font-size:11px;">Workplace admin</div></div>
+      </div>
+    </div>
+
+    <!-- Content -->
+    <div style="flex:1;overflow:auto;">
+      <div style="max-width:1180px;margin:0 auto;padding:32px 40px 80px;">
+        <div style="margin-bottom:18px;">
+          <h1 style="font:500 38px/46px var(--font-sans);letter-spacing:-.01em;margin:0;">Visitors</h1>
+          
+        </div>
+
+        <!-- Tabs -->
+        <div style="display:flex;gap:28px;border-bottom:1px solid var(--color-border-light);margin-bottom:20px;">
+          <div onClick="{{ goVisits }}" style="{{ visitsTabStyle }}">Visits</div>
+          <div onClick="{{ goForms }}" style="{{ formsTabStyle }}">Custom visit forms</div>
+        </div>
+
+        <!-- VISITS TAB -->
+        <sc-if value="{{ visitsTab }}" hint-placeholder-val="{{ true }}">
+        <div>
+          <div style="display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:16px;flex-wrap:wrap;">
+            <div style="display:flex;gap:8px;align-items:center;">
+              <div style="display:inline-flex;align-items:center;gap:8px;height:32px;border:1px solid var(--color-border);border-radius:4px;padding:0 11px;font-size:14px;background:#fff;cursor:pointer;"><i class="fa-solid fa-location-dot" style="color:var(--gray-7);font-size:13px;"></i><span>54 State St.</span><i class="fa-solid fa-angle-down" style="color:var(--gray-7);font-size:12px;"></i></div>
+              <div style="display:inline-flex;align-items:center;gap:8px;height:32px;border:1px solid var(--color-border);border-radius:4px;padding:0 11px;font-size:14px;background:#fff;cursor:pointer;"><i class="fa-solid fa-calendar" style="color:var(--gray-7);font-size:13px;"></i><span>Nov 24, 2026</span><i class="fa-solid fa-arrow-right-long" style="color:var(--gray-7);font-size:11px;"></i><span>Dec 31, 2026</span></div>
+            </div>
+            <div style="display:flex;gap:8px;align-items:center;">
+              <button style="display:inline-flex;align-items:center;gap:8px;height:32px;padding:0 12px;border-radius:4px;font:500 14px/22px var(--font-sans);border:1px solid var(--color-border);background:#fff;color:var(--color-text);cursor:pointer;"><i class="fa-solid fa-arrow-up-from-bracket" style="font-size:12px;"></i>Export</button>
+              <button onClick="{{ openDrawer }}" style="display:inline-flex;align-items:center;gap:8px;height:32px;padding:0 16px;border-radius:4px;font:500 14px/22px var(--font-sans);border:1px solid transparent;background:var(--color-primary);color:#fff;cursor:pointer;"><i class="fa-solid fa-plus" style="font-size:12px;"></i>Create visitor</button>
+            </div>
+          </div>
+          <div style="background:#fff;border:1px solid var(--color-border);border-radius:8px;overflow:hidden;">
+            <div style="display:flex;padding:12px 20px;background:var(--gray-1);font-size:12px;font-weight:600;color:var(--gray-8);border-bottom:1px solid var(--color-border-light);">
+              <span style="flex:1;">Date</span><span style="flex:2;">Visitor</span><span style="flex:1.5;">Host</span><span style="flex:1.2;">Visit type</span><span style="flex:1;">Expected time</span><span style="flex:1;">Check in</span><span style="flex:1;">Check out</span><span style="width:96px;text-align:right;">Actions</span>
+            </div>
+            <sc-for list="{{ visitRows }}" as="v" hint-placeholder-count="3">
+            <div style="display:flex;align-items:center;padding:12px 20px;font-size:14px;border-bottom:1px solid var(--color-border-light);">
+              <span style="flex:1;color:var(--color-text-secondary);">{{ v.date }}</span>
+              <span onClick="{{ v.onClick }}" style="flex:2;cursor:pointer;min-width:0;font-weight:500;color:var(--color-link);overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">{{ v.name }}</span>
+              <span style="flex:1.5;color:var(--color-text-secondary);display:flex;align-items:center;gap:8px;min-width:0;"><span style="width:24px;height:24px;border-radius:50%;color:#fff;display:inline-flex;align-items:center;justify-content:center;font-weight:600;font-size:10px;flex-shrink:0;background:{{ v.hostColor }};">{{ v.hostInitials }}</span><span style="overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">{{ v.host }}</span></span>
+              <span style="flex:1.2;"><span style="display:inline-flex;align-items:center;height:24px;padding:0 8px;border-radius:4px;font-size:12px;font-weight:500;background:{{ v.vtBg }};border:1px solid {{ v.vtBd }};color:{{ v.vtFg }};">{{ v.visitType }}</span></span>
+              <span style="flex:1;color:var(--color-text-secondary);">{{ v.expected }}</span>
+              <span style="flex:1;color:{{ v.checkInColor }};font-weight:{{ v.checkInWeight }};">{{ v.checkIn }}</span>
+              <span style="flex:1;color:var(--color-text-secondary);">{{ v.checkOut }}</span>
+              <span style="width:96px;display:flex;justify-content:flex-end;gap:14px;">
+                <i onClick="{{ v.onEdit }}" class="fa-solid fa-pen" title="Edit" style="color:var(--gray-7);cursor:pointer;font-size:13px;"></i>
+                <i onClick="{{ v.onPrint }}" class="fa-solid fa-id-card" title="Print badge" style="color:var(--gray-7);cursor:pointer;font-size:14px;"></i>
+                <i onClick="{{ v.onDelete }}" class="fa-solid fa-trash-can" title="Delete" style="color:var(--gray-7);cursor:pointer;font-size:13px;"></i>
+              </span>
+            </div>
+            </sc-for>
+          </div>
+        </div>
+        </sc-if>
+
+        <!-- FORMS TAB -->
+        <sc-if value="{{ formsTab }}">
+        <div>
+          <div style="display: flex; align-items: flex-start; justify-content: flex-end; margin-bottom: 16px">
+            
+            <button onClick="{{ openBuilderNew }}" style="display: inline-flex; align-items: center; gap: 8px; height: 32px; padding: 0 16px; border-radius: 4px; font: 500 14px/22px var(--font-sans); border: 1px solid transparent; background: var(--color-primary); color: #fff; cursor: pointer; text-align: center"><i class="fa-solid fa-plus" style="font-size:12px;"></i>Create</button>
+          </div>
+          <div style="background:#fff;border:1px solid var(--color-border);border-radius:8px;overflow:hidden;">
+            <div style="display:flex;padding:12px 20px;background:var(--gray-1);font-size:12px;font-weight:600;color:var(--gray-8);border-bottom:1px solid var(--color-border-light);">
+              <span style="flex:1.8;">Form name</span><span style="flex:1.4;">Building</span><span style="flex:1.4;">Visit type</span><span style="flex:1.3;">Last updated by</span><span style="flex:1.1;">Last updated on</span><span style="width:80px;text-align:right;">Actions</span>
+            </div>
+            <sc-for list="{{ formRows }}" as="f" hint-placeholder-count="1">
+            <div style="display:flex;align-items:center;padding:14px 20px;font-size:14px;border-bottom:1px solid var(--color-border-light);">
+              <span style="flex:1.8;font-weight:500;display:flex;align-items:center;gap:10px;">{{ f.name }}</span>
+              <span style="flex:1.4;color:var(--color-text-secondary);">{{ f.buildingsLabel }}</span>
+              <span style="flex:1.4;color:var(--color-text-secondary);">{{ f.visitTypesLabel }}</span>
+              <span style="flex:1.3;color:var(--color-text-secondary);">{{ f.updatedBy }}</span>
+              <span style="flex:1.1;color:var(--color-text-secondary);">{{ f.updatedOn }}</span>
+              <span style="width:80px;display:flex;justify-content:flex-end;gap:14px;">
+                <i onClick="{{ f.onEdit }}" class="fa-solid fa-pen" style="color:var(--gray-7);cursor:pointer;font-size:13px;"></i>
+                <i onClick="{{ f.onDelete }}" class="fa-solid fa-trash-can" style="color:var(--gray-7);cursor:pointer;font-size:13px;"></i>
+              </span>
+            </div>
+            </sc-for>
+            <sc-if value="{{ formsEmpty }}">
+            <div style="padding:48px;text-align:center;color:var(--gray-7);"><i class="fa-solid fa-clipboard-list" style="font-size:26px;margin-bottom:10px;display:block;"></i>No custom forms yet. Create one to collect information at check-in.</div>
+            </sc-if>
+          </div>
+        </div>
+        </sc-if>
+
+      </div>
+    </div>
+
+    <!-- ============ VISIT DETAIL SIDER (pushes content) ============ -->
+    <sc-if value="{{ detailOpen }}">
+    <div style="width:440px;flex-shrink:0;height:100%;background:#fff;border-left:1px solid var(--color-border);display:flex;flex-direction:column;position:relative;animation:rDrawer .22s ease;">
+      <div style="display:flex;align-items:center;justify-content:space-between;padding:20px 24px;border-bottom:1px solid var(--color-border-light);flex-shrink:0;">
+        <div style="display:flex;align-items:center;gap:12px;min-width:0;">
+          <sc-if value="{{ detailBackVisible }}"><i onClick="{{ backFromSeries }}" class="fa-solid fa-arrow-left" style="cursor:pointer;color:var(--gray-7);font-size:16px;"></i></sc-if>
+          <h3 style="font:500 20px/28px var(--font-sans);margin:0;">{{ detailHeaderTitle }}</h3>
+        </div>
+        <i onClick="{{ closeDetail }}" class="fa-solid fa-xmark" style="cursor:pointer;color:var(--gray-7);font-size:18px;"></i>
+      </div>
+
+      <div style="flex:1;overflow:auto;padding:24px;">
+
+        <!-- MAIN DETAIL -->
+        <sc-if value="{{ detailMain }}">
+        <div style="display:flex;align-items:center;gap:14px;margin-bottom:20px;">
+          <span style="width:48px;height:48px;border-radius:50%;color:#fff;display:inline-flex;align-items:center;justify-content:center;font-weight:600;font-size:17px;flex-shrink:0;background:{{ detailColor }};">{{ detailInitials }}</span>
+          <div style="min-width:0;"><div style="font-size:18px;font-weight:500;">{{ detailName }}</div><div style="font-size:13px;color:var(--color-text-tertiary);">{{ detailEmail }}</div></div>
+        </div>
+
+        <sc-if value="{{ detailHasSeries }}">
+        <div style="margin-bottom:22px;">
+          <div onClick="{{ toggleSeries }}" style="display:flex;align-items:center;justify-content:space-between;width:100%;height:40px;padding:0 14px;border:1px solid var(--color-border);border-radius:6px;background:var(--gray-1);cursor:pointer;font-size:14px;font-weight:500;color:var(--color-text);">
+            <span style="display:flex;align-items:center;gap:8px;"><i class="fa-solid fa-calendar-days" style="color:var(--gray-7);font-size:13px;"></i>{{ seriesLabel }}</span>
+            <i class="fa-solid fa-angle-right" style="color:var(--gray-7);font-size:13px;"></i>
+          </div>
+          <sc-if value="{{ seriesInlineOpen }}">
+          <div style="margin-top:10px;display:flex;flex-direction:column;gap:8px;">
+            <sc-for list="{{ seriesDays }}" as="d" hint-placeholder-count="3">
+            <div onClick="{{ d.onClick }}" style="{{ d.rowStyle }}">
+              <div style="min-width:0;"><div style="font-size:14px;font-weight:500;">{{ d.date }}</div><div style="font-size:12px;color:var(--gray-7);margin-top:1px;">{{ d.expected }}</div></div>
+              <span style="display:inline-flex;align-items:center;gap:6px;height:24px;padding:0 8px;border-radius:4px;font-size:12px;font-weight:500;flex-shrink:0;background:{{ d.stBg }};border:1px solid {{ d.stBd }};color:{{ d.stFg }};"><i class="fa-solid {{ d.stIcon }}" style="font-size:10px;"></i>{{ d.status }}</span>
+            </div>
+            </sc-for>
+          </div>
+          </sc-if>
+        </div>
+        </sc-if>
+
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px 14px;margin-bottom:22px;">
+          <div><div style="font-size:12px;color:var(--gray-7);margin-bottom:4px;">Host</div><div style="display:flex;align-items:center;gap:8px;font-size:14px;min-width:0;"><span style="width:24px;height:24px;border-radius:50%;color:#fff;display:inline-flex;align-items:center;justify-content:center;font-weight:600;font-size:10px;flex-shrink:0;background:{{ detailHostColor }};">{{ detailHostInitials }}</span><span style="overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">{{ detailHost }}</span></div></div>
+          <div><div style="font-size:12px;color:var(--gray-7);margin-bottom:4px;">Visit type</div><span style="display:inline-flex;align-items:center;height:24px;padding:0 8px;border-radius:4px;font-size:12px;font-weight:500;background:{{ detailVtBg }};border:1px solid {{ detailVtBd }};color:{{ detailVtFg }};">{{ detailVisitType }}</span></div>
+          <div><div style="font-size:12px;color:var(--gray-7);margin-bottom:4px;">Building</div><div style="font-size:14px;">{{ detailBuilding }}</div></div>
+          <div><div style="font-size:12px;color:var(--gray-7);margin-bottom:4px;">Expected time</div><div style="font-size:14px;">{{ detailExpected }}</div></div>
+          <sc-if value="{{ detailCheckedIn }}"><div><div style="font-size:12px;color:var(--gray-7);margin-bottom:4px;">Checked in</div><div style="font-size:14px;color:var(--color-success);display:flex;align-items:center;gap:6px;"><i class="fa-solid fa-circle-check" style="font-size:12px;"></i>{{ detailCheckInTime }}</div></div></sc-if>
+        </div>
+
+        <div style="border-top:1px solid var(--color-border-light);padding-top:18px;">
+          <sc-if value="{{ detailHasFields }}">
+          <div style="display:flex;flex-direction:column;gap:16px;">
+            <sc-for list="{{ detailFieldViews }}" as="f" hint-placeholder-count="2">
+            <div><div style="font-size:12px;color:var(--gray-7);margin-bottom:4px;">{{ f.label }}</div><div style="font-size:14px;color:{{ f.valColor }};">{{ f.value }}</div></div>
+            </sc-for>
+          </div>
+          </sc-if>
+          <sc-if value="{{ detailNoFields }}"><div style="font-size:13px;color:var(--color-text-tertiary);">No custom forms apply to this visit.</div></sc-if>
+        </div>
+        </sc-if>
+
+        <!-- FULL SERIES VIEW -->
+        <sc-if value="{{ showSeriesFull }}">
+        <div style="display:flex;align-items:center;gap:14px;margin-bottom:18px;">
+          <span style="width:44px;height:44px;border-radius:50%;color:#fff;display:inline-flex;align-items:center;justify-content:center;font-weight:600;font-size:16px;flex-shrink:0;background:{{ detailColor }};">{{ detailInitials }}</span>
+          <div style="min-width:0;"><div style="font-size:16px;font-weight:500;">{{ detailName }}</div><div style="font-size:13px;color:var(--color-text-tertiary);">Registered for {{ seriesCount }} days</div></div>
+        </div>
+        <div style="display:flex;flex-direction:column;gap:8px;">
+          <sc-for list="{{ seriesDays }}" as="d" hint-placeholder-count="3">
+          <div onClick="{{ d.onClick }}" style="{{ d.rowStyle }}">
+            <div style="min-width:0;"><div style="font-size:14px;font-weight:500;">{{ d.date }}</div><div style="font-size:12px;color:var(--gray-7);margin-top:1px;">{{ d.expected }}</div></div>
+            <span style="display:inline-flex;align-items:center;gap:6px;height:24px;padding:0 8px;border-radius:4px;font-size:12px;font-weight:500;flex-shrink:0;background:{{ d.stBg }};border:1px solid {{ d.stBd }};color:{{ d.stFg }};"><i class="fa-solid {{ d.stIcon }}" style="font-size:10px;"></i>{{ d.status }}</span>
+          </div>
+          </sc-for>
+        </div>
+        </sc-if>
+
+      </div>
+
+      <div style="display:flex;gap:12px;padding:16px 24px;border-top:1px solid var(--color-border-light);flex-shrink:0;">
+        <button onClick="{{ editVisit }}" style="flex:1;height:36px;padding:0 16px;border-radius:4px;font:500 14px var(--font-sans);background:#fff;color:var(--color-text);border:1px solid var(--color-border);cursor:pointer;display:inline-flex;align-items:center;justify-content:center;gap:8px;"><i class="fa-solid fa-pen" style="font-size:12px;"></i>Edit</button>
+        <button onClick="{{ startCancel }}" style="flex:1;height:36px;padding:0 16px;border-radius:4px;font:500 14px var(--font-sans);background:#fff;color:var(--color-error);border:1px solid var(--color-error-border);cursor:pointer;">Cancel visit</button>
+      </div>
+
+      <sc-if value="{{ cancelConfirm }}">
+      <div style="position:absolute;inset:0;background:rgba(0,0,0,.35);display:flex;align-items:center;justify-content:center;padding:24px;z-index:5;animation:rFade .15s ease;">
+        <div style="background:#fff;border-radius:12px;box-shadow:var(--shadow-lg);padding:22px;width:100%;max-width:344px;">
+          <div style="font-size:16px;font-weight:500;margin-bottom:6px;">Cancel this visit?</div>
+          <div style="font-size:14px;color:var(--color-text-secondary);margin-bottom:18px;line-height:1.5;">This visitor is registered for multiple days. Choose what you'd like to cancel.</div>
+          <div style="display:flex;flex-direction:column;gap:10px;">
+            <button onClick="{{ cancelThisDay }}" style="height:38px;border-radius:4px;font:500 14px var(--font-sans);background:#fff;color:var(--color-text);border:1px solid var(--color-border);cursor:pointer;">This day only</button>
+            <button onClick="{{ cancelSeries }}" style="height:38px;border-radius:4px;font:500 14px var(--font-sans);background:var(--color-error);color:#fff;border:1px solid transparent;cursor:pointer;">{{ cancelSeriesLabel }}</button>
+            <button onClick="{{ dismissCancel }}" style="height:34px;border-radius:4px;font:500 14px var(--font-sans);background:transparent;color:var(--color-text-secondary);border:none;cursor:pointer;">Keep visit</button>
+          </div>
+        </div>
+      </div>
+      </sc-if>
+    </div>
+    </sc-if>
+  </div>
+  </sc-if>
+
+  <!-- ============ ARRIVAL DISPLAY (TABLET) ============ -->
+  <sc-if value="{{ isTablet }}">
+  <div data-screen-label="Arrival display" style="height:100%;display:flex;align-items:center;justify-content:center;background:radial-gradient(circle at 50% 30%, #202a3d, #0b1120);padding:28px;">
+    <div style="height:calc(100vh - 56px);aspect-ratio:3/4.05;background:#0a0a0c;border-radius:44px;padding:16px;box-shadow:0 40px 90px rgba(0,0,0,.5),inset 0 0 0 2px #2a2a2e;position:relative;">
+      <div style="position:absolute;top:26px;left:50%;transform:translateX(-50%);width:8px;height:8px;border-radius:50%;background:#25252b;z-index:2;"></div>
+      <div style="height:100%;background:#fff;border-radius:30px;overflow:hidden;display:flex;flex-direction:column;position:relative;">
+
+        <!-- WELCOME -->
+        <sc-if value="{{ tWelcome }}" hint-placeholder-val="{{ true }}">
+        <div style="flex:1;display:flex;flex-direction:column;background:linear-gradient(160deg,#7A0E4D,#550331);color:#fff;animation:rStep .3s ease;">
+          <div style="padding:36px 40px 0;display:flex;align-items:center;justify-content:space-between;font-size:14px;color:rgba(255,255,255,.8);">
+            <span style="display:flex;align-items:center;gap:8px;"><i class="fa-solid fa-location-dot"></i>{{ kioskLocation }}</span>
+            <span>{{ tabletDate }}</span>
+          </div>
+          <div style="flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:0 48px;">
+            <svg width="64" height="52" viewBox="0 0 19.281 15.363" style="margin-bottom:28px;"><path fill="#fff" fill-rule="evenodd" d="M 4.552 4.545 C 6.33 1.074 9.889 -1.164 14.006 0.638 C 14.017 0.643 15.547 1.341 16.579 2.992 C 16.848 3.423 17.26 3.746 17.74 3.912 L 18.033 4.013 L 19.281 4.445 C 19.067 4.631 18.854 4.817 18.64 5.003 C 18.263 5.33 17.973 5.714 17.755 6.165 C 17.63 6.423 17.504 6.715 17.457 7.001 C 17.412 7.269 17.379 7.542 17.327 7.811 C 17.206 8.444 17.036 9.068 16.801 9.67 C 15.577 12.246 13.26 14.281 10.281 15.047 C 6.353 16.057 2.37 14.576 0 11.592 C 0.622 11.283 1.334 10.811 1.981 10.108 C 2.216 10.288 2.457 10.462 2.707 10.625 C 4.215 11.612 5.815 12.133 7.298 12.133 C 7.584 12.133 7.868 12.114 8.144 12.075 C 10.242 11.775 12.008 10.204 12.343 8.341 C 12.721 6.239 11.281 3.971 9.257 3.474 C 7.807 2.969 6.521 3.595 5.276 4.202 C 5.037 4.318 4.794 4.437 4.552 4.545 Z M 14.333 3.082 C 14.001 3.082 13.732 3.351 13.731 3.683 C 13.731 4.015 14.001 4.286 14.333 4.286 C 14.665 4.286 14.936 4.015 14.936 3.683 C 14.935 3.351 14.665 3.082 14.333 3.082 Z"></path></svg>
+            <div style="font-size:40px;font-weight:500;letter-spacing:-.01em;margin-bottom:12px;">Welcome</div>
+            <div style="font-size:18px;color:rgba(255,255,255,.75);line-height:1.5;">Check in for your visit to<br>Robin at {{ kioskLocation }}</div>
+          </div>
+          <div style="padding:0 40px 56px;">
+            <button onClick="{{ tapCheckIn }}" style="width:100%;height:68px;border-radius:16px;border:none;background:#fff;color:var(--magenta-9);font:500 20px var(--font-sans);cursor:pointer;display:flex;align-items:center;justify-content:center;gap:12px;box-shadow:0 8px 24px rgba(0,0,0,.25);"><i class="fa-solid fa-hand-pointer"></i>Tap to check in</button>
+            <div style="text-align:center;color:rgba(255,255,255,.6);font-size:14px;margin-top:18px;">Pre-registered or first time — we'll guide you.</div>
+          </div>
+        </div>
+        </sc-if>
+
+        <!-- EMAIL -->
+        <sc-if value="{{ tEmailStep }}">
+        <div style="flex:1;display:flex;flex-direction:column;padding:40px;animation:rStep .3s ease;">
+          <div onClick="{{ tabletBack }}" style="color:var(--color-link);font-size:15px;cursor:pointer;display:flex;align-items:center;gap:8px;margin-bottom:32px;"><i class="fa-solid fa-arrow-left"></i>Back</div>
+          <div style="font-size:30px;font-weight:500;margin-bottom:10px;">Let's get you checked in</div>
+          <div style="font-size:17px;color:var(--color-text-secondary);margin-bottom:36px;line-height:1.5;">Enter your email so we can find your visit or set one up.</div>
+          <label style="font-size:14px;font-weight:600;color:var(--gray-9);margin-bottom:8px;">Email address</label>
+          <input value="{{ tEmail }}" onChange="{{ onTEmail }}" placeholder="you@company.com" type="email" style="height:60px;border:1.5px solid var(--color-border);border-radius:12px;padding:0 18px;font-size:19px;margin-bottom:12px;">
+          <sc-if value="{{ tEmailError }}"><div style="color:var(--color-error);font-size:14px;margin-bottom:8px;">Please enter a valid email address.</div></sc-if>
+          <div style="flex:1;"></div>
+          <button onClick="{{ submitEmail }}" style="width:100%;height:64px;border-radius:14px;border:none;background:var(--color-primary);color:#fff;font:500 19px var(--font-sans);cursor:pointer;">Continue</button>
+        </div>
+        </sc-if>
+
+        <!-- SELF REGISTER -->
+        <sc-if value="{{ tSelfStep }}">
+        <div style="flex:1;display:flex;flex-direction:column;padding:40px;overflow:auto;animation:rStep .3s ease;">
+          <div onClick="{{ tabletBack }}" style="color:var(--color-link);font-size:15px;cursor:pointer;display:flex;align-items:center;gap:8px;margin-bottom:24px;"><i class="fa-solid fa-arrow-left"></i>Back</div>
+          <div style="font-size:30px;font-weight:500;margin-bottom:6px;">Tell us about your visit</div>
+          <div style="font-size:16px;color:var(--color-text-secondary);margin-bottom:28px;">We didn't find a pre-registered visit for {{ tEmail }}.</div>
+          <label style="font-size:14px;font-weight:600;color:var(--gray-9);margin-bottom:8px;">Full name</label>
+          <input value="{{ tName }}" onChange="{{ onTName }}" placeholder="Your name" style="height:56px;border:1.5px solid var(--color-border);border-radius:12px;padding:0 16px;font-size:18px;margin-bottom:22px;">
+          <label style="font-size:14px;font-weight:600;color:var(--gray-9);margin-bottom:8px;">Who are you visiting?</label>
+          <select value="{{ tHost }}" onChange="{{ onTHost }}" style="height:56px;border:1.5px solid var(--color-border);border-radius:12px;padding:0 14px;font-size:18px;margin-bottom:22px;background:#fff;">
+            <option value="">Select a host</option>
+            <sc-for list="{{ hostOptions }}" as="h" hint-placeholder-count="4"><option value="{{ h }}">{{ h }}</option></sc-for>
+          </select>
+          <sc-if value="{{ tSelfError }}"><div style="color:var(--color-error);font-size:14px;margin-top:8px;">Please fill in your name and host.</div></sc-if>
+          <div style="flex:1;min-height:16px;"></div>
+          <button onClick="{{ selfContinue }}" style="width:100%;height:64px;border-radius:14px;border:none;background:var(--color-primary);color:#fff;font:500 19px var(--font-sans);cursor:pointer;flex-shrink:0;">Continue</button>
+        </div>
+        </sc-if>
+
+        <!-- REASON -->
+        <sc-if value="{{ tReasonStep }}">
+        <div style="flex:1;display:flex;flex-direction:column;padding:40px;overflow:auto;animation:rStep .3s ease;">
+          <div onClick="{{ tabletBack }}" style="color:var(--color-link);font-size:15px;cursor:pointer;display:flex;align-items:center;gap:8px;margin-bottom:24px;"><i class="fa-solid fa-arrow-left"></i>Back</div>
+          <div style="font-size:30px;font-weight:500;margin-bottom:6px;">Reason for your visit</div>
+          <div style="font-size:16px;color:var(--color-text-secondary);margin-bottom:28px;">Choose the option that best describes your visit.</div>
+          <div style="display:flex;flex-direction:column;gap:12px;">
+            <sc-for list="{{ tVisitTypeCards }}" as="c" hint-placeholder-count="4">
+            <div onClick="{{ c.onSelect }}" style="{{ c.style }}">{{ c.name }}</div>
+            </sc-for>
+          </div>
+          <sc-if value="{{ tReasonError }}"><div style="color:var(--color-error);font-size:14px;margin-top:12px;">Please choose a reason for your visit.</div></sc-if>
+          <div style="flex:1;min-height:16px;"></div>
+          <button onClick="{{ reasonContinue }}" style="width:100%;height:64px;border-radius:14px;border:none;background:var(--color-primary);color:#fff;font:500 19px var(--font-sans);cursor:pointer;flex-shrink:0;margin-top:16px;">Continue</button>
+        </div>
+        </sc-if>
+
+        <!-- FIELDS (guest fills form) -->
+        <sc-if value="{{ tFieldsStep }}">
+        <div style="flex:1;display:flex;flex-direction:column;overflow:hidden;animation:rStep .3s ease;">
+          <div style="padding:36px 40px 20px;border-bottom:1px solid var(--color-border-light);">
+            <div style="display:flex;align-items:center;gap:8px;color:var(--color-success);font-size:14px;font-weight:500;margin-bottom:10px;"><i class="fa-solid fa-circle-check"></i>{{ tFoundLabel }}</div>
+            <div style="font-size:26px;font-weight:500;">{{ tFormTitle }}</div>
+            <div style="font-size:15px;color:var(--color-text-secondary);margin-top:4px;">A few details are required for your {{ tSessionVisitType }} visit.</div>
+          </div>
+          <div style="flex:1;overflow:auto;padding:28px 40px;display:flex;flex-direction:column;gap:24px;">
+            <sc-for list="{{ tFieldViews }}" as="f" hint-placeholder-count="2">
+            <div>
+              <label style="display:block;font-size:15px;font-weight:600;color:var(--gray-9);margin-bottom:10px;">{{ f.label }}<sc-if value="{{ f.required }}"><span style="color:var(--color-error);"> *</span></sc-if></label>
+              <sc-if value="{{ f.isText }}"><input value="{{ f.value }}" onChange="{{ f.onText }}" placeholder="{{ f.placeholder }}" style="{{ f.inpStyle }}"></sc-if>
+              <sc-if value="{{ f.isPhone }}"><input value="{{ f.value }}" onChange="{{ f.onText }}" placeholder="(555) 000-0000" type="tel" style="{{ f.inpStyle }}"></sc-if>
+              <sc-if value="{{ f.isTextarea }}"><textarea value="{{ f.value }}" onChange="{{ f.onText }}" placeholder="{{ f.placeholder }}" style="{{ f.areaStyle }}"></textarea></sc-if>
+              <sc-if value="{{ f.isSelect }}"><select value="{{ f.value }}" onChange="{{ f.onSelect }}" style="{{ f.selStyle }}"><sc-for list="{{ f.selectOptions }}" as="o" hint-placeholder-count="3"><option value="{{ o.value }}">{{ o.label }}</option></sc-for></select></sc-if>
+              <sc-if value="{{ f.isChoice }}"><div style="display:flex;flex-direction:column;gap:10px;"><sc-for list="{{ f.choices }}" as="o" hint-placeholder-count="3"><div onClick="{{ o.onPick }}" style="{{ o.rowStyle }}"><span style="{{ o.markStyle }}"><sc-if value="{{ o.selected }}"><i class="fa-solid {{ f.markIcon }}" style="font-size:11px;color:#fff;"></i></sc-if></span>{{ o.label }}</div></sc-for></div></sc-if>
+              <sc-if value="{{ f.isFile }}"><div onClick="{{ f.onFile }}" style="{{ f.fileStyle }}"><i class="fa-solid fa-arrow-up-from-bracket" style="font-size:18px;margin-bottom:6px;"></i><div style="font-size:15px;">{{ f.fileLabel }}</div></div></sc-if>
+            </div>
+            </sc-for>
+            <sc-if value="{{ tFieldsError }}"><div style="color:var(--color-error);font-size:14px;">Please complete the required fields marked with *.</div></sc-if>
+          </div>
+          <div style="padding:20px 40px 32px;border-top:1px solid var(--color-border-light);">
+            <button onClick="{{ fieldsContinue }}" style="width:100%;height:64px;border-radius:14px;border:none;background:var(--color-primary);color:#fff;font:500 19px var(--font-sans);cursor:pointer;">Complete check-in</button>
+          </div>
+        </div>
+        </sc-if>
+
+        <!-- COMPLETE -->
+        <sc-if value="{{ tCompleteStep }}">
+        <div style="flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:48px;animation:rStep .3s ease;">
+          <div style="width:104px;height:104px;border-radius:50%;background:var(--green-1);border:2px solid var(--color-success-border);display:flex;align-items:center;justify-content:center;margin-bottom:28px;animation:rPop .35s ease;"><i class="fa-solid fa-check" style="font-size:44px;color:var(--color-success);"></i></div>
+          <div style="font-size:34px;font-weight:500;margin-bottom:12px;">You're checked in</div>
+          <div style="font-size:18px;color:var(--color-text-secondary);line-height:1.5;margin-bottom:8px;">Welcome, {{ tName }}.</div>
+          <div style="font-size:17px;color:var(--color-text-secondary);line-height:1.5;">We've let {{ tSessionHost }} know you've arrived.</div>
+          <button onClick="{{ tabletFinish }}" style="margin-top:44px;height:56px;padding:0 40px;border-radius:14px;border:1.5px solid var(--color-border);background:#fff;color:var(--color-text);font:500 17px var(--font-sans);cursor:pointer;">Done</button>
+        </div>
+        </sc-if>
+
+      </div>
+    </div>
+  </div>
+  </sc-if>
+
+  <!-- ============ CREATE VISIT DRAWER ============ -->
+  <sc-if value="{{ drawerOpen }}">
+  <div onClick="{{ closeDrawer }}" style="position:fixed;inset:0;background:rgba(0,0,0,.45);z-index:40;animation:rFade .18s ease;"></div>
+  <div style="position:fixed;top:0;right:0;bottom:0;width:520px;background:#fff;z-index:41;box-shadow:var(--shadow-lg);display:flex;flex-direction:column;animation:rDrawer .22s ease;">
+    <div style="display:flex;align-items:center;justify-content:space-between;padding:20px 24px;border-bottom:1px solid var(--color-border-light);flex-shrink:0;">
+      <h3 style="font:500 20px/28px var(--font-sans);margin:0;">Create visit</h3>
+      <i onClick="{{ closeDrawer }}" class="fa-solid fa-xmark" style="cursor:pointer;color:var(--gray-7);font-size:18px;"></i>
+    </div>
+    <div style="flex:1;overflow:auto;padding:20px 24px;display:flex;flex-direction:column;gap:20px;">
+      <!-- Visitors -->
+      <div>
+        <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:10px;">
+          <span style="font-size:15px;font-weight:500;">Visitors ({{ drawerVisitorCount }})</span>
+          <span style="color:var(--color-link);font-size:14px;cursor:pointer;">Import from CSV</span>
+        </div>
+        <div style="display:flex;flex-direction:column;gap:10px;">
+          <sc-for list="{{ drawerVisitors }}" as="p" hint-placeholder-count="1">
+          <div style="display:flex;gap:8px;align-items:center;">
+            <input value="{{ p.name }}" onChange="{{ p.onName }}" placeholder="Full name" style="flex:1;height:36px;border:1px solid var(--color-border);border-radius:4px;padding:0 11px;font-size:14px;min-width:0;">
+            <input value="{{ p.email }}" onChange="{{ p.onEmail }}" placeholder="Email" style="flex:1;height:36px;border:1px solid var(--color-border);border-radius:4px;padding:0 11px;font-size:14px;min-width:0;">
+            <sc-if value="{{ p.canRemove }}"><i onClick="{{ p.onRemove }}" class="fa-solid fa-xmark" style="color:var(--gray-6);cursor:pointer;width:20px;text-align:center;"></i></sc-if>
+            <sc-if value="{{ p.noRemove }}"><span style="width:20px;flex-shrink:0;"></span></sc-if>
+          </div>
+          </sc-for>
+        </div>
+        <div onClick="{{ addVisitorRow }}" style="color:var(--color-link);font-size:14px;cursor:pointer;display:inline-flex;align-items:center;gap:6px;margin-top:10px;"><i class="fa-solid fa-plus" style="font-size:11px;"></i>Add another visitor</div>
+      </div>
+
+      <div style="height:1px;background:var(--color-border-light);"></div>
+
+      <div style="display:flex;gap:14px;">
+        <div style="flex:1;"><label style="display:block;font-size:13px;font-weight:600;color:var(--gray-9);margin-bottom:6px;">Host</label><select value="{{ drawerHost }}" onChange="{{ onDrawerHost }}" style="width:100%;height:36px;border:1px solid var(--color-border);border-radius:4px;padding:0 8px;font-size:14px;background:#fff;"><sc-for list="{{ hostOptions }}" as="h" hint-placeholder-count="4"><option value="{{ h }}">{{ h }}</option></sc-for></select></div>
+        <div style="flex:1;"><label style="display:block;font-size:13px;font-weight:600;color:var(--gray-9);margin-bottom:6px;">Building</label><select value="{{ drawerBuilding }}" onChange="{{ onDrawerBuilding }}" style="width:100%;height:36px;border:1px solid var(--color-border);border-radius:4px;padding:0 8px;font-size:14px;background:#fff;"><sc-for list="{{ buildingOptions }}" as="b" hint-placeholder-count="2"><option value="{{ b }}">{{ b }}</option></sc-for></select></div>
+      </div>
+
+      <div><label style="display:block;font-size:13px;font-weight:600;color:var(--gray-9);margin-bottom:6px;">Date and time</label>
+        <div style="position:relative;">
+          <div style="display:flex;gap:8px;align-items:flex-start;">
+            <div onClick="{{ togglePicker }}" style="{{ dateFieldStyle }}">
+              <i class="fa-solid fa-calendar" style="color:var(--gray-7);font-size:13px;flex-shrink:0;"></i>
+              <sc-if value="{{ dmSingle }}"><span style="{{ dateSingleColor }}">{{ dateSingleLabel }}</span></sc-if>
+              <sc-if value="{{ dmMulti }}">
+                <sc-if value="{{ hasMultiDates }}">
+                  <sc-for list="{{ dateChips }}" as="c" hint-placeholder-count="2"><span style="display:inline-flex;align-items:center;gap:6px;height:24px;padding:0 6px 0 9px;border-radius:4px;background:var(--gray-1);border:1px solid var(--color-border);font-size:13px;">{{ c.label }}<i onClick="{{ c.onRemove }}" class="fa-solid fa-xmark" style="color:var(--gray-6);font-size:11px;"></i></span></sc-for>
+                  <sc-if value="{{ hasMoreDates }}"><span style="font-size:13px;color:var(--color-text-tertiary);">{{ moreLabel }}</span></sc-if>
+                </sc-if>
+                <sc-if value="{{ noMultiDates }}"><span style="color:var(--gray-6);">Select dates</span></sc-if>
+              </sc-if>
+              <sc-if value="{{ dmRange }}">
+                <span style="{{ rangeStartColor }}">{{ rangeStartLabel }}</span>
+                <i class="fa-solid fa-arrow-right-long" style="color:var(--gray-6);font-size:11px;"></i>
+                <span style="{{ rangeEndColor }}">{{ rangeEndLabel }}</span>
+              </sc-if>
+            </div>
+            <sc-if value="{{ timeSharedVisible }}">
+              <select value="{{ drawerTime }}" onChange="{{ onDrawerTime }}" style="width:120px;flex-shrink:0;height:36px;border:1px solid var(--color-border);border-radius:4px;padding:0 8px;font-size:14px;background:#fff;"><sc-for list="{{ timeOpts }}" as="t" hint-placeholder-count="6"><option value="{{ t }}">{{ t }}</option></sc-for></select>
+            </sc-if>
+          </div>
+
+          <sc-if value="{{ pickerOpen }}">
+          <div style="margin-top:8px;width:336px;max-width:100%;background:#fff;border:1px solid var(--color-border);border-radius:8px;box-shadow:var(--shadow-md);padding:12px;animation:rStep .16s ease;">
+            <div style="display:flex;gap:4px;background:var(--gray-1);border-radius:6px;padding:4px;margin-bottom:12px;">
+              <div onClick="{{ setModeSingle }}" style="{{ segSingle }}"><i class="fa-solid fa-calendar-day" style="font-size:11px;"></i>Single</div>
+              <div onClick="{{ setModeMulti }}" style="{{ segMulti }}"><i class="fa-solid fa-calendar-week" style="font-size:11px;"></i>Multi-day</div>
+              <div onClick="{{ setModeRange }}" style="{{ segRange }}"><i class="fa-solid fa-calendar-days" style="font-size:11px;"></i>Range</div>
+            </div>
+            <div style="display:flex;align-items:center;justify-content:space-between;padding:2px 4px 10px;">
+              <div style="display:flex;gap:12px;"><i onClick="{{ calPrevYear }}" class="fa-solid fa-angles-left" style="color:var(--gray-7);cursor:pointer;font-size:13px;"></i><i onClick="{{ calPrevMonth }}" class="fa-solid fa-angle-left" style="color:var(--gray-7);cursor:pointer;font-size:14px;"></i></div>
+              <div style="font-size:14px;font-weight:500;">{{ calMonthLabel }}</div>
+              <div style="display:flex;gap:12px;"><i onClick="{{ calNextMonth }}" class="fa-solid fa-angle-right" style="color:var(--gray-7);cursor:pointer;font-size:14px;"></i><i onClick="{{ calNextYear }}" class="fa-solid fa-angles-right" style="color:var(--gray-7);cursor:pointer;font-size:13px;"></i></div>
+            </div>
+            <div style="display:grid;grid-template-columns:repeat(7,1fr);margin-bottom:4px;">
+              <sc-for list="{{ dowLabels }}" as="w" hint-placeholder-count="7"><div style="text-align:center;font-size:12px;color:var(--gray-7);height:24px;line-height:24px;">{{ w }}</div></sc-for>
+            </div>
+            <div style="display:grid;grid-template-columns:repeat(7,1fr);row-gap:2px;column-gap:0;">
+              <sc-for list="{{ calCells }}" as="c" hint-placeholder-count="42"><div onClick="{{ c.onClick }}" style="{{ c.style }}">{{ c.day }}</div></sc-for>
+            </div>
+            <div style="border-top:1px solid var(--color-border-light);margin-top:10px;padding-top:10px;display:flex;align-items:center;justify-content:space-between;">
+              <span onClick="{{ calToday }}" style="color:var(--color-link);font-size:14px;cursor:pointer;">Today</span>
+              <button onClick="{{ closePicker }}" style="height:28px;padding:0 14px;border-radius:4px;font:500 13px var(--font-sans);background:var(--color-primary);color:#fff;border:none;cursor:pointer;">Done</button>
+            </div>
+          </div>
+          </sc-if>
+        </div>
+
+        <sc-if value="{{ perDayToggleVisible }}">
+        <div onClick="{{ toggleShowPerDay }}" style="display:flex;align-items:center;gap:8px;cursor:pointer;font-size:13px;color:var(--gray-9);margin-top:10px;"><span style="{{ perDayBox }}"><sc-if value="{{ showPerDay }}"><i class="fa-solid fa-check" style="font-size:10px;color:#fff;"></i></sc-if></span>Set a different time for each day</div>
+        </sc-if>
+        <sc-if value="{{ perDayVisible }}">
+        <div style="margin-top:12px;display:flex;flex-direction:column;gap:8px;border:1px solid var(--color-border-light);border-radius:6px;padding:12px;background:var(--gray-1);">
+          <sc-for list="{{ perDayViews }}" as="p" hint-placeholder-count="3">
+          <div style="display:flex;align-items:center;justify-content:space-between;gap:10px;">
+            <span style="font-size:13px;color:var(--color-text);">{{ p.label }}</span>
+            <select value="{{ p.value }}" onChange="{{ p.onChange }}" style="width:120px;flex-shrink:0;height:32px;border:1px solid var(--color-border);border-radius:4px;padding:0 8px;font-size:13px;background:#fff;"><sc-for list="{{ timeOpts }}" as="t" hint-placeholder-count="6"><option value="{{ t }}">{{ t }}</option></sc-for></select>
+          </div>
+          </sc-for>
+        </div>
+        </sc-if>
+      </div>
+
+      <div><label style="display:block;font-size:13px;font-weight:600;color:var(--gray-9);margin-bottom:6px;">Visit type</label><select value="{{ drawerVisitType }}" onChange="{{ onDrawerVisitType }}" style="width:100%;height:36px;border:1px solid var(--color-border);border-radius:4px;padding:0 8px;font-size:14px;background:#fff;"><option value="">Select visit type</option><sc-for list="{{ visitTypeOptions }}" as="t" hint-placeholder-count="4"><option value="{{ t }}">{{ t }}</option></sc-for></select></div>
+
+      <!-- Custom fields — blank until visit type selected; all fields shown -->
+      <sc-if value="{{ drawerHasFields }}">
+      <div style="display:flex;flex-direction:column;gap:16px;">
+        <sc-for list="{{ drawerFieldViews }}" as="f" hint-placeholder-count="2">
+        <div>
+          <label style="display:block;font-size:13px;font-weight:600;color:var(--gray-9);margin-bottom:6px;">{{ f.label }}<sc-if value="{{ f.reqHost }}"><span style="color:var(--color-error);"> *</span></sc-if></label>
+          <sc-if value="{{ f.isText }}"><input value="{{ f.value }}" onChange="{{ f.onText }}" placeholder="{{ f.placeholder }}" style="{{ f.inpStyle }}"></sc-if>
+          <sc-if value="{{ f.isPhone }}"><input value="{{ f.value }}" onChange="{{ f.onText }}" placeholder="(555) 000-0000" style="{{ f.inpStyle }}"></sc-if>
+          <sc-if value="{{ f.isTextarea }}"><textarea value="{{ f.value }}" onChange="{{ f.onText }}" placeholder="{{ f.placeholder }}" style="{{ f.areaStyle }}"></textarea></sc-if>
+          <sc-if value="{{ f.isSelect }}"><select value="{{ f.value }}" onChange="{{ f.onSelect }}" style="{{ f.selStyle }}"><sc-for list="{{ f.selectOptions }}" as="o" hint-placeholder-count="3"><option value="{{ o.value }}">{{ o.label }}</option></sc-for></select></sc-if>
+          <sc-if value="{{ f.isChoice }}"><div style="display:flex;flex-wrap:wrap;gap:8px;"><sc-for list="{{ f.choices }}" as="o" hint-placeholder-count="3"><div onClick="{{ o.onPick }}" style="{{ o.chipStyle }}">{{ o.label }}</div></sc-for></div></sc-if>
+          <sc-if value="{{ f.isFile }}"><div onClick="{{ f.onFile }}" style="{{ f.fileStyle }}"><i class="fa-solid fa-arrow-up-from-bracket" style="margin-right:8px;"></i>{{ f.fileLabel }}</div></sc-if>
+          <sc-if value="{{ f.guestNote }}"><div style="font-size:11px;color:var(--color-text-tertiary);margin-top:5px;"><i class="fa-solid fa-tablet-screen-button"></i> Visitor can complete this at check-in — optional for you</div></sc-if>
+        </div>
+        </sc-for>
+      </div>
+      </sc-if>
+
+      <span style="color:var(--color-link);font-size:14px;cursor:pointer;">Add guest instructions (optional)</span>
+    </div>
+    <div style="display:flex;flex-direction:column;gap:12px;padding:16px 24px;border-top:1px solid var(--color-border-light);flex-shrink:0;">
+      <div onClick="{{ toggleCheckInNow }}" style="display:flex;align-items:center;gap:8px;cursor:pointer;font-size:14px;color:var(--gray-9);"><span style="{{ checkInNowBox }}"><sc-if value="{{ checkInNow }}"><i class="fa-solid fa-check" style="font-size:10px;color:#fff;"></i></sc-if></span>Check in now<i class="fa-solid fa-circle-info" style="color:var(--gray-6);font-size:13px;"></i></div>
+      <div style="display:flex;justify-content:flex-end;gap:12px;">
+        <button onClick="{{ closeDrawer }}" style="height:32px;padding:0 16px;border-radius:4px;font:500 14px var(--font-sans);background:#fff;color:var(--color-text);border:1px solid var(--color-border);cursor:pointer;">Cancel</button>
+        <button onClick="{{ saveDrawer }}" style="height:32px;padding:0 16px;border-radius:4px;font:500 14px var(--font-sans);background:var(--color-primary);color:#fff;border:1px solid transparent;cursor:pointer;">Create visit</button>
+      </div>
+    </div>
+  </div>
+  </sc-if>
+
+  <!-- ============ FORM BUILDER (full screen, 2-stage) ============ -->
+  <sc-if value="{{ builderOpen }}">
+  <div data-screen-label="Form builder" style="position:fixed;inset:0;background:var(--color-bg-layout);z-index:50;display:flex;flex-direction:column;animation:rFade .2s ease;">
+    <!-- header -->
+    <div style="height:64px;background:var(--navy);display:flex;align-items:center;justify-content:space-between;padding:0 24px;flex-shrink:0;">
+      <div style="width:200px;"><i onClick="{{ closeBuilder }}" class="fa-solid fa-xmark" style="cursor:pointer;color:rgba(255,255,255,.8);font-size:18px;"></i></div>
+      <div style="color:#fff;font-size:18px;font-weight:500;letter-spacing:-.02em;">Custom visit form</div>
+      <div style="width:200px;display:flex;justify-content:flex-end;gap:12px;align-items:center;">
+        <button onClick="{{ closeBuilder }}" style="height:32px;padding:0 12px;border-radius:4px;font:500 14px var(--font-sans);background:transparent;color:rgba(255,255,255,.85);border:none;cursor:pointer;">Cancel</button>
+        <sc-if value="{{ builderStep2 }}"><button onClick="{{ builderBack }}" style="height:32px;padding:0 16px;border-radius:4px;font:500 14px var(--font-sans);background:transparent;color:#fff;border:1px solid rgba(255,255,255,.4);cursor:pointer;">Back</button></sc-if>
+        <button onClick="{{ builderPrimary }}" style="height:32px;padding:0 18px;border-radius:4px;font:500 14px var(--font-sans);background:var(--color-primary);color:#fff;border:1px solid transparent;cursor:pointer;">{{ builderPrimaryLabel }}</button>
+      </div>
+    </div>
+    <!-- stepper -->
+    <div style="height:56px;background:#fff;border-bottom:1px solid var(--color-border);display:flex;align-items:center;justify-content:center;gap:0;flex-shrink:0;">
+      <div style="display:flex;align-items:center;gap:12px;">
+        <span style="{{ step1Circle }}"><sc-if value="{{ step1Done }}"><i class="fa-solid fa-check" style="font-size:12px;"></i></sc-if><sc-if value="{{ step1Num }}">1</sc-if></span>
+        <span style="{{ step1Label }}">Build form</span>
+      </div>
+      <div style="width:120px;height:1px;background:var(--color-border);margin:0 20px;"></div>
+      <div style="display:flex;align-items:center;gap:12px;">
+        <span style="{{ step2Circle }}">2</span>
+        <span style="{{ step2Label }}">Building &amp; visit type</span>
+      </div>
+    </div>
+
+    <!-- body: content + optional preview sider -->
+    <div style="flex:1;display:flex;overflow:hidden;">
+    <div style="flex:1;overflow:auto;padding:28px 40px;">
+      <div style="max-width:793px;margin:0 auto;display:flex;flex-direction:column;gap:16px;">
+
+        <!-- STEP 1 : build form -->
+        <sc-if value="{{ builderStep1 }}">
+        <div style="display:flex;flex-direction:column;gap:16px;">
+          <div style="background:#fff;border:1px solid var(--color-border);border-radius:4px;padding:24px;">
+            <div style="font-size:18px;font-weight:500;letter-spacing:-.02em;">Form name</div>
+            <div style="font-size:14px;color:var(--color-text);margin-bottom:14px;">This name will not appear on the form.</div>
+            <input value="{{ builderName }}" onChange="{{ onBuilderName }}" placeholder="e.g. Contractor safety acknowledgment" style="width:100%;height:32px;border:1px solid var(--color-border);border-radius:4px;padding:0 11px;font-size:14px;">
+            <sc-if value="{{ builderNameError }}"><div style="color:var(--color-error);font-size:13px;margin-top:6px;">Give the form a name.</div></sc-if>
+          </div>
+          <div style="background:#fff;border:1px solid var(--color-border);border-radius:4px;padding:24px;">
+            <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:16px;">
+              <span style="font-size:18px;font-weight:500;letter-spacing:-.02em;">Form</span>
+              <button onClick="{{ togglePreview }}" style="display:inline-flex;align-items:center;gap:8px;height:32px;padding:0 14px;border-radius:4px;font:500 14px var(--font-sans);background:#fff;color:var(--color-text);border:1px solid var(--color-border);cursor:pointer;"><i class="fa-solid fa-eye" style="font-size:13px;"></i>Preview</button>
+            </div>
+            <div style="display:flex;flex-direction:column;gap:16px;">
+            <sc-for list="{{ builderFields }}" as="f" hint-placeholder-count="2">
+            <div style="border:1px solid var(--color-border);border-radius:4px;overflow:hidden;">
+              <div style="display:flex;gap:8px;padding:16px;align-items:flex-start;">
+                <i class="fa-solid fa-grip-vertical" style="color:var(--gray-5);cursor:grab;padding-top:9px;"></i>
+                <div style="flex:1;position:relative;">
+                  <input value="{{ f.label }}" onChange="{{ f.onLabel }}" placeholder="Question label" maxlength="40" style="width:100%;height:32px;border:1px solid var(--color-border);border-radius:4px;padding:0 52px 0 11px;font-size:14px;">
+                  <span style="position:absolute;right:11px;top:7px;font-size:12px;color:var(--gray-6);">{{ f.labelCount }}</span>
+                </div>
+                <select value="{{ f.type }}" onChange="{{ f.onType }}" style="width:170px;height:32px;border:1px solid var(--color-border);border-radius:4px;padding:0 8px;font-size:14px;background:#fff;flex-shrink:0;"><sc-for list="{{ fieldTypeOptions }}" as="o" hint-placeholder-count="6"><option value="{{ o.value }}">{{ o.label }}</option></sc-for></select>
+              </div>
+              <sc-if value="{{ f.hasOptions }}">
+              <div style="padding:0 16px 12px 44px;display:flex;flex-direction:column;gap:8px;">
+                <sc-for list="{{ f.options }}" as="o" hint-placeholder-count="2">
+                <div style="display:flex;align-items:center;gap:10px;">
+                  <i class="fa-regular {{ f.optionMark }}" style="color:var(--gray-6);font-size:14px;"></i>
+                  <input value="{{ o.value }}" onChange="{{ o.onChange }}" placeholder="Option" style="flex:1;max-width:320px;height:32px;border:1px solid var(--color-border);border-radius:4px;padding:0 10px;font-size:14px;">
+                  <i onClick="{{ o.remove }}" class="fa-solid fa-xmark" style="color:var(--gray-6);cursor:pointer;font-size:13px;"></i>
+                </div>
+                </sc-for>
+                <div onClick="{{ f.addOption }}" style="color:var(--color-link);font-size:14px;cursor:pointer;display:inline-flex;align-items:center;gap:6px;width:fit-content;margin-top:2px;"><i class="fa-solid fa-plus" style="font-size:11px;"></i>Add option</div>
+              </div>
+              </sc-if>
+              <sc-if value="{{ f.isFileType }}">
+              <div style="padding:0 16px 12px 44px;"><div style="border:1.5px dashed var(--color-border);border-radius:4px;padding:16px;text-align:center;color:var(--gray-7);font-size:13px;"><i class="fa-solid fa-arrow-up-from-bracket" style="margin-right:8px;"></i>Visitor will upload a file</div></div>
+              </sc-if>
+              <div style="background:var(--gray-1);border-top:1px solid var(--color-border);padding:12px 16px;display:flex;align-items:center;justify-content:flex-end;gap:20px;flex-wrap:wrap;">
+                <sc-if value="{{ f.showMulti }}"><div onClick="{{ f.toggleMulti }}" style="display:flex;align-items:center;gap:8px;cursor:pointer;font-size:13px;color:var(--gray-9);"><span style="{{ f.multiBox }}"><sc-if value="{{ f.multi }}"><i class="fa-solid fa-check" style="font-size:10px;color:#fff;"></i></sc-if></span>Multi-select</div></sc-if>
+                <div onClick="{{ f.toggleGuest }}" style="display:flex;align-items:center;gap:8px;cursor:pointer;font-size:13px;color:var(--gray-9);"><span style="{{ f.guestBox }}"><sc-if value="{{ f.guest }}"><i class="fa-solid fa-check" style="font-size:10px;color:#fff;"></i></sc-if></span>Guest fill out</div>
+                <div onClick="{{ f.toggleBadge }}" style="display:flex;align-items:center;gap:8px;cursor:pointer;font-size:13px;color:var(--gray-9);"><span style="{{ f.badgeBox }}"><sc-if value="{{ f.badge }}"><i class="fa-solid fa-check" style="font-size:10px;color:#fff;"></i></sc-if></span>Display on badge</div>
+                <div onClick="{{ f.toggleRequired }}" style="display:flex;align-items:center;gap:8px;cursor:pointer;font-size:13px;color:var(--gray-9);"><span style="{{ f.reqBox }}"><sc-if value="{{ f.required }}"><i class="fa-solid fa-check" style="font-size:10px;color:#fff;"></i></sc-if></span>Required</div>
+                <i onClick="{{ f.remove }}" class="fa-solid fa-trash-can" style="color:var(--red-6);cursor:pointer;font-size:14px;"></i>
+              </div>
+            </div>
+            </sc-for>
+            </div>
+            <div onClick="{{ addField }}" style="margin-top:16px;border:1.5px dashed var(--color-border);border-radius:4px;height:40px;display:flex;align-items:center;justify-content:center;color:var(--color-text);font-size:14px;font-weight:500;cursor:pointer;"><i class="fa-solid fa-plus" style="margin-right:8px;"></i>Add question</div>
+          </div>
+        </div>
+        </sc-if>
+
+        <!-- STEP 2 : building & visit type -->
+        <sc-if value="{{ builderStep2 }}">
+        <div style="display:flex;flex-direction:column;gap:16px;">
+          <div style="background:#fff;border:1px solid var(--color-border);border-radius:4px;padding:24px;">
+            <div style="font-size:18px;font-weight:500;letter-spacing:-.02em;margin-bottom:4px;">Where this form applies</div>
+            <div style="font-size:14px;color:var(--color-text-secondary);margin-bottom:20px;">This form appears when a visitor's visit type and building both match your selection.</div>
+            <div style="font-size:13px;font-weight:600;color:var(--gray-9);margin-bottom:10px;">Visit types</div>
+            <div style="display:flex;flex-wrap:wrap;gap:8px;margin-bottom:24px;">
+              <sc-for list="{{ builderVisitTypes }}" as="t" hint-placeholder-count="4">
+              <div onClick="{{ t.onToggle }}" style="{{ t.style }}"><sc-if value="{{ t.selected }}"><i class="fa-solid fa-check" style="font-size:10px;margin-right:6px;"></i></sc-if>{{ t.name }}</div>
+              </sc-for>
+            </div>
+            <div style="font-size:13px;font-weight:600;color:var(--gray-9);margin-bottom:10px;">Buildings</div>
+            <div style="display:flex;flex-wrap:wrap;gap:8px;">
+              <sc-for list="{{ builderBuildings }}" as="b" hint-placeholder-count="2">
+              <div onClick="{{ b.onToggle }}" style="{{ b.style }}"><sc-if value="{{ b.selected }}"><i class="fa-solid fa-check" style="font-size:10px;margin-right:6px;"></i></sc-if>{{ b.name }}</div>
+              </sc-for>
+            </div>
+            <sc-if value="{{ builderAssignError }}"><div style="color:var(--color-error);font-size:13px;margin-top:16px;">Select at least one visit type and one building.</div></sc-if>
+          </div>
+        </div>
+        </sc-if>
+
+      </div>
+    </div>
+
+    <!-- PREVIEW SIDER (inline) -->
+    <sc-if value="{{ previewOpen }}">
+    <div style="width:440px;flex-shrink:0;background:#fff;border-left:1px solid var(--color-border);display:flex;flex-direction:column;overflow:hidden;">
+      <div style="display:flex;align-items:center;justify-content:space-between;padding:18px 24px;border-bottom:1px solid var(--color-border-light);flex-shrink:0;">
+        <div><div style="font-size:16px;font-weight:500;">Preview</div><div style="font-size:12px;color:var(--gray-7);">As shown in the Create visit drawer</div></div>
+        <i onClick="{{ togglePreview }}" class="fa-solid fa-xmark" style="cursor:pointer;color:var(--gray-7);font-size:18px;"></i>
+      </div>
+      <div style="flex:1;overflow:auto;padding:24px;display:flex;flex-direction:column;gap:16px;">
+        <div style="display:flex;flex-direction:column;gap:16px;opacity:.55;pointer-events:none;">
+          <div>
+            <div style="font-size:13px;font-weight:600;color:var(--gray-9);margin-bottom:6px;">Visitors (1)</div>
+            <div style="display:flex;gap:8px;">
+              <input readonly="" placeholder="Full name" style="flex:1;min-width:0;height:36px;border:1px solid var(--color-border);border-radius:4px;padding:0 11px;font-size:14px;background:var(--gray-1);">
+              <input readonly="" placeholder="Email" style="flex:1;min-width:0;height:36px;border:1px solid var(--color-border);border-radius:4px;padding:0 11px;font-size:14px;background:var(--gray-1);">
+            </div>
+          </div>
+          <div style="display:flex;gap:14px;">
+            <div style="flex:1;"><div style="font-size:13px;font-weight:600;color:var(--gray-9);margin-bottom:6px;">Host</div><div style="height:36px;border:1px solid var(--color-border);border-radius:4px;padding:0 11px;font-size:14px;background:var(--gray-1);display:flex;align-items:center;">Tiffany Yu</div></div>
+            <div style="flex:1;"><div style="font-size:13px;font-weight:600;color:var(--gray-9);margin-bottom:6px;">Building</div><div style="height:36px;border:1px solid var(--color-border);border-radius:4px;padding:0 11px;font-size:14px;background:var(--gray-1);display:flex;align-items:center;">54 State St.</div></div>
+          </div>
+          <div><div style="font-size:13px;font-weight:600;color:var(--gray-9);margin-bottom:6px;">Date and time</div><div style="height:36px;border:1px solid var(--color-border);border-radius:4px;padding:0 11px;font-size:14px;background:var(--gray-1);display:flex;align-items:center;gap:8px;"><i class="fa-solid fa-calendar" style="color:var(--gray-7);font-size:13px;"></i>Jul 2, 2026 · 9:00 AM</div></div>
+          <div><div style="font-size:13px;font-weight:600;color:var(--gray-9);margin-bottom:6px;">Visit type</div><div style="height:36px;border:1px solid var(--color-border);border-radius:4px;padding:0 11px;font-size:14px;background:var(--gray-1);display:flex;align-items:center;justify-content:space-between;color:var(--gray-6);">Select visit type<i class="fa-solid fa-angle-down"></i></div></div>
+        </div>
+        <sc-for list="{{ previewFields }}" as="f" hint-placeholder-count="2">
+        <div>
+          <label style="display:block;font-size:13px;font-weight:600;color:var(--gray-9);margin-bottom:6px;">{{ f.label }}<sc-if value="{{ f.reqHost }}"><span style="color:var(--color-error);"> *</span></sc-if></label>
+          <sc-if value="{{ f.isText }}"><input value="{{ f.value }}" onChange="{{ f.onText }}" placeholder="{{ f.placeholder }}" style="{{ f.inpStyle }}"></sc-if>
+          <sc-if value="{{ f.isPhone }}"><input value="{{ f.value }}" onChange="{{ f.onText }}" placeholder="(555) 000-0000" style="{{ f.inpStyle }}"></sc-if>
+          <sc-if value="{{ f.isTextarea }}"><textarea value="{{ f.value }}" onChange="{{ f.onText }}" placeholder="{{ f.placeholder }}" style="{{ f.areaStyle }}"></textarea></sc-if>
+          <sc-if value="{{ f.isSelect }}"><select value="{{ f.value }}" onChange="{{ f.onSelect }}" style="{{ f.selStyle }}"><sc-for list="{{ f.selectOptions }}" as="o" hint-placeholder-count="3"><option value="{{ o.value }}">{{ o.label }}</option></sc-for></select></sc-if>
+          <sc-if value="{{ f.isChoice }}"><div style="display:flex;flex-wrap:wrap;gap:8px;"><sc-for list="{{ f.choices }}" as="o" hint-placeholder-count="3"><div onClick="{{ o.onPick }}" style="{{ o.chipStyle }}">{{ o.label }}</div></sc-for></div></sc-if>
+          <sc-if value="{{ f.isFile }}"><div onClick="{{ f.onFile }}" style="{{ f.fileStyle }}"><i class="fa-solid fa-arrow-up-from-bracket" style="margin-right:8px;"></i>{{ f.fileLabel }}</div></sc-if>
+          <sc-if value="{{ f.guestNote }}"><div style="font-size:11px;color:var(--color-text-tertiary);margin-top:5px;"><i class="fa-solid fa-tablet-screen-button"></i> Visitor can complete this at check-in — optional for you</div></sc-if>
+        </div>
+        </sc-for>
+        <sc-if value="{{ previewEmpty }}"><div style="font-size:13px;color:var(--color-text-tertiary);">Fields you add will appear here.</div></sc-if>
+      </div>
+    </div>
+    </sc-if>
+    </div>
+  </div>
+  </sc-if>
+
+  <!-- ============ FLOATING SWITCHER ============ -->
+  <div style="position:fixed;bottom:20px;left:50%;transform:translateX(-50%);z-index:80;display:flex;align-items:center;gap:8px;background:var(--navy);border-radius:40px;padding:6px;box-shadow:0 12px 32px rgba(0,0,0,.35);">
+    <div onClick="{{ setModeWeb }}" style="{{ webSegStyle }}"><i class="fa-solid fa-desktop" style="font-size:12px;"></i>Web app</div>
+    <div onClick="{{ setModeTablet }}" style="{{ tabletSegStyle }}"><i class="fa-solid fa-tablet-screen-button" style="font-size:12px;"></i>Arrival display</div>
+    <div onClick="{{ resetDemo }}" title="Reset demo" style="width:34px;height:34px;border-radius:50%;display:flex;align-items:center;justify-content:center;color:rgba(255,255,255,.6);cursor:pointer;"><i class="fa-solid fa-rotate-left" style="font-size:13px;"></i></div>
+  </div>
+
+  <!-- ============ TOAST ============ -->
+  <sc-if value="{{ showToast }}">
+  <div style="position:fixed;top:24px;left:50%;transform:translateX(-50%);z-index:90;background:#fff;border:1px solid var(--color-border);border-radius:8px;box-shadow:var(--shadow-md);padding:12px 18px;display:flex;align-items:center;gap:10px;font-size:14px;animation:rSlideT .25s ease;">
+    <i class="fa-solid {{ toastIcon }}" style="color:var(--color-success);"></i>{{ toastMsg }}
+  </div>
+  </sc-if>
+
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;$preview&quot;:{&quot;width&quot;:&quot;100%&quot;,&quot;height&quot;:&quot;100%&quot;},&quot;timeModel&quot;:{&quot;editor&quot;:&quot;enum&quot;,&quot;options&quot;:[&quot;Same time for all days&quot;,&quot;Customizable per-day times&quot;],&quot;default&quot;:&quot;Same time for all days&quot;,&quot;tsType&quot;:&quot;string&quot;,&quot;section&quot;:&quot;Create visit&quot;},&quot;seriesView&quot;:{&quot;editor&quot;:&quot;enum&quot;,&quot;options&quot;:[&quot;Inline expandable list&quot;,&quot;Full series view&quot;],&quot;default&quot;:&quot;Inline expandable list&quot;,&quot;tsType&quot;:&quot;string&quot;,&quot;section&quot;:&quot;Visit details&quot;},&quot;kioskLocation&quot;:{&quot;editor&quot;:&quot;enum&quot;,&quot;options&quot;:[&quot;54 State St.&quot;,&quot;Woolen Mills&quot;],&quot;default&quot;:&quot;54 State St.&quot;,&quot;tsType&quot;:&quot;string&quot;,&quot;section&quot;:&quot;Arrival display&quot;}}">
+class Component extends DCLogic {
+  state = {
+    mode: "web",
+    webTab: "Visits",
+    builderOpen: false, builder: null, editingFormId: null, previewOpen: false, previewValues: {},
+    drawerOpen: false, drawer: null, checkInNow: false,
+    detailId: null, seriesOpen: false, showSeries: false, cancelConfirm: false,
+    tablet: { step: "welcome", email: "", name: "", host: "", visitType: "", building: "", preregId: null, values: {}, found: false, emailError: false, selfError: false, reasonError: false, fieldsError: false },
+    toast: null,
+    visitTypes: [
+      { name: "VIP", icon: "fa-star" },
+      { name: "Vendor", icon: "fa-truck" },
+      { name: "Candidate", icon: "fa-user-tie" },
+      { name: "Contractor", icon: "fa-helmet-safety" },
+    ],
+    buildings: ["54 State St.", "Woolen Mills"],
+    hosts: ["Tiffany Yu", "Jordan Miller", "Amara Khan", "Ravi Lal", "Liam Chen"],
+    forms: [
+      {
+        id: "f1", name: "Contractor safety acknowledgment",
+        buildings: ["54 State St."], visitTypes: ["Contractor"],
+        updatedBy: "Tiffany Yu", updatedOn: "Jun 28, 2026",
+        fields: [
+          { id: "c1", label: "Company name", type: "short", guest: false, badge: true, required: true, multi: false, options: [] },
+          { id: "c2", label: "Certificate number", type: "short", guest: true, badge: false, required: true, multi: false, options: [] },
+          { id: "c3", label: "Areas you will access", type: "multiple", guest: true, badge: false, required: true, multi: true, options: ["Lobby", "Server room", "Roof", "Loading dock"] },
+          { id: "c4", label: "On-site emergency contact", type: "phone", guest: true, badge: false, required: false, multi: false, options: [] },
+        ],
+      },
+    ],
+    visits: [
+      { id: "v1", name: "Priya Nair", email: "priya@partnerco.com", host: "Amara Khan", visitType: "VIP", building: "54 State St.", date: "Jul 2, 2026", expected: "8:30 AM", checkIn: "8:40 AM", checkOut: "—", status: "Checked in", values: {}, source: "prereg" },
+      { id: "v2", name: "Dana Lopez", email: "dana@vendorco.com", host: "Tiffany Yu", visitType: "Vendor", building: "54 State St.", date: "Jul 2, 2026", expected: "2:00 PM", checkIn: "—", checkOut: "—", status: "Pre-registered", values: {}, source: "prereg" },
+      { id: "v3", name: "Marcus Bell", email: "marcus@applicant.com", host: "Jordan Miller", visitType: "Candidate", building: "54 State St.", date: "Jul 2, 2026", expected: "9:00 AM", checkIn: "9:12 AM", checkOut: "10:30 AM", status: "Checked in", values: {}, source: "self" },
+      { id: "v4a", seriesId: "s-tw", name: "Tomás Wolf", email: "tomas@buildright.com", host: "Ravi Lal", visitType: "Contractor", building: "54 State St.", date: "Jul 6, 2026", expected: "7:30 AM", checkIn: "—", checkOut: "—", status: "Pre-registered", values: { c1: "BuildRight Inc." }, source: "prereg" },
+      { id: "v4b", seriesId: "s-tw", name: "Tomás Wolf", email: "tomas@buildright.com", host: "Ravi Lal", visitType: "Contractor", building: "54 State St.", date: "Jul 7, 2026", expected: "7:30 AM", checkIn: "—", checkOut: "—", status: "Pre-registered", values: { c1: "BuildRight Inc." }, source: "prereg" },
+      { id: "v4c", seriesId: "s-tw", name: "Tomás Wolf", email: "tomas@buildright.com", host: "Ravi Lal", visitType: "Contractor", building: "54 State St.", date: "Jul 8, 2026", expected: "7:30 AM", checkIn: "—", checkOut: "—", status: "Pre-registered", values: { c1: "BuildRight Inc." }, source: "prereg" },
+    ],
+  };
+
+  uid = (p) => p + Math.random().toString(36).slice(2, 8);
+  kiosk = () => this.props.kioskLocation || "54 State St.";
+  avColors = ["#BE1F77", "#2774C1", "#72B433", "#D99413", "#7A0E4D", "#1E5E9E"];
+  colorFor = (n) => this.avColors[((n || "").charCodeAt(0) || 0) % 6];
+  initials = (n) => (n || "").split(" ").filter(Boolean).map(w => w[0]).slice(0, 2).join("").toUpperCase() || "?";
+  typeLabels = { short: "Short answer", paragraph: "Paragraph", multiple: "Multiple choice", dropdown: "Dropdown", file: "File upload", phone: "Phone number" };
+  typeIcon = (n) => { const t = this.state.visitTypes.find(v => v.name === n); return t ? t.icon : "fa-user"; };
+
+  nowTime = () => { const d = new Date(); let h = d.getHours(); const m = d.getMinutes().toString().padStart(2, "0"); const ap = h >= 12 ? "PM" : "AM"; h = h % 12 || 12; return h + ":" + m + " " + ap; };
+  todayStr = () => { const d = new Date(); const mo = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"][d.getMonth()]; return mo + " " + d.getDate() + ", " + d.getFullYear(); };
+  tabletDateStr = () => { const d = new Date(); const wd = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"][d.getDay()]; const mo = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"][d.getMonth()]; return wd + ", " + mo + " " + d.getDate(); };
+
+  // ---------- date helpers (multi-day picker) ----------
+  DOW = ["Su", "Mo", "Tu", "We", "Th", "Fr", "Sa"];
+  MOFULL = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
+  MOABBR = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
+  pad2 = (n) => (n < 10 ? "0" : "") + n;
+  isoOf = (o) => o.getFullYear() + "-" + this.pad2(o.getMonth() + 1) + "-" + this.pad2(o.getDate());
+  todayIso = () => this.isoOf(new Date());
+  isoParts = (iso) => { const [y, m, d] = iso.split("-").map(Number); return { y, m: m - 1, d }; };
+  fmtIso = (iso) => { const p = this.isoParts(iso); return this.MOABBR[p.m] + " " + p.d + ", " + p.y; };
+  fmtShort = (iso) => { const p = this.isoParts(iso); return this.MOABBR[p.m] + " " + p.d; };
+  rangeList = (a, b) => { const out = []; let s = new Date(a + "T00:00:00"), e = new Date(b + "T00:00:00"); if (e < s) { const t = s; s = e; e = t; } for (let dt = new Date(s); dt <= e; dt.setDate(dt.getDate() + 1)) out.push(this.isoOf(dt)); return out; };
+  effectiveDates = (d) => { if (!d) return []; if (d.dateMode === "range") { if (d.rStart && d.rEnd) return this.rangeList(d.rStart, d.rEnd); return d.rStart ? [d.rStart] : []; } return [...(d.days || [])].sort(); };
+  perDayMode = () => this.props.timeModel === "Customizable per-day times";
+  timeFor = (d, iso) => { if (this.perDayMode() && d.showPerDay) return d.perDay[iso] || d.time; return d.time; };
+  timeOpts = () => { const out = []; for (let h = 6; h <= 20; h++) { for (const mm of [0, 30]) { const ap = h >= 12 ? "PM" : "AM"; const hh = h % 12 || 12; out.push(hh + ":" + this.pad2(mm) + " " + ap); } } return out; };
+
+  statusStyle = (s) => {
+    if (s === "Checked in") return { bg: "var(--green-1)", bd: "var(--color-success-border)", fg: "var(--color-success)", icon: "fa-circle-check" };
+    if (s === "Pre-registered") return { bg: "var(--blue-1)", bd: "var(--color-info-border)", fg: "var(--color-link)", icon: "fa-clock" };
+    return { bg: "#FAFAFA", bd: "var(--color-border)", fg: "var(--gray-9)", icon: "fa-circle" };
+  };
+  vtStyle = (n) => ({ bg: "var(--gray-1)", bd: "var(--color-border)", fg: "var(--gray-9)" });
+
+  toast = (msg, icon) => { this.setState({ toast: { msg, icon: icon || "fa-circle-check" } }); clearTimeout(this._tt); this._tt = setTimeout(() => this.setState({ toast: null }), 2800); };
+
+  matchingForms = (vt, bldg) => this.state.forms.filter(f => f.visitTypes.includes(vt) && f.buildings.includes(bldg));
+  collectFields = (vt, bldg, who) => { const out = []; this.matchingForms(vt, bldg).forEach(f => f.fields.forEach(fl => { const isGuest = !!fl.guest; if ((who === "guest") === isGuest) out.push(fl); })); return out; };
+
+  // ---------- navigation ----------
+  setModeWeb = () => this.setState({ mode: "web" });
+  setModeTablet = () => this.setState({ mode: "tablet" });
+  goVisits = () => this.setState({ webTab: "Visits" });
+  goForms = () => this.setState({ webTab: "Custom visit forms" });
+  resetDemo = () => window.location.reload();
+
+  // ---------- builder ----------
+  newField = () => ({ id: this.uid("fl"), label: "", type: "short", guest: true, badge: false, required: false, multi: false, options: [] });
+  openBuilderNew = () => this.setState({ builderOpen: true, previewOpen: false, previewValues: {}, editingFormId: null, builder: { step: 1, name: "", buildings: [], visitTypes: [], fields: [this.newField()] }, builderNameError: false, builderAssignError: false });
+  openBuilderEdit = (id) => { const f = this.state.forms.find(x => x.id === id); this.setState({ builderOpen: true, previewOpen: false, previewValues: {}, editingFormId: id, builder: { step: 1, ...JSON.parse(JSON.stringify(f)) }, builderNameError: false, builderAssignError: false }); };
+  closeBuilder = () => this.setState({ builderOpen: false, builder: null, previewOpen: false });
+  togglePreview = () => this.setState(s => ({ previewOpen: !s.previewOpen }));
+  setPreviewValue = (fid, val) => this.setState(s => ({ previewValues: { ...s.previewValues, [fid]: val } }));
+  togglePreviewMulti = (fid, opt) => this.setState(s => { const cur = s.previewValues[fid] || []; const has = cur.includes(opt); return { previewValues: { ...s.previewValues, [fid]: has ? cur.filter(x => x !== opt) : [...cur, opt] } }; });
+  builderBack = () => this.setState(s => ({ builder: { ...s.builder, step: 1 } }));
+  onBuilderName = (e) => this.setState(s => ({ builder: { ...s.builder, name: e.target.value } }));
+  addField = () => this.setState(s => ({ builder: { ...s.builder, fields: [...s.builder.fields, this.newField()] } }));
+  updateField = (id, patch) => this.setState(s => ({ builder: { ...s.builder, fields: s.builder.fields.map(f => f.id === id ? { ...f, ...patch } : f) } }));
+  removeField = (id) => this.setState(s => ({ builder: { ...s.builder, fields: s.builder.fields.filter(f => f.id !== id) } }));
+  addOption = (id) => this.setState(s => ({ builder: { ...s.builder, fields: s.builder.fields.map(f => f.id === id ? { ...f, options: [...f.options, ""] } : f) } }));
+  updateOption = (id, i, val) => this.setState(s => ({ builder: { ...s.builder, fields: s.builder.fields.map(f => f.id === id ? { ...f, options: f.options.map((o, oi) => oi === i ? val : o) } : f) } }));
+  removeOption = (id, i) => this.setState(s => ({ builder: { ...s.builder, fields: s.builder.fields.map(f => f.id === id ? { ...f, options: f.options.filter((o, oi) => oi !== i) } : f) } }));
+  toggleBuilderList = (key, val) => this.setState(s => { const arr = s.builder[key]; const has = arr.includes(val); return { builderAssignError: false, builder: { ...s.builder, [key]: has ? arr.filter(x => x !== val) : [...arr, val] } }; });
+  onFieldType = (id, e) => { const t = e.target.value; const f = this.state.builder.fields.find(x => x.id === id); const opts = (t === "multiple" || t === "dropdown") && (!f.options || !f.options.length) ? ["Option 1", "Option 2"] : f.options; this.updateField(id, { type: t, options: opts }); };
+  builderPrimary = () => {
+    const b = this.state.builder;
+    if (b.step === 1) {
+      if (!b.name.trim()) { this.setState({ builderNameError: true }); return; }
+      this.setState(s => ({ builder: { ...s.builder, step: 2 } }));
+      return;
+    }
+    if (!b.visitTypes.length || !b.buildings.length) { this.setState({ builderAssignError: true }); return; }
+    const clean = { name: b.name.trim(), buildings: b.buildings, visitTypes: b.visitTypes, fields: b.fields.filter(f => f.label.trim()), updatedBy: "Tiffany Yu", updatedOn: this.todayStr() };
+    this.setState(s => {
+      let forms;
+      if (s.editingFormId) forms = s.forms.map(f => f.id === s.editingFormId ? { ...clean, id: s.editingFormId } : f);
+      else forms = [...s.forms, { ...clean, id: this.uid("f") }];
+      return { forms, builderOpen: false, builder: null, editingFormId: null, previewOpen: false };
+    });
+    this.toast("Form saved");
+  };
+  deleteForm = (id) => { this.setState(s => ({ forms: s.forms.filter(f => f.id !== id) })); this.toast("Form deleted", "fa-trash-can"); };
+
+  // ---------- create visit drawer ----------
+  openDrawer = () => { const ti = this.todayIso(); const p = this.isoParts(ti); this.setState({ drawerOpen: true, checkInNow: false, drawer: { visitors: [{ id: this.uid("p"), name: "", email: "" }], host: "Tiffany Yu", building: this.kiosk(), visitType: "", values: {}, dateMode: "single", days: [ti], rStart: null, rEnd: null, calY: p.y, calM: p.m, time: "9:00 AM", perDay: {}, showPerDay: false, pickerOpen: false } }); };
+  togglePicker = () => this.setState(s => ({ drawer: { ...s.drawer, pickerOpen: !s.drawer.pickerOpen } }));
+  closePicker = () => this.updDrawer({ pickerOpen: false });
+  setDateMode = (mode) => { const d = this.state.drawer; const all = this.effectiveDates(d); let patch = { dateMode: mode }; if (mode === "single") patch.days = all.length ? [all[0]] : []; else if (mode === "multi") patch.days = all; else { patch.rStart = all[0] || null; patch.rEnd = all.length > 1 ? all[all.length - 1] : null; } this.updDrawer(patch); };
+  pickDay = (iso) => { const d = this.state.drawer; if (d.dateMode === "single") { this.updDrawer({ days: [iso] }); } else if (d.dateMode === "multi") { const has = d.days.includes(iso); this.updDrawer({ days: has ? d.days.filter(x => x !== iso) : [...d.days, iso] }); } else { if (!d.rStart || (d.rStart && d.rEnd)) this.updDrawer({ rStart: iso, rEnd: null }); else if (iso < d.rStart) this.updDrawer({ rStart: iso, rEnd: d.rStart }); else this.updDrawer({ rEnd: iso }); } };
+  calShift = (dm, dy) => { const d = this.state.drawer; let m = d.calM + dm, y = d.calY + dy; while (m < 0) { m += 12; y--; } while (m > 11) { m -= 12; y++; } this.updDrawer({ calY: y, calM: m }); };
+  calToday = () => { const ti = this.todayIso(); const p = this.isoParts(ti); const d = this.state.drawer; this.updDrawer({ calY: p.y, calM: p.m }); if (d.dateMode === "single") this.updDrawer({ days: [ti] }); };
+  onDrawerTime = (e) => this.updDrawer({ time: e.target.value });
+  toggleShowPerDay = () => this.updDrawer({ showPerDay: !this.state.drawer.showPerDay });
+  setPerDayTime = (iso, e) => this.setState(s => ({ drawer: { ...s.drawer, perDay: { ...s.drawer.perDay, [iso]: e.target.value } } }));
+  removeDateChip = (iso, e) => { if (e && e.stopPropagation) e.stopPropagation(); const d = this.state.drawer; if (d.dateMode === "range") this.updDrawer({ rStart: null, rEnd: null }); else this.updDrawer({ days: d.days.filter(x => x !== iso) }); };
+  closeDrawer = () => this.setState({ drawerOpen: false, drawer: null });
+  updDrawer = (patch) => this.setState(s => ({ drawer: { ...s.drawer, ...patch } }));
+  addVisitorRow = () => this.setState(s => ({ drawer: { ...s.drawer, visitors: [...s.drawer.visitors, { id: this.uid("p"), name: "", email: "" }] } }));
+  removeVisitorRow = (id) => this.setState(s => ({ drawer: { ...s.drawer, visitors: s.drawer.visitors.filter(v => v.id !== id) } }));
+  updVisitor = (id, patch) => this.setState(s => ({ drawer: { ...s.drawer, visitors: s.drawer.visitors.map(v => v.id === id ? { ...v, ...patch } : v) } }));
+  toggleCheckInNow = () => this.setState(s => ({ checkInNow: !s.checkInNow }));
+  setDrawerValue = (fid, val) => this.setState(s => ({ drawer: { ...s.drawer, values: { ...s.drawer.values, [fid]: val } } }));
+  toggleDrawerMulti = (fid, opt) => this.setState(s => { const cur = s.drawer.values[fid] || []; const has = cur.includes(opt); return { drawer: { ...s.drawer, values: { ...s.drawer.values, [fid]: has ? cur.filter(x => x !== opt) : [...cur, opt] } } }; });
+  saveDrawer = () => {
+    const d = this.state.drawer;
+    const valid = d.visitors.filter(v => v.name.trim() && v.email.trim());
+    if (!valid.length) { this.toast("Add at least one visitor's name and email", "fa-triangle-exclamation"); return; }
+    if (!d.visitType) { this.toast("Select a visit type", "fa-triangle-exclamation"); return; }
+    const dates = this.effectiveDates(d);
+    if (!dates.length) { this.toast("Select at least one date", "fa-triangle-exclamation"); return; }
+    const reqHost = []; this.matchingForms(d.visitType, d.building).forEach(f => f.fields.forEach(fl => { if (fl.required && !fl.guest) reqHost.push(fl); }));
+    const missingReq = reqHost.some(fl => { const val = d.values[fl.id]; return Array.isArray(val) ? val.length === 0 : (!val || !String(val).trim()); });
+    if (missingReq) { this.toast("Complete the required custom fields", "fa-triangle-exclamation"); return; }
+    const checkedIn = this.state.checkInNow;
+    const visits = [];
+    valid.forEach(v => { const sid = dates.length > 1 ? this.uid("s") : null; dates.forEach((iso, di) => {
+      const canCheckIn = checkedIn && di === 0;
+      visits.push({ id: this.uid("v"), seriesId: sid, name: v.name.trim(), email: v.email.trim(), host: d.host, visitType: d.visitType, building: d.building, date: this.fmtIso(iso), expected: this.timeFor(d, iso), checkIn: canCheckIn ? this.nowTime() : "—", checkOut: "—", status: canCheckIn ? "Checked in" : "Pre-registered", values: { ...d.values }, source: "prereg" });
+    }); });
+    this.setState(s => ({ visits: [...visits, ...s.visits], drawerOpen: false, drawer: null }));
+    const nd = dates.length, total = visits.length;
+    if (nd > 1) this.toast(total + " visits created across " + nd + " days");
+    else this.toast(valid.length === 1 ? valid[0].name.trim() + " added" : valid.length + " visitors added");
+  };
+
+  // ---------- detail ----------
+  openDetail = (id) => this.setState({ detailId: id, seriesOpen: false, showSeries: false, cancelConfirm: false });
+  closeDetail = () => this.setState({ detailId: null, seriesOpen: false, showSeries: false, cancelConfirm: false });
+  seriesFor = (v) => { if (!v || !v.seriesId) return v ? [v] : []; return this.state.visits.filter(x => x.seriesId === v.seriesId); };
+  dateKey = (s) => { const t = Date.parse(s); return isNaN(t) ? 0 : t; };
+  seriesInline = () => this.props.seriesView !== "Full series view";
+  toggleSeries = () => { if (this.seriesInline()) this.setState(s => ({ seriesOpen: !s.seriesOpen })); else this.setState({ showSeries: true }); };
+  backFromSeries = () => this.setState({ showSeries: false });
+  editVisit = () => this.toast("Editing visits is coming soon", "fa-pen");
+  startCancel = () => { const v = this.state.visits.find(x => x.id === this.state.detailId); const series = this.seriesFor(v); if (series.length > 1) this.setState({ cancelConfirm: true }); else this.cancelThisDay(); };
+  dismissCancel = () => this.setState({ cancelConfirm: false });
+  cancelThisDay = () => { const id = this.state.detailId; this.setState(s => ({ visits: s.visits.filter(v => v.id !== id), detailId: null, cancelConfirm: false, seriesOpen: false, showSeries: false })); this.toast("Visit canceled", "fa-circle-check"); };
+  cancelSeries = () => { const v = this.state.visits.find(x => x.id === this.state.detailId); const sid = v && v.seriesId; const n = this.seriesFor(v).length; this.setState(s => ({ visits: s.visits.filter(x => !sid || x.seriesId !== sid), detailId: null, cancelConfirm: false, seriesOpen: false, showSeries: false })); this.toast(n + " visits canceled", "fa-circle-check"); };
+  printBadge = (id) => { const v = this.state.visits.find(x => x.id === id); this.toast("Badge sent to printer for " + (v ? v.name : "visitor"), "fa-id-card"); };
+  deleteVisit = (id) => { this.setState(s => ({ visits: s.visits.filter(v => v.id !== id) })); this.toast("Visit deleted", "fa-trash-can"); };
+
+  // ---------- tablet ----------
+  updTablet = (patch) => this.setState(s => ({ tablet: { ...s.tablet, ...patch } }));
+  tapCheckIn = () => this.setState({ tablet: { step: "email", email: "", name: "", host: "", visitType: "", building: this.kiosk(), preregId: null, values: {}, found: false, emailError: false, selfError: false, reasonError: false, fieldsError: false } });
+  tabletBack = () => this.setState(s => { const st = s.tablet.step; const prev = st === "email" ? "welcome" : st === "self" ? "email" : st === "reason" ? "self" : st === "fields" ? (s.tablet.found ? "email" : "reason") : "welcome"; return { tablet: { ...s.tablet, step: prev, emailError: false, selfError: false, reasonError: false, fieldsError: false } }; });
+  onTEmail = (e) => this.updTablet({ email: e.target.value, emailError: false });
+  onTName = (e) => this.updTablet({ name: e.target.value, selfError: false });
+  onTHost = (e) => this.updTablet({ host: e.target.value, selfError: false });
+  selectTVisitType = (name) => this.updTablet({ visitType: name, reasonError: false });
+  setTValue = (fid, val) => this.setState(s => ({ tablet: { ...s.tablet, values: { ...s.tablet.values, [fid]: val }, fieldsError: false } }));
+  toggleTMulti = (fid, opt) => this.setState(s => { const cur = s.tablet.values[fid] || []; const has = cur.includes(opt); return { tablet: { ...s.tablet, values: { ...s.tablet.values, [fid]: has ? cur.filter(x => x !== opt) : [...cur, opt] }, fieldsError: false } }; });
+
+  submitEmail = () => {
+    const t = this.state.tablet; const email = (t.email || "").trim().toLowerCase();
+    if (!email || email.indexOf("@") < 1) { this.updTablet({ emailError: true }); return; }
+    const match = this.state.visits.find(v => v.status === "Pre-registered" && v.building === this.kiosk() && v.email.toLowerCase() === email);
+    if (match) {
+      const guest = this.collectFields(match.visitType, this.kiosk(), "guest");
+      const base = { ...t, name: match.name, host: match.host, visitType: match.visitType, building: this.kiosk(), preregId: match.id, found: true, values: {} };
+      if (guest.length === 0) { this.setState({ tablet: base }, this.commitCheckIn); }
+      else this.setState({ tablet: { ...base, step: "fields" } });
+    } else {
+      this.updTablet({ step: "self", found: false, building: this.kiosk() });
+    }
+  };
+  selfContinue = () => {
+    const t = this.state.tablet;
+    if (!t.name.trim() || !t.host) { this.updTablet({ selfError: true }); return; }
+    this.updTablet({ step: "reason" });
+  };
+  reasonContinue = () => {
+    const t = this.state.tablet;
+    if (!t.visitType) { this.updTablet({ reasonError: true }); return; }
+    const guest = this.collectFields(t.visitType, this.kiosk(), "guest");
+    if (guest.length === 0) this.commitCheckIn();
+    else this.updTablet({ step: "fields" });
+  };
+  fieldsContinue = () => {
+    const t = this.state.tablet;
+    const guest = this.collectFields(t.visitType, this.kiosk(), "guest");
+    const missing = guest.some(f => { if (!f.required) return false; const v = t.values[f.id]; return Array.isArray(v) ? v.length === 0 : !v || !String(v).trim(); });
+    if (missing) { this.updTablet({ fieldsError: true }); return; }
+    this.commitCheckIn();
+  };
+  commitCheckIn = () => {
+    const t = this.state.tablet;
+    this.setState(s => {
+      let visits;
+      if (t.preregId) visits = s.visits.map(v => v.id === t.preregId ? { ...v, status: "Checked in", checkIn: this.nowTime(), values: { ...v.values, ...t.values } } : v);
+      else visits = [{ id: this.uid("v"), name: t.name.trim(), email: t.email.trim(), host: t.host, visitType: t.visitType, building: this.kiosk(), date: this.todayStr(), expected: "—", checkIn: this.nowTime(), checkOut: "—", status: "Checked in", values: { ...t.values }, source: "self" }, ...s.visits];
+      return { visits, tablet: { ...s.tablet, step: "complete" } };
+    });
+  };
+  tabletFinish = () => this.setState({ tablet: { step: "welcome", email: "", name: "", host: "", visitType: "", building: "", preregId: null, values: {}, found: false, emailError: false, selfError: false, reasonError: false, fieldsError: false } });
+
+  // ---------- field view builder ----------
+  fieldView = (field, values, onVal, onToggle, onRadio, mode) => {
+    const big = mode === "tablet";
+    const ro = mode === "preview";
+    const v = ro ? undefined : values[field.id];
+    const inpStyle = "width:100%;box-sizing:border-box;border:1px solid var(--color-border);border-radius:" + (big ? "12px" : "4px") + ";font-size:" + (big ? "17px" : "14px") + ";height:" + (big ? "54px" : "36px") + ";padding:0 " + (big ? "16px" : "11px") + ";";
+    const areaStyle = "width:100%;box-sizing:border-box;border:1px solid var(--color-border);border-radius:" + (big ? "12px" : "4px") + ";font-size:" + (big ? "17px" : "14px") + ";height:" + (big ? "110px" : "72px") + ";padding:" + (big ? "12px 16px" : "8px 11px") + ";resize:none;font-family:var(--font-sans);";
+    const selStyle = inpStyle + "background:#fff;";
+    const fileStyle = "border:1.5px dashed var(--color-border);border-radius:" + (big ? "12px" : "4px") + ";padding:" + (big ? "18px" : "12px") + ";text-align:center;color:var(--gray-7);font-size:" + (big ? "15px" : "13px") + ";cursor:pointer;" + (big ? "display:flex;flex-direction:column;align-items:center;" : "");
+    const isChoice = field.type === "multiple";
+    const isMultiSel = isChoice && field.multi;
+    const chipSel = (sel) => "display:inline-flex;align-items:center;padding:" + (big ? "10px 16px" : "6px 12px") + ";border-radius:20px;font-size:" + (big ? "16px" : "13px") + ";cursor:pointer;user-select:none;border:1px solid " + (sel ? "var(--color-link)" : "var(--color-border)") + ";background:" + (sel ? "var(--blue-1)" : "#fff") + ";color:" + (sel ? "var(--color-link)" : "var(--color-text)") + ";font-weight:" + (sel ? "500" : "400") + ";";
+    const rowSel = (sel) => "display:flex;align-items:center;gap:12px;padding:14px 16px;border-radius:12px;font-size:16px;cursor:pointer;user-select:none;border:1.5px solid " + (sel ? "var(--color-link)" : "var(--color-border)") + ";background:" + (sel ? "var(--blue-1)" : "#fff") + ";";
+    const markSel = (sel) => "width:22px;height:22px;flex-shrink:0;display:inline-flex;align-items:center;justify-content:center;border:1.5px solid " + (sel ? "var(--color-link)" : "var(--color-border)") + ";background:" + (sel ? "var(--color-link)" : "#fff") + ";border-radius:" + (isMultiSel ? "6px" : "50%") + ";";
+    const arr = Array.isArray(v) ? v : [];
+    const choices = (field.options || []).map(o => {
+      const sel = isMultiSel ? arr.includes(o) : v === o;
+      return { label: o, selected: sel, onPick: ro ? (() => {}) : (isMultiSel ? () => onToggle(field.id, o) : () => onRadio(field.id, o)), rowStyle: rowSel(sel), markStyle: markSel(sel), chipStyle: chipSel(sel) };
+    });
+    return {
+      id: field.id, label: field.label, required: field.required,
+      isText: field.type === "short", isTextarea: field.type === "paragraph", isPhone: field.type === "phone", isSelect: field.type === "dropdown", isChoice, isFile: field.type === "file",
+      markIcon: isMultiSel ? "fa-check" : "fa-circle", 
+      value: field.type === "multiple" ? "" : (v || ""),
+      placeholder: field.type === "paragraph" ? "Type your answer" : "Your answer",
+      onText: ro ? (() => {}) : ((e) => onVal(field.id, e.target.value)),
+      onSelect: ro ? (() => {}) : ((e) => onVal(field.id, e.target.value)),
+      selectOptions: [{ value: "", label: "Select…" }].concat((field.options || []).map(o => ({ value: o, label: o }))),
+      choices, inpStyle, areaStyle, selStyle, fileStyle,
+      onFile: ro ? (() => {}) : (() => onVal(field.id, "document.pdf")),
+      fileLabel: (v && typeof v === "string") ? v : "Upload a file",
+      guestNote: !!field.guest, reqHost: !!field.required && !field.guest,
+    };
+  };
+
+  renderVals() {
+    const s = this.state;
+    const isWeb = s.mode === "web", isTablet = s.mode === "tablet";
+    const kiosk = this.kiosk();
+
+    const tabBase = "padding:0 2px 12px;cursor:pointer;font-size:14px;";
+    const tabOn = tabBase + "font-weight:500;color:var(--color-link);border-bottom:2px solid var(--color-link);margin-bottom:-1px;";
+    const tabOff = tabBase + "font-weight:400;color:var(--color-text-secondary);border-bottom:2px solid transparent;margin-bottom:-1px;";
+
+    // visit rows (latest date first)
+    const sortedVisits = [...s.visits].sort((a, b) => this.dateKey(b.date) - this.dateKey(a.date));
+    const visitRows = sortedVisits.map(v => {
+      const vt = this.vtStyle(v.visitType);
+      const isIn = v.checkIn && v.checkIn !== "—";
+      return { id: v.id, date: v.date, name: v.name, email: v.email, initials: this.initials(v.name), color: this.colorFor(v.name), host: v.host, hostInitials: this.initials(v.host), hostColor: this.colorFor(v.host), visitType: v.visitType, vtBg: vt.bg, vtBd: vt.bd, vtFg: vt.fg, expected: v.expected, checkIn: v.checkIn, checkInColor: "var(--color-text-secondary)", checkInWeight: "400", checkOut: v.checkOut, onClick: () => this.openDetail(v.id), onEdit: () => this.openDetail(v.id), onPrint: () => this.printBadge(v.id), onDelete: () => this.deleteVisit(v.id) };
+    });
+
+    const formRows = s.forms.map(f => ({ id: f.id, name: f.name, buildingsLabel: f.buildings.join(", ") || "—", visitTypesLabel: f.visitTypes.join(", ") || "—", updatedBy: f.updatedBy, updatedOn: f.updatedOn, onEdit: () => this.openBuilderEdit(f.id), onDelete: () => this.deleteForm(f.id) }));
+
+    // builder
+    let builderVals = {};
+    if (s.builderOpen && s.builder) {
+      const b = s.builder;
+      const cb = (on) => "width:16px;height:16px;flex-shrink:0;border-radius:3px;display:inline-flex;align-items:center;justify-content:center;border:1px solid " + (on ? "var(--color-link)" : "var(--color-border)") + ";background:" + (on ? "var(--color-link)" : "#fff") + ";";
+      const chip = (sel) => "display:inline-flex;align-items:center;padding:7px 13px;border-radius:20px;font-size:14px;cursor:pointer;user-select:none;border:1px solid " + (sel ? "var(--color-link)" : "var(--color-border)") + ";background:" + (sel ? "var(--blue-1)" : "#fff") + ";color:" + (sel ? "var(--color-link)" : "var(--color-text)") + ";font-weight:" + (sel ? "500" : "400") + ";";
+      const st1done = b.step === 2;
+      const circleBase = "width:26px;height:26px;border-radius:50%;display:inline-flex;align-items:center;justify-content:center;font-size:13px;font-weight:500;flex-shrink:0;";
+      builderVals = {
+        builderStep1: b.step === 1, builderStep2: b.step === 2,
+        builderPrimaryLabel: b.step === 1 ? "Next" : "Save form",
+        builderName: b.name, onBuilderName: this.onBuilderName, builderNameError: !!s.builderNameError,
+        builderAssignError: !!s.builderAssignError,
+        step1Done: st1done, step1Num: !st1done,
+        step1Circle: circleBase + (st1done ? "background:var(--color-link);color:#fff;" : "background:var(--color-link);color:#fff;"),
+        step1Label: "font-size:14px;font-weight:500;color:var(--color-text);",
+        step2Circle: circleBase + (b.step === 2 ? "background:var(--color-link);color:#fff;" : "background:#fff;color:var(--gray-6);border:1px solid var(--color-border);"),
+        step2Label: "font-size:14px;font-weight:" + (b.step === 2 ? "500" : "400") + ";color:" + (b.step === 2 ? "var(--color-text)" : "var(--gray-7)") + ";",
+        fieldTypeOptions: Object.keys(this.typeLabels).map(k => ({ value: k, label: this.typeLabels[k] })),
+        builderFields: b.fields.map(f => ({
+          id: f.id, label: f.label, type: f.type,
+          labelCount: (f.label ? f.label.length : 0) + "/40",
+          hasOptions: f.type === "multiple" || f.type === "dropdown",
+          isFileType: f.type === "file",
+          optionMark: f.type === "multiple" && f.multi ? "fa-square" : (f.type === "multiple" ? "fa-circle" : "fa-square-caret-down"),
+          showMulti: f.type === "multiple",
+          onLabel: (e) => this.updateField(f.id, { label: e.target.value.slice(0, 40) }),
+          onType: (e) => this.onFieldType(f.id, e),
+          remove: () => this.removeField(f.id),
+          addOption: () => this.addOption(f.id),
+          options: (f.options || []).map((o, oi) => ({ value: o, onChange: (e) => this.updateOption(f.id, oi, e.target.value), remove: () => this.removeOption(f.id, oi) })),
+          guest: f.guest, badge: f.badge, required: f.required, multi: f.multi,
+          toggleGuest: () => this.updateField(f.id, { guest: !f.guest }),
+          toggleBadge: () => this.updateField(f.id, { badge: !f.badge }),
+          toggleRequired: () => this.updateField(f.id, { required: !f.required }),
+          toggleMulti: () => this.updateField(f.id, { multi: !f.multi }),
+          guestBox: cb(f.guest), badgeBox: cb(f.badge), reqBox: cb(f.required), multiBox: cb(f.multi),
+        })),
+        builderVisitTypes: s.visitTypes.map(t => ({ name: t.name, selected: b.visitTypes.includes(t.name), onToggle: () => this.toggleBuilderList("visitTypes", t.name), style: chip(b.visitTypes.includes(t.name)) })),
+        builderBuildings: s.buildings.map(bl => ({ name: bl, selected: b.buildings.includes(bl), onToggle: () => this.toggleBuilderList("buildings", bl), style: chip(b.buildings.includes(bl)) })),
+        previewOpen: s.previewOpen,
+        previewEmpty: b.fields.filter(f => f.label.trim()).length === 0,
+        previewFields: b.fields.filter(f => f.label.trim()).map(f => this.fieldView(f, s.previewValues, this.setPreviewValue, this.togglePreviewMulti, this.setPreviewValue, "drawer")),
+      };
+    }
+
+    // drawer
+    let drawerVals = { drawerHost: "", drawerBuilding: "", drawerVisitType: "" };
+    if (s.drawerOpen && s.drawer) {
+      const d = s.drawer;
+      const forms = d.visitType ? this.matchingForms(d.visitType, d.building) : [];
+      const allFields = []; forms.forEach(f => f.fields.forEach(fl => allFields.push(fl)));
+      const views = allFields.map(f => this.fieldView(f, d.values, this.setDrawerValue, this.toggleDrawerMulti, this.setDrawerValue, "drawer"));
+      const cb = (on) => "width:16px;height:16px;flex-shrink:0;border-radius:3px;display:inline-flex;align-items:center;justify-content:center;border:1px solid " + (on ? "var(--color-link)" : "var(--color-border)") + ";background:" + (on ? "var(--color-link)" : "#fff") + ";";
+
+      // ---- date picker view-model ----
+      const all = this.effectiveDates(d);
+      const perday = this.perDayMode();
+      const ti = this.todayIso();
+      const segBase = "flex:1;display:flex;align-items:center;justify-content:center;gap:6px;height:32px;border-radius:4px;font-size:13px;font-weight:500;cursor:pointer;user-select:none;";
+      const seg = (on) => segBase + (on ? "background:var(--color-link);color:#fff;" : "background:transparent;color:var(--color-text-secondary);");
+      const cellStyle = (inMonth, sel, inRange, isToday) => {
+        let c = "height:36px;display:flex;align-items:center;justify-content:center;font-size:14px;cursor:pointer;user-select:none;";
+        if (sel) return c + "background:var(--color-link);color:#fff;border-radius:8px;font-weight:500;";
+        if (inRange) return c + "background:var(--blue-1);color:var(--color-text);";
+        if (!inMonth) return c + "color:var(--gray-6);";
+        if (isToday) return c + "color:var(--color-link);font-weight:600;";
+        return c + "color:var(--color-text);";
+      };
+      const first = new Date(d.calY, d.calM, 1);
+      const startDow = first.getDay();
+      const calCells = [];
+      for (let i = 0; i < 42; i++) {
+        const dt = new Date(d.calY, d.calM, 1 - startDow + i);
+        const iso = this.isoOf(dt);
+        const inMonth = dt.getMonth() === d.calM;
+        let sel, inRange = false;
+        if (d.dateMode === "range") { const isStart = iso === d.rStart, isEnd = iso === d.rEnd; if (d.rStart && d.rEnd) inRange = iso > d.rStart && iso < d.rEnd; sel = isStart || isEnd; }
+        else sel = all.includes(iso);
+        calCells.push({ day: dt.getDate(), iso, onClick: () => this.pickDay(iso), style: cellStyle(inMonth, sel, inRange, iso === ti) });
+      }
+      const chips = all.slice(0, 2).map(iso => ({ label: this.fmtShort(iso), onRemove: (e) => this.removeDateChip(iso, e) }));
+      const dateVals = {
+        pickerOpen: !!d.pickerOpen, togglePicker: this.togglePicker, closePicker: this.closePicker,
+        dateFieldStyle: "flex:1;min-width:0;min-height:36px;display:flex;align-items:center;flex-wrap:wrap;gap:6px;border:1px solid " + (d.pickerOpen ? "var(--color-link)" : "var(--color-border)") + ";border-radius:4px;padding:5px 11px;font-size:14px;cursor:pointer;background:#fff;",
+        dmSingle: d.dateMode === "single", dmMulti: d.dateMode === "multi", dmRange: d.dateMode === "range",
+        dateSingleLabel: all[0] ? this.fmtIso(all[0]) : "Select date",
+        dateSingleColor: all[0] ? "color:var(--color-text);" : "color:var(--gray-6);",
+        dateChips: chips, hasMultiDates: all.length > 0, noMultiDates: all.length === 0,
+        hasMoreDates: all.length > 2, moreLabel: "+" + (all.length - 2),
+        rangeStartLabel: d.rStart ? this.fmtIso(d.rStart) : "Start date", rangeStartColor: d.rStart ? "color:var(--color-text);" : "color:var(--gray-6);",
+        rangeEndLabel: d.rEnd ? this.fmtIso(d.rEnd) : "End date", rangeEndColor: d.rEnd ? "color:var(--color-text);" : "color:var(--gray-6);",
+        setModeSingle: () => this.setDateMode("single"), setModeMulti: () => this.setDateMode("multi"), setModeRange: () => this.setDateMode("range"),
+        segSingle: seg(d.dateMode === "single"), segMulti: seg(d.dateMode === "multi"), segRange: seg(d.dateMode === "range"),
+        calPrevMonth: () => this.calShift(-1, 0), calNextMonth: () => this.calShift(1, 0), calPrevYear: () => this.calShift(0, -1), calNextYear: () => this.calShift(0, 1), calToday: this.calToday,
+        calMonthLabel: this.MOFULL[d.calM] + " " + d.calY, dowLabels: this.DOW, calCells,
+        drawerTime: d.time, onDrawerTime: this.onDrawerTime, timeOpts: this.timeOpts(),
+        timeSharedVisible: !(perday && d.showPerDay),
+        perDayToggleVisible: perday && all.length > 1, perDayVisible: perday && d.showPerDay && all.length > 1,
+        showPerDay: d.showPerDay, perDayBox: cb(d.showPerDay), toggleShowPerDay: this.toggleShowPerDay,
+        perDayViews: all.map(iso => ({ label: this.fmtIso(iso), value: d.perDay[iso] || d.time, onChange: (e) => this.setPerDayTime(iso, e) })),
+      };
+
+      drawerVals = {
+        ...dateVals,
+        drawerVisitors: d.visitors.map(v => ({ id: v.id, name: v.name, email: v.email, canRemove: d.visitors.length > 1, noRemove: d.visitors.length <= 1, onName: (e) => this.updVisitor(v.id, { name: e.target.value }), onEmail: (e) => this.updVisitor(v.id, { email: e.target.value }), onRemove: () => this.removeVisitorRow(v.id) })),
+        drawerVisitorCount: d.visitors.filter(v => v.name.trim()).length,
+        drawerHost: d.host, drawerBuilding: d.building, drawerVisitType: d.visitType,
+        onDrawerHost: (e) => this.updDrawer({ host: e.target.value }),
+        onDrawerBuilding: (e) => this.updDrawer({ building: e.target.value }),
+        onDrawerVisitType: (e) => this.updDrawer({ visitType: e.target.value }),
+        drawerHasFields: views.length > 0,
+        drawerFieldViews: views,
+        checkInNow: s.checkInNow, checkInNowBox: cb(s.checkInNow),
+      };
+    }
+
+    // detail
+    let detailVals = { detailOpen: false };
+    if (s.detailId) {
+      const v = s.visits.find(x => x.id === s.detailId);
+      if (v) {
+        const vt = this.vtStyle(v.visitType);
+        const forms = this.matchingForms(v.visitType, v.building);
+        const fields = [];
+        forms.forEach(f => f.fields.forEach(fl => fields.push(fl)));
+        const fviews = fields.map(fl => {
+          const raw = v.values[fl.id];
+          const has = Array.isArray(raw) ? raw.length > 0 : (raw !== undefined && raw !== "" && raw !== null);
+          const disp = has ? (Array.isArray(raw) ? raw.join(", ") : String(raw)) : (fl.guest ? "Awaiting check-in" : "Not provided");
+          return { label: fl.label, value: disp, valColor: has ? "var(--color-text)" : "var(--gray-6)" };
+        });
+        const series = this.seriesFor(v).slice().sort((a, b) => this.dateKey(a.date) - this.dateKey(b.date));
+        const hasSeries = series.length > 1;
+        const inline = this.seriesInline();
+        const showSeriesFull = hasSeries && !inline && s.showSeries;
+        const checkedIn = v.checkIn && v.checkIn !== "—";
+        const seriesDays = series.map(x => {
+          const xst = this.statusStyle(x.status);
+          const cur = x.id === v.id;
+          return { id: x.id, date: x.date, expected: x.expected, status: x.status, stBg: xst.bg, stBd: xst.bd, stFg: xst.fg, stIcon: xst.icon, current: cur,
+            rowStyle: "display:flex;align-items:center;justify-content:space-between;gap:10px;padding:12px 14px;border:1px solid " + (cur ? "var(--color-link)" : "var(--color-border)") + ";border-radius:8px;cursor:pointer;background:" + (cur ? "var(--blue-1)" : "#fff") + ";",
+            onClick: () => this.openDetail(x.id) };
+        });
+        detailVals = {
+          detailOpen: true, detailName: v.name, detailEmail: v.email, detailInitials: this.initials(v.name), detailColor: this.colorFor(v.name),
+          detailHost: v.host, detailHostInitials: this.initials(v.host), detailHostColor: this.colorFor(v.host),
+          detailVisitType: v.visitType, detailVtBg: vt.bg, detailVtBd: vt.bd, detailVtFg: vt.fg,
+          detailBuilding: v.building, detailExpected: v.expected || "—",
+          detailCheckedIn: checkedIn, detailCheckInTime: v.checkIn,
+          detailHeaderTitle: showSeriesFull ? "Visit series" : "Visit details",
+          detailMain: !showSeriesFull, showSeriesFull,
+          detailBackVisible: showSeriesFull, backFromSeries: this.backFromSeries,
+          detailHasSeries: hasSeries, seriesLabel: "View series (" + series.length + ")", seriesCount: series.length,
+          toggleSeries: this.toggleSeries, seriesInlineOpen: inline && s.seriesOpen && hasSeries, seriesDays,
+          editVisit: this.editVisit, startCancel: this.startCancel,
+          cancelConfirm: !!s.cancelConfirm, dismissCancel: this.dismissCancel, cancelThisDay: this.cancelThisDay, cancelSeries: this.cancelSeries,
+          cancelSeriesLabel: "Entire series (" + series.length + ")",
+          detailHasFields: fviews.length > 0, detailNoFields: fviews.length === 0, detailFieldViews: fviews,
+        };
+      }
+    }
+
+    // tablet
+    const t = s.tablet;
+    const tGuest = t.visitType ? this.collectFields(t.visitType, kiosk, "guest") : [];
+    const tForm = t.visitType ? this.matchingForms(t.visitType, kiosk)[0] : null;
+    const cardStyle = (sel) => "display:flex;align-items:center;gap:12px;padding:16px 18px;border-radius:12px;cursor:pointer;font-size:17px;font-weight:500;border:1.5px solid " + (sel ? "var(--color-link)" : "var(--color-border)") + ";background:" + (sel ? "var(--blue-1)" : "#fff") + ";color:" + (sel ? "var(--color-link)" : "var(--color-text)") + ";";
+    const tabletVals = {
+      tWelcome: t.step === "welcome", tEmailStep: t.step === "email", tSelfStep: t.step === "self", tReasonStep: t.step === "reason", tFieldsStep: t.step === "fields", tCompleteStep: t.step === "complete",
+      tabletDate: this.tabletDateStr(),
+      tEmail: t.email, tName: t.name, tHost: t.host,
+      tEmailError: t.emailError, tSelfError: t.selfError, tReasonError: t.reasonError, tFieldsError: t.fieldsError,
+      hostOptions: s.hosts, buildingOptions: s.buildings, visitTypeOptions: s.visitTypes.map(v => v.name),
+      onTEmail: this.onTEmail, onTName: this.onTName, onTHost: this.onTHost,
+      submitEmail: this.submitEmail, selfContinue: this.selfContinue, reasonContinue: this.reasonContinue, fieldsContinue: this.fieldsContinue,
+      tapCheckIn: this.tapCheckIn, tabletBack: this.tabletBack, tabletFinish: this.tabletFinish,
+      tVisitTypeCards: s.visitTypes.map(v => ({ name: v.name, icon: v.icon, onSelect: () => this.selectTVisitType(v.name), style: cardStyle(t.visitType === v.name) })),
+      tFoundLabel: t.found ? ("Found your visit, " + t.name) : "You're registering as a guest",
+      tFormTitle: tForm ? tForm.name : "A few details",
+      tSessionVisitType: t.visitType, tSessionHost: t.host,
+      tFieldViews: tGuest.map(f => this.fieldView(f, t.values, this.setTValue, this.toggleTMulti, this.setTValue, "tablet")),
+    };
+
+    return {
+      isWeb, isTablet, kioskLocation: kiosk,
+      visitsTab: s.webTab === "Visits", formsTab: s.webTab === "Custom visit forms",
+      visitsTabStyle: s.webTab === "Visits" ? tabOn : tabOff,
+      formsTabStyle: s.webTab === "Custom visit forms" ? tabOn : tabOff,
+      goVisits: this.goVisits, goForms: this.goForms,
+      visitRows, openDrawer: this.openDrawer,
+      formRows, formsEmpty: s.forms.length === 0, openBuilderNew: this.openBuilderNew,
+      builderOpen: s.builderOpen, closeBuilder: this.closeBuilder, builderPrimary: this.builderPrimary, builderBack: this.builderBack, addField: this.addField, togglePreview: this.togglePreview,
+      ...builderVals,
+      drawerOpen: s.drawerOpen, closeDrawer: this.closeDrawer, saveDrawer: this.saveDrawer, addVisitorRow: this.addVisitorRow, toggleCheckInNow: this.toggleCheckInNow,
+      ...drawerVals,
+      ...detailVals, closeDetail: this.closeDetail,
+      ...tabletVals,
+      setModeWeb: this.setModeWeb, setModeTablet: this.setModeTablet, resetDemo: this.resetDemo,
+      webSegStyle: "display:flex;align-items:center;gap:8px;padding:9px 18px;border-radius:34px;font-size:13.5px;font-weight:500;cursor:pointer;transition:all .15s;" + (isWeb ? "background:#fff;color:var(--navy);" : "background:transparent;color:rgba(255,255,255,.7);"),
+      tabletSegStyle: "display:flex;align-items:center;gap:8px;padding:9px 18px;border-radius:34px;font-size:13.5px;font-weight:500;cursor:pointer;transition:all .15s;" + (isTablet ? "background:#fff;color:var(--navy);" : "background:transparent;color:rgba(255,255,255,.7);"),
+      showToast: !!s.toast, toastMsg: s.toast ? s.toast.msg : "", toastIcon: s.toast ? s.toast.icon : "fa-circle-check",
+    };
+  }
+}
+</script>
+</body>
+</html>
