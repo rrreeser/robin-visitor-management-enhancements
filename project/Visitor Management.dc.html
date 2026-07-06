@@ -37,14 +37,33 @@
         <svg width="26" height="21" viewBox="0 0 19.281 15.363"><path fill="#fff" fill-rule="evenodd" d="M 4.552 4.545 C 6.33 1.074 9.889 -1.164 14.006 0.638 C 14.017 0.643 15.547 1.341 16.579 2.992 C 16.848 3.423 17.26 3.746 17.74 3.912 L 18.033 4.013 L 19.281 4.445 C 19.067 4.631 18.854 4.817 18.64 5.003 C 18.263 5.33 17.973 5.714 17.755 6.165 C 17.63 6.423 17.504 6.715 17.457 7.001 C 17.412 7.269 17.379 7.542 17.327 7.811 C 17.206 8.444 17.036 9.068 16.801 9.67 C 15.577 12.246 13.26 14.281 10.281 15.047 C 6.353 16.057 2.37 14.576 0 11.592 C 0.622 11.283 1.334 10.811 1.981 10.108 C 2.216 10.288 2.457 10.462 2.707 10.625 C 4.215 11.612 5.815 12.133 7.298 12.133 C 7.584 12.133 7.868 12.114 8.144 12.075 C 10.242 11.775 12.008 10.204 12.343 8.341 C 12.721 6.239 11.281 3.971 9.257 3.474 C 7.807 2.969 6.521 3.595 5.276 4.202 C 5.037 4.318 4.794 4.437 4.552 4.545 Z M 14.333 3.082 C 14.001 3.082 13.732 3.351 13.731 3.683 C 13.731 4.015 14.001 4.286 14.333 4.286 C 14.665 4.286 14.936 4.015 14.936 3.683 C 14.935 3.351 14.665 3.082 14.333 3.082 Z"></path></svg>
         <span style="color:#fff;font-weight:700;font-size:20px;letter-spacing:-.02em;">Robin</span>
       </div>
-      <div style="display:flex;flex-direction:column;gap:4px;padding:4px;flex:1;">
-        <div style="display:flex;align-items:center;gap:12px;height:40px;padding:0 12px;border-radius:6px;color:rgba(255,255,255,.65);font-size:14px;"><i class="fa-solid fa-location-dot" style="width:18px;text-align:center;"></i>Map</div>
-        <div style="display:flex;align-items:center;gap:12px;height:40px;padding:0 12px;border-radius:6px;color:rgba(255,255,255,.65);font-size:14px;"><i class="fa-solid fa-calendar" style="width:18px;text-align:center;"></i>Schedule</div>
-        <div style="display:flex;align-items:center;gap:12px;height:40px;padding:0 12px;border-radius:6px;color:rgba(255,255,255,.65);font-size:14px;"><i class="fa-solid fa-users" style="width:18px;text-align:center;"></i>People</div>
-        <div style="display:flex;align-items:center;gap:12px;height:40px;padding:0 12px;border-radius:6px;color:rgba(255,255,255,.65);font-size:14px;"><i class="fa-solid fa-door-open" style="width:18px;text-align:center;"></i>Meeting spaces</div>
-        <div style="display:flex;align-items:center;gap:12px;height:40px;padding:0 12px;border-radius:6px;background:rgba(255,255,255,.10);color:#fff;font-size:14px;font-weight:500;"><i class="fa-solid fa-id-badge" style="width:18px;text-align:center;"></i>Visitors</div>
+      <div style="display:flex;flex-direction:column;gap:4px;padding:4px;flex:1;overflow:auto;">
+        <sc-if value="{{ showMap }}"><div style="display:flex;align-items:center;gap:12px;height:40px;padding:0 12px;border-radius:6px;color:rgba(255,255,255,.65);font-size:14px;"><i class="fa-solid fa-location-dot" style="width:18px;text-align:center;"></i>Map</div></sc-if>
+        <sc-if value="{{ showSchedule }}"><div style="display:flex;align-items:center;gap:12px;height:40px;padding:0 12px;border-radius:6px;color:rgba(255,255,255,.65);font-size:14px;"><i class="fa-solid fa-calendar" style="width:18px;text-align:center;"></i>Schedule</div></sc-if>
+        <sc-if value="{{ showPeople }}"><div style="display:flex;align-items:center;gap:12px;height:40px;padding:0 12px;border-radius:6px;color:rgba(255,255,255,.65);font-size:14px;"><i class="fa-solid fa-users" style="width:18px;text-align:center;"></i>People</div></sc-if>
+        <sc-if value="{{ showMeetingSpaces }}"><div style="display:flex;align-items:center;gap:12px;height:40px;padding:0 12px;border-radius:6px;color:rgba(255,255,255,.65);font-size:14px;"><i class="fa-solid fa-door-open" style="width:18px;text-align:center;"></i>Meeting spaces</div></sc-if>
+        <!-- Workplace section (non-standalone) -->
+        <sc-if value="{{ showWorkplaceSection }}">
+        <div onClick="{{ toggleWorkplace }}" style="display:flex;align-items:center;gap:12px;height:40px;padding:0 12px;border-radius:6px;color:rgba(255,255,255,.65);font-size:14px;cursor:pointer;">
+          <i class="fa-solid fa-building" style="width:18px;text-align:center;"></i>
+          <span style="flex:1;">Workplace</span>
+          <i class="fa-solid {{ workplaceChevron }}" style="font-size:11px;opacity:.7;"></i>
+        </div>
+        <sc-if value="{{ workplaceExpanded }}">
+        <div style="background:rgba(0,0,0,.18);margin:0 -4px;padding:4px;">
+          <div onClick="{{ goDashboardPage }}" style="{{ dashboardSubStyle }}">Dashboard</div>
+          <div onClick="{{ goTicketsPage }}" style="{{ ticketsSubStyle }}">Tickets</div>
+          <div onClick="{{ goVisitorsPage }}" style="{{ visitorsSubStyle }}">Visitors</div>
+          <div onClick="{{ goDeliveriesPage }}" style="{{ deliveriesSubStyle }}">Deliveries</div>
+        </div>
+        </sc-if>
+        </sc-if>
+        <!-- Standalone nav items -->
+        <sc-if value="{{ showStandaloneVisitors }}"><div onClick="{{ goVisitorsPage }}" style="{{ visitorsNavStyle }}"><i class="fa-solid fa-id-badge" style="width:18px;text-align:center;"></i>Visitors</div></sc-if>
+        <sc-if value="{{ showAnnouncementsNav }}"><div onClick="{{ goAnnouncementsPage }}" style="{{ announcementsNavStyle }}"><i class="fa-solid fa-bullhorn" style="width:18px;text-align:center;"></i>Announcements</div></sc-if>
+        <sc-if value="{{ showDeliveriesNav }}"><div onClick="{{ goDeliveriesPage }}" style="{{ deliveriesNavStyle }}"><i class="fa-solid fa-box" style="width:18px;text-align:center;"></i>Deliveries</div></sc-if>
         <div style="display:flex;align-items:center;gap:12px;height:40px;padding:0 12px;border-radius:6px;color:rgba(255,255,255,.65);font-size:14px;"><i class="fa-solid fa-chart-line" style="width:18px;text-align:center;"></i>Analytics</div>
-        <div style="display:flex;align-items:center;gap:12px;height:40px;padding:0 12px;border-radius:6px;color:rgba(255,255,255,.65);font-size:14px;"><i class="fa-solid fa-gear" style="width:18px;text-align:center;"></i>Manage</div>
+        <div onClick="{{ goManagePage }}" style="{{ manageNavStyle }}"><i class="fa-solid fa-gear" style="width:18px;text-align:center;"></i>Manage</div>
       </div>
       <div style="border-top:1px solid var(--navy-border);padding:8px;display:flex;align-items:center;gap:10px;height:56px;">
         <span style="width:32px;height:32px;border-radius:50%;background:var(--magenta-6);color:#fff;display:inline-flex;align-items:center;justify-content:center;font-weight:600;font-size:13px;">TY</span>
@@ -52,7 +71,8 @@
       </div>
     </div>
 
-    <!-- Content -->
+    <!-- Content: Visitors -->
+    <sc-if value="{{ showVisitorsContent }}" hint-placeholder-val="{{ true }}">
     <div style="flex:1;overflow:auto;">
       <div style="max-width:1180px;margin:0 auto;padding:32px 40px 80px;">
         <div style="margin-bottom:18px;">
@@ -63,6 +83,8 @@
         <!-- Tabs -->
         <div style="display:flex;gap:28px;border-bottom:1px solid var(--color-border-light);margin-bottom:20px;">
           <div onClick="{{ goVisits }}" style="{{ visitsTabStyle }}">Visits</div>
+          <div onClick="{{ goVisitTypes }}" style="{{ visitTypesTabStyle }}">Visit types</div>
+          <div onClick="{{ goDocuments }}" style="{{ documentsTabStyle }}">Documents</div>
           <div onClick="{{ goForms }}" style="{{ formsTabStyle }}">Custom visit forms</div>
         </div>
 
@@ -81,11 +103,11 @@
           </div>
           <div style="background:#fff;border:1px solid var(--color-border);border-radius:8px;overflow:hidden;">
             <div style="display:flex;padding:12px 20px;background:var(--gray-1);font-size:12px;font-weight:600;color:var(--gray-8);border-bottom:1px solid var(--color-border-light);">
-              <span style="flex:1;">Date</span><span style="flex:2;">Visitor</span><span style="flex:1.5;">Host</span><span style="flex:1.2;">Visit type</span><span style="flex:1;">Expected time</span><span style="flex:1;">Check in</span><span style="flex:1;">Check out</span><span style="width:96px;text-align:right;">Actions</span>
+              <span style="width:36px;flex-shrink:0;display:flex;align-items:center;"><input type="checkbox" style="width:15px;height:15px;cursor:pointer;accent-color:var(--color-link);"></span><span style="flex:1;">Date</span><span style="flex:2;">Visitor</span><span style="flex:1.5;">Host</span><span style="flex:1.2;">Visit type</span><span style="flex:1;">Expected time</span><span style="flex:1;">Check in</span><span style="flex:1;">Check out</span><span style="width:96px;text-align:right;">Actions</span>
             </div>
             <sc-for list="{{ visitRows }}" as="v" hint-placeholder-count="3">
             <div style="display:flex;align-items:center;padding:12px 20px;font-size:14px;border-bottom:1px solid var(--color-border-light);">
-              <span style="flex:1;color:var(--color-text-secondary);">{{ v.date }}</span>
+              <span style="width:36px;flex-shrink:0;display:flex;align-items:center;"><input type="checkbox" style="width:15px;height:15px;cursor:pointer;accent-color:var(--color-link);"></span><span style="flex:1;color:var(--color-text-secondary);">{{ v.date }}</span>
               <span onClick="{{ v.onClick }}" style="flex:2;cursor:pointer;min-width:0;font-weight:500;color:var(--color-link);overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">{{ v.name }}</span>
               <span style="flex:1.5;color:var(--color-text-secondary);display:flex;align-items:center;gap:8px;min-width:0;"><span style="width:24px;height:24px;border-radius:50%;color:#fff;display:inline-flex;align-items:center;justify-content:center;font-weight:600;font-size:10px;flex-shrink:0;background:{{ v.hostColor }};">{{ v.hostInitials }}</span><span style="overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">{{ v.host }}</span></span>
               <span style="flex:1.2;"><span style="display:inline-flex;align-items:center;height:24px;padding:0 8px;border-radius:4px;font-size:12px;font-weight:500;background:{{ v.vtBg }};border:1px solid {{ v.vtBd }};color:{{ v.vtFg }};">{{ v.visitType }}</span></span>
@@ -99,6 +121,68 @@
               </span>
             </div>
             </sc-for>
+          </div>
+        </div>
+        </sc-if>
+
+        <!-- VISIT TYPES TAB -->
+        <sc-if value="{{ visitTypesTab }}">
+        <div>
+          <div style="display:flex;align-items:flex-start;justify-content:flex-end;margin-bottom:16px;">
+            <button style="display:inline-flex;align-items:center;gap:8px;height:32px;padding:0 16px;border-radius:4px;font:500 14px/22px var(--font-sans);border:1px solid transparent;background:var(--color-primary);color:#fff;cursor:pointer;"><i class="fa-solid fa-plus" style="font-size:12px;"></i>Add visit type</button>
+          </div>
+          <div style="background:#fff;border:1px solid var(--color-border);border-radius:8px;overflow:hidden;">
+            <div style="display:flex;padding:12px 20px;background:var(--gray-1);font-size:12px;font-weight:600;color:var(--gray-8);border-bottom:1px solid var(--color-border-light);">
+              <span style="flex:1;">Visit type</span><span style="width:80px;text-align:right;">Actions</span>
+            </div>
+            <sc-for list="{{ visitTypeRows }}" as="vt" hint-placeholder-count="4">
+            <div style="display:flex;align-items:center;padding:14px 20px;font-size:14px;border-bottom:1px solid var(--color-border-light);">
+              <span style="flex:1;"><span style="display:inline-flex;align-items:center;height:24px;padding:0 8px;border-radius:4px;font-size:12px;font-weight:500;background:{{ vt.vtBg }};border:1px solid {{ vt.vtBd }};color:{{ vt.vtFg }};">{{ vt.name }}</span></span>
+              <span style="width:80px;display:flex;justify-content:flex-end;gap:14px;">
+                <i class="fa-solid fa-pen" style="color:var(--gray-7);cursor:pointer;font-size:13px;"></i>
+                <i class="fa-solid fa-trash-can" style="color:var(--gray-7);cursor:pointer;font-size:13px;"></i>
+              </span>
+            </div>
+            </sc-for>
+          </div>
+        </div>
+        </sc-if>
+
+        <!-- DOCUMENTS TAB -->
+        <sc-if value="{{ documentsTab }}">
+        <div>
+          <div style="display:flex;align-items:flex-start;justify-content:flex-end;margin-bottom:16px;position:relative;">
+            <button onClick="{{ openAddDocDropdown }}" style="display:inline-flex;align-items:center;gap:8px;height:32px;padding:0 16px;border-radius:4px;font:500 14px/22px var(--font-sans);border:1px solid transparent;background:var(--color-primary);color:#fff;cursor:pointer;">Add document<i class="fa-solid fa-chevron-down" style="font-size:11px;"></i></button>
+            <sc-if value="{{ addDocDropdown }}">
+            <div onClick="{{ closeAddDocDropdown }}" style="position:fixed;inset:0;z-index:20;"></div>
+            <div style="position:absolute;top:38px;right:0;z-index:21;background:#fff;border:1px solid var(--color-border);border-radius:8px;box-shadow:var(--shadow-md);padding:4px;min-width:244px;">
+              <div onClick="{{ openAgreementBuilder }}" style-hover="background:var(--gray-1);" style="display:flex;flex-direction:column;padding:10px 12px;border-radius:6px;cursor:pointer;gap:2px;user-select:none;"><span style="font-size:14px;font-weight:500;color:var(--color-text);">Agreement</span><span style="font-size:12px;color:var(--gray-7);">Visitors must accept to check in</span></div>
+              <div onClick="{{ openAttachmentBuilder }}" style-hover="background:var(--gray-1);" style="display:flex;flex-direction:column;padding:10px 12px;border-radius:6px;cursor:pointer;gap:2px;user-select:none;"><span style="font-size:14px;font-weight:500;color:var(--color-text);">Attachment</span><span style="font-size:12px;color:var(--gray-7);">Sent with visitor invite email</span></div>
+            </div>
+            </sc-if>
+          </div>
+          <div style="background:#fff;border:1px solid var(--color-border);border-radius:8px;overflow:hidden;">
+            <div style="display:flex;padding:12px 20px;background:var(--gray-1);font-size:12px;font-weight:600;color:var(--gray-8);border-bottom:1px solid var(--color-border-light);">
+              <span style="flex:1.8;">Document name</span><span style="flex:1;">Type</span><span style="flex:0.9;">Status</span><span style="flex:1.1;">Added on</span><span style="flex:1.4;">Visit types</span><span style="flex:1.2;">Building</span><span style="width:96px;text-align:right;">Actions</span>
+            </div>
+            <sc-for list="{{ docRows }}" as="doc" hint-placeholder-count="2">
+            <div style="display:flex;align-items:center;padding:14px 20px;font-size:14px;border-bottom:1px solid var(--color-border-light);">
+              <span style="flex:1.8;font-weight:500;">{{ doc.name }}</span>
+              <span style="flex:1;"><span style="display:inline-flex;align-items:center;height:24px;padding:0 8px;border-radius:4px;font-size:12px;font-weight:500;background:{{ doc.typeBg }};border:1px solid {{ doc.typeBd }};color:{{ doc.typeFg }};">{{ doc.typeLabel }}</span></span>
+              <span style="flex:0.9;"><span style="display:inline-flex;align-items:center;height:24px;padding:0 8px;border-radius:4px;font-size:12px;font-weight:500;background:{{ doc.statusBg }};border:1px solid {{ doc.statusBd }};color:{{ doc.statusFg }};">{{ doc.statusLabel }}</span></span>
+              <span style="flex:1.1;color:var(--color-text-secondary);">{{ doc.addedOn }}</span>
+              <span style="flex:1.4;display:flex;flex-wrap:wrap;gap:4px;align-items:center;"><sc-for list="{{ doc.vtBadges }}" as="b" hint-placeholder-count="1"><span style="display:inline-flex;align-items:center;height:24px;padding:0 8px;border-radius:4px;font-size:12px;font-weight:500;background:{{ b.bg }};border:1px solid {{ b.bd }};color:{{ b.fg }};">{{ b.name }}</span></sc-for><sc-if value="{{ doc.noVtBadges }}"><span style="color:var(--color-text-secondary);">—</span></sc-if></span>
+              <span style="flex:1.2;color:var(--color-text-secondary);">{{ doc.buildingsLabel }}</span>
+              <span style="width:96px;display:flex;justify-content:flex-end;gap:14px;">
+                <i onClick="{{ doc.onEdit }}" class="fa-solid fa-pen" title="Edit" style="color:var(--gray-7);cursor:pointer;font-size:13px;"></i>
+                <i onClick="{{ doc.onToggleStatus }}" class="fa-solid {{ doc.archiveIcon }}" title="{{ doc.archiveTitle }}" style="color:var(--gray-7);cursor:pointer;font-size:13px;"></i>
+                <i onClick="{{ doc.onDelete }}" class="fa-solid fa-trash-can" title="Delete" style="color:var(--gray-7);cursor:pointer;font-size:13px;"></i>
+              </span>
+            </div>
+            </sc-for>
+            <sc-if value="{{ docsEmpty }}">
+            <div style="padding:48px;text-align:center;color:var(--gray-7);"><i class="fa-solid fa-file-lines" style="font-size:26px;margin-bottom:10px;display:block;"></i>No documents yet. Add an agreement or attachment to get started.</div>
+            </sc-if>
           </div>
         </div>
         </sc-if>
@@ -118,7 +202,7 @@
             <div style="display:flex;align-items:center;padding:14px 20px;font-size:14px;border-bottom:1px solid var(--color-border-light);">
               <span style="flex:1.8;font-weight:500;display:flex;align-items:center;gap:10px;">{{ f.name }}</span>
               <span style="flex:1.4;color:var(--color-text-secondary);">{{ f.buildingsLabel }}</span>
-              <span style="flex:1.4;color:var(--color-text-secondary);">{{ f.visitTypesLabel }}</span>
+              <span style="flex:1.4;display:flex;flex-wrap:wrap;gap:4px;align-items:center;"><sc-for list="{{ f.visitTypeBadges }}" as="b" hint-placeholder-count="1"><span style="display:inline-flex;align-items:center;height:24px;padding:0 8px;border-radius:4px;font-size:12px;font-weight:500;background:{{ b.bg }};border:1px solid {{ b.bd }};color:{{ b.fg }};">{{ b.name }}</span></sc-for><sc-if value="{{ f.noVisitTypes }}"><span style="color:var(--color-text-secondary);">—</span></sc-if></span>
               <span style="flex:1.3;color:var(--color-text-secondary);">{{ f.updatedBy }}</span>
               <span style="flex:1.1;color:var(--color-text-secondary);">{{ f.updatedOn }}</span>
               <span style="width:80px;display:flex;justify-content:flex-end;gap:14px;">
@@ -136,6 +220,30 @@
 
       </div>
     </div>
+    </sc-if>
+
+    <!-- Content: Manage -->
+    <sc-if value="{{ showManageContent }}" hint-placeholder-val="{{ false }}">
+    <div style="width:216px;flex-shrink:0;height:100%;background:#fff;border-right:1px solid var(--color-border);display:flex;flex-direction:column;overflow:auto;">
+      <div style="padding:12px 8px 12px;">
+        <sc-for list="{{ manageSubItems }}" as="item" hint-placeholder-count="10">
+          <div onClick="{{ item.onSelect }}" style="{{ item.style }}">{{ item.name }}</div>
+        </sc-for>
+      </div>
+    </div>
+    <div style="flex:1;overflow:auto;padding:40px 48px;">
+      <h1 style="font:500 32px/40px var(--font-sans);letter-spacing:-.01em;margin:0 0 8px;">{{ manageTabTitle }}</h1>
+      <p style="font-size:15px;color:var(--color-text-secondary);margin:0;">This is a placeholder for the {{ manageTabTitle }} settings page.</p>
+    </div>
+    </sc-if>
+
+    <!-- Content: Placeholder pages (Dashboard, Tickets, Deliveries, Announcements) -->
+    <sc-if value="{{ showPlaceholderContent }}" hint-placeholder-val="{{ false }}">
+    <div style="flex:1;overflow:auto;padding:40px 48px;">
+      <h1 style="font:500 32px/40px var(--font-sans);letter-spacing:-.01em;margin:0 0 8px;">{{ placeholderContentTitle }}</h1>
+      <p style="font-size:15px;color:var(--color-text-secondary);margin:0;">This is a placeholder for the {{ placeholderContentTitle }} page.</p>
+    </div>
+    </sc-if>
 
     <!-- ============ VISIT DETAIL SIDER (pushes content) ============ -->
     <sc-if value="{{ detailOpen }}">
@@ -310,6 +418,36 @@
           <sc-if value="{{ tReasonError }}"><div style="color:var(--color-error);font-size:14px;margin-top:12px;">Please choose a reason for your visit.</div></sc-if>
           <div style="flex:1;min-height:16px;"></div>
           <button onClick="{{ reasonContinue }}" style="width:100%;height:64px;border-radius:14px;border:none;background:var(--color-primary);color:#fff;font:500 19px var(--font-sans);cursor:pointer;flex-shrink:0;margin-top:16px;">Continue</button>
+        </div>
+        </sc-if>
+
+        <!-- AGREEMENT -->
+        <sc-if value="{{ tAgreementStep }}" hint-placeholder-val="{{ false }}">
+        <div style="flex:1;display:flex;flex-direction:column;overflow:hidden;animation:rStep .3s ease;">
+          <!-- Declined state -->
+          <sc-if value="{{ tAgreementDeclined }}">
+          <div style="flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:48px;">
+            <div style="width:88px;height:88px;border-radius:50%;background:#fff3f3;border:2px solid #fca5a5;display:flex;align-items:center;justify-content:center;margin-bottom:28px;"><i class="fa-solid fa-ban" style="font-size:38px;color:var(--color-error);"></i></div>
+            <div style="font-size:30px;font-weight:500;margin-bottom:14px;">Check-in unavailable</div>
+            <div style="font-size:17px;color:var(--color-text-secondary);line-height:1.65;max-width:400px;">Acceptance of <strong>{{ tAgreementName }}</strong> is required to check in at this location.</div>
+            <button onClick="{{ agreementStartOver }}" style="margin-top:40px;height:56px;padding:0 40px;border-radius:14px;border:1.5px solid var(--color-border);background:#fff;color:var(--color-text);font:500 17px var(--font-sans);cursor:pointer;">Start over</button>
+          </div>
+          </sc-if>
+          <!-- Agreement to read -->
+          <sc-if value="{{ tAgreementNotDeclined }}">
+          <div style="padding:28px 40px 20px;border-bottom:1px solid var(--color-border-light);flex-shrink:0;">
+            <div onClick="{{ tabletBack }}" style="color:var(--color-link);font-size:15px;cursor:pointer;display:flex;align-items:center;gap:8px;margin-bottom:16px;"><i class="fa-solid fa-arrow-left"></i>Back</div>
+            <div style="font-size:13px;font-weight:600;color:var(--color-text-secondary);text-transform:uppercase;letter-spacing:.06em;margin-bottom:6px;">{{ tAgreementCounter }}</div>
+            <div style="font-size:26px;font-weight:500;">{{ tAgreementName }}</div>
+          </div>
+          <div style="flex:1;overflow:auto;padding:28px 40px;">
+            <div style="font-size:16px;line-height:1.75;color:var(--color-text);white-space:pre-wrap;">{{ tAgreementContent }}</div>
+          </div>
+          <div style="padding:20px 40px 32px;border-top:1px solid var(--color-border-light);display:flex;flex-direction:column;gap:12px;flex-shrink:0;">
+            <button onClick="{{ agreementAccept }}" style="width:100%;height:64px;border-radius:14px;border:none;background:var(--color-primary);color:#fff;font:500 19px var(--font-sans);cursor:pointer;">I agree</button>
+            <button onClick="{{ agreementDecline }}" style="width:100%;height:52px;border-radius:14px;border:1.5px solid #fca5a5;background:#fff;color:var(--color-error);font:500 16px var(--font-sans);cursor:pointer;">Decline</button>
+          </div>
+          </sc-if>
         </div>
         </sc-if>
 
@@ -644,6 +782,121 @@
   </div>
   </sc-if>
 
+  <!-- ============ DOCUMENT BUILDER ============ -->
+  <sc-if value="{{ docBuilderOpen }}">
+  <div data-screen-label="Document builder" style="position:fixed;inset:0;background:var(--color-bg-layout);z-index:50;display:flex;flex-direction:column;animation:rFade .2s ease;">
+    <div style="height:64px;background:var(--navy);display:flex;align-items:center;justify-content:space-between;padding:0 24px;flex-shrink:0;">
+      <div style="width:200px;"><i onClick="{{ closeDocBuilder }}" class="fa-solid fa-xmark" style="cursor:pointer;color:rgba(255,255,255,.8);font-size:18px;"></i></div>
+      <div style="color:#fff;font-size:18px;font-weight:500;letter-spacing:-.02em;">{{ docBuilderTitle }}</div>
+      <div style="width:260px;display:flex;justify-content:flex-end;gap:10px;align-items:center;">
+        <sc-if value="{{ docBuilderIsEditing }}"><button onClick="{{ docBuilderArchive }}" style="height:32px;padding:0 14px;border-radius:4px;font:500 14px var(--font-sans);background:transparent;color:rgba(255,255,255,.75);border:1px solid rgba(255,255,255,.3);cursor:pointer;">{{ docBuilderArchiveLabel }}</button></sc-if>
+        <button onClick="{{ closeDocBuilder }}" style="height:32px;padding:0 12px;border-radius:4px;font:500 14px var(--font-sans);background:transparent;color:rgba(255,255,255,.85);border:none;cursor:pointer;">Cancel</button>
+        <sc-if value="{{ docBuilderHasBack }}"><button onClick="{{ docBuilderBack }}" style="height:32px;padding:0 16px;border-radius:4px;font:500 14px var(--font-sans);background:transparent;color:#fff;border:1px solid rgba(255,255,255,.4);cursor:pointer;">Back</button></sc-if>
+        <button onClick="{{ docBuilderPrimary }}" style="height:32px;padding:0 18px;border-radius:4px;font:500 14px var(--font-sans);background:var(--color-primary);color:#fff;border:1px solid transparent;cursor:pointer;">{{ docBuilderPrimaryLabel }}</button>
+      </div>
+    </div>
+    <div style="height:56px;background:#fff;border-bottom:1px solid var(--color-border);display:flex;align-items:center;justify-content:center;flex-shrink:0;">
+      <sc-if value="{{ docIsAgreement }}">
+      <div style="display:flex;align-items:center;">
+        <div style="display:flex;align-items:center;gap:12px;"><span style="{{ docS1Circle }}"><sc-if value="{{ docS1Done }}"><i class="fa-solid fa-check" style="font-size:12px;"></i></sc-if><sc-if value="{{ docS1Num }}">1</sc-if></span><span style="{{ docS1Label }}">Agreement content</span></div>
+        <div style="width:80px;height:1px;background:var(--color-border);margin:0 20px;"></div>
+        <div style="display:flex;align-items:center;gap:12px;"><span style="{{ docS2Circle }}"><sc-if value="{{ docS2Done }}"><i class="fa-solid fa-check" style="font-size:12px;"></i></sc-if><sc-if value="{{ docS2Num }}">2</sc-if></span><span style="{{ docS2Label }}">Building &amp; visit type</span></div>
+        <div style="width:80px;height:1px;background:var(--color-border);margin:0 20px;"></div>
+        <div style="display:flex;align-items:center;gap:12px;"><span style="{{ docS3Circle }}">3</span><span style="{{ docS3Label }}">Notification email</span></div>
+      </div>
+      </sc-if>
+      <sc-if value="{{ docIsAttachment }}">
+      <div style="display:flex;align-items:center;">
+        <div style="display:flex;align-items:center;gap:12px;"><span style="{{ docS1Circle }}"><sc-if value="{{ docS1Done }}"><i class="fa-solid fa-check" style="font-size:12px;"></i></sc-if><sc-if value="{{ docS1Num }}">1</sc-if></span><span style="{{ docS1Label }}">Upload file</span></div>
+        <div style="width:120px;height:1px;background:var(--color-border);margin:0 20px;"></div>
+        <div style="display:flex;align-items:center;gap:12px;"><span style="{{ docS2Circle }}">2</span><span style="{{ docS2Label }}">Building &amp; visit type</span></div>
+      </div>
+      </sc-if>
+    </div>
+    <div style="flex:1;overflow:auto;padding:28px 40px;">
+      <div style="max-width:620px;margin:0 auto;display:flex;flex-direction:column;gap:16px;">
+
+        <sc-if value="{{ docBuilderStep1 }}">
+        <sc-if value="{{ docIsAgreement }}">
+        <div style="display:flex;flex-direction:column;gap:16px;">
+          <div style="background:#fff;border:1px solid var(--color-border);border-radius:4px;padding:24px;">
+            <div style="font-size:18px;font-weight:500;letter-spacing:-.02em;margin-bottom:4px;">Agreement name</div>
+            <div style="font-size:14px;color:var(--color-text-secondary);margin-bottom:14px;">This name appears in the documents table and in emails to visitors.</div>
+            <input value="{{ docName }}" onChange="{{ onDocName }}" placeholder="e.g. Contractor safety acknowledgment" style="width:100%;height:32px;border:1px solid var(--color-border);border-radius:4px;padding:0 11px;font-size:14px;box-sizing:border-box;">
+            <sc-if value="{{ docBuilderNameError }}"><div style="color:var(--color-error);font-size:13px;margin-top:6px;">Give the agreement a name.</div></sc-if>
+          </div>
+          <div style="background:#fff;border:1px solid var(--color-border);border-radius:4px;padding:24px;">
+            <div style="font-size:18px;font-weight:500;letter-spacing:-.02em;margin-bottom:4px;">Agreement text</div>
+            <div style="font-size:14px;color:var(--color-text-secondary);margin-bottom:14px;">Visitors will read and accept this text before checking in.</div>
+            <textarea value="{{ docContent }}" onChange="{{ onDocContent }}" placeholder="Type or paste your agreement text here…" style="width:100%;height:200px;border:1px solid var(--color-border);border-radius:4px;padding:12px;font-size:14px;font-family:var(--font-sans);resize:vertical;box-sizing:border-box;line-height:1.6;"></textarea>
+            <sc-if value="{{ docBuilderContentError }}"><div style="color:var(--color-error);font-size:13px;margin-top:6px;">Agreement text is required.</div></sc-if>
+          </div>
+        </div>
+        </sc-if>
+        <sc-if value="{{ docIsAttachment }}">
+        <div style="display:flex;flex-direction:column;gap:16px;">
+          <div style="background:#fff;border:1px solid var(--color-border);border-radius:4px;padding:24px;">
+            <div style="font-size:18px;font-weight:500;letter-spacing:-.02em;margin-bottom:14px;">Upload file</div>
+            <sc-if value="{{ docHasFile }}">
+            <div style="display:flex;align-items:center;gap:12px;padding:14px 16px;border:1px solid var(--color-border);border-radius:6px;background:var(--gray-1);">
+              <i class="fa-solid fa-file-lines" style="font-size:20px;color:var(--gray-7);flex-shrink:0;"></i>
+              <span style="flex:1;font-size:14px;font-weight:500;">{{ docFileName }}</span>
+              <i onClick="{{ removeDocFile }}" class="fa-solid fa-xmark" style="color:var(--gray-6);cursor:pointer;font-size:14px;"></i>
+            </div>
+            </sc-if>
+            <sc-if value="{{ docNoFile }}">
+            <div onClick="{{ onDocFile }}" style-hover="border-color:var(--color-link);" style="border:2px dashed var(--color-border);border-radius:8px;padding:48px 24px;text-align:center;cursor:pointer;">
+              <i class="fa-solid fa-cloud-arrow-up" style="font-size:32px;color:var(--gray-5);margin-bottom:14px;display:block;"></i>
+              <div style="font-size:15px;font-weight:500;color:var(--color-text);margin-bottom:6px;">Drop a file here or click to upload</div>
+              <div style="font-size:13px;color:var(--gray-7);">PDF, DOC, DOCX, PNG, JPG up to 25 MB</div>
+            </div>
+            <sc-if value="{{ docBuilderFileError }}"><div style="color:var(--color-error);font-size:13px;margin-top:8px;">Please upload a file.</div></sc-if>
+            </sc-if>
+          </div>
+          <div style="background:#fff;border:1px solid var(--color-border);border-radius:4px;padding:24px;">
+            <div style="font-size:18px;font-weight:500;letter-spacing:-.02em;margin-bottom:4px;">Attachment name</div>
+            <div style="font-size:14px;color:var(--color-text-secondary);margin-bottom:14px;">This name appears in the documents table and in the visitor invite email.</div>
+            <input value="{{ docName }}" onChange="{{ onDocName }}" placeholder="e.g. Parking instructions" style="width:100%;height:32px;border:1px solid var(--color-border);border-radius:4px;padding:0 11px;font-size:14px;box-sizing:border-box;">
+            <sc-if value="{{ docBuilderNameError }}"><div style="color:var(--color-error);font-size:13px;margin-top:6px;">Give the attachment a name.</div></sc-if>
+          </div>
+        </div>
+        </sc-if>
+        </sc-if>
+
+        <sc-if value="{{ docBuilderStep2 }}">
+        <div style="background:#fff;border:1px solid var(--color-border);border-radius:4px;padding:24px;">
+          <div style="font-size:18px;font-weight:500;letter-spacing:-.02em;margin-bottom:4px;">Where this document applies</div>
+          <div style="font-size:14px;color:var(--color-text-secondary);margin-bottom:20px;">This document will apply when a visitor's visit type and building both match.</div>
+          <div style="font-size:13px;font-weight:600;color:var(--gray-9);margin-bottom:10px;">Visit types</div>
+          <div style="display:flex;flex-wrap:wrap;gap:8px;margin-bottom:24px;">
+            <sc-for list="{{ docBuilderVisitTypes }}" as="t" hint-placeholder-count="4">
+            <div onClick="{{ t.onToggle }}" style="{{ t.style }}"><sc-if value="{{ t.selected }}"><i class="fa-solid fa-check" style="font-size:10px;margin-right:6px;"></i></sc-if>{{ t.name }}</div>
+            </sc-for>
+          </div>
+          <div style="font-size:13px;font-weight:600;color:var(--gray-9);margin-bottom:10px;">Buildings</div>
+          <div style="display:flex;flex-wrap:wrap;gap:8px;">
+            <sc-for list="{{ docBuilderBuildings }}" as="b" hint-placeholder-count="2">
+            <div onClick="{{ b.onToggle }}" style="{{ b.style }}"><sc-if value="{{ b.selected }}"><i class="fa-solid fa-check" style="font-size:10px;margin-right:6px;"></i></sc-if>{{ b.name }}</div>
+            </sc-for>
+          </div>
+          <sc-if value="{{ docBuilderAssignError }}"><div style="color:var(--color-error);font-size:13px;margin-top:16px;">Select at least one visit type and one building.</div></sc-if>
+        </div>
+        </sc-if>
+
+        <sc-if value="{{ docBuilderStep3 }}">
+        <div style="background:#fff;border:1px solid var(--color-border);border-radius:4px;padding:24px;">
+          <div style="font-size:18px;font-weight:500;letter-spacing:-.02em;margin-bottom:4px;">Notification email</div>
+          <div style="font-size:14px;color:var(--color-text-secondary);margin-bottom:20px;">When a visitor signs this agreement, a completed copy will be sent to this address. Leave blank to skip.</div>
+          <label style="display:block;font-size:13px;font-weight:600;color:var(--gray-9);margin-bottom:6px;">Email address</label>
+          <input value="{{ docEmail }}" onChange="{{ onDocEmail }}" placeholder="e.g. legal@company.com" type="email" style="width:100%;height:36px;border:1px solid var(--color-border);border-radius:4px;padding:0 11px;font-size:14px;box-sizing:border-box;">
+        </div>
+        </sc-if>
+
+      </div>
+    </div>
+  </div>
+  </sc-if>
+
   <!-- ============ FLOATING SWITCHER ============ -->
   <div style="position:fixed;bottom:20px;left:50%;transform:translateX(-50%);z-index:80;display:flex;align-items:center;gap:8px;background:var(--navy);border-radius:40px;padding:6px;box-shadow:0 12px 32px rgba(0,0,0,.35);">
     <div onClick="{{ setModeWeb }}" style="{{ webSegStyle }}"><i class="fa-solid fa-desktop" style="font-size:12px;"></i>Web app</div>
@@ -660,11 +913,14 @@
 
 </div>
 </x-dc>
-<script type="text/x-dc" data-dc-script data-props="{&quot;$preview&quot;:{&quot;width&quot;:&quot;100%&quot;,&quot;height&quot;:&quot;100%&quot;},&quot;timeModel&quot;:{&quot;editor&quot;:&quot;enum&quot;,&quot;options&quot;:[&quot;Same time for all days&quot;,&quot;Customizable per-day times&quot;],&quot;default&quot;:&quot;Same time for all days&quot;,&quot;tsType&quot;:&quot;string&quot;,&quot;section&quot;:&quot;Create visit&quot;},&quot;seriesView&quot;:{&quot;editor&quot;:&quot;enum&quot;,&quot;options&quot;:[&quot;Inline expandable list&quot;,&quot;Full series view&quot;],&quot;default&quot;:&quot;Inline expandable list&quot;,&quot;tsType&quot;:&quot;string&quot;,&quot;section&quot;:&quot;Visit details&quot;},&quot;kioskLocation&quot;:{&quot;editor&quot;:&quot;enum&quot;,&quot;options&quot;:[&quot;54 State St.&quot;,&quot;Woolen Mills&quot;],&quot;default&quot;:&quot;54 State St.&quot;,&quot;tsType&quot;:&quot;string&quot;,&quot;section&quot;:&quot;Arrival display&quot;}}">
+<script type="text/x-dc" data-dc-script data-props="{&quot;$preview&quot;:{&quot;width&quot;:&quot;100%&quot;,&quot;height&quot;:&quot;100%&quot;},&quot;timeModel&quot;:{&quot;editor&quot;:&quot;enum&quot;,&quot;options&quot;:[&quot;Same time for all days&quot;,&quot;Customizable per-day times&quot;],&quot;default&quot;:&quot;Same time for all days&quot;,&quot;tsType&quot;:&quot;string&quot;,&quot;section&quot;:&quot;Create visit&quot;},&quot;seriesView&quot;:{&quot;editor&quot;:&quot;enum&quot;,&quot;options&quot;:[&quot;Inline expandable list&quot;,&quot;Full series view&quot;],&quot;default&quot;:&quot;Inline expandable list&quot;,&quot;tsType&quot;:&quot;string&quot;,&quot;section&quot;:&quot;Visit details&quot;},&quot;kioskLocation&quot;:{&quot;editor&quot;:&quot;enum&quot;,&quot;options&quot;:[&quot;54 State St.&quot;,&quot;Woolen Mills&quot;],&quot;default&quot;:&quot;54 State St.&quot;,&quot;tsType&quot;:&quot;string&quot;,&quot;section&quot;:&quot;Arrival display&quot;},&quot;standaloneApp&quot;:{&quot;editor&quot;:&quot;enum&quot;,&quot;options&quot;:[&quot;Off&quot;,&quot;On&quot;],&quot;default&quot;:&quot;Off&quot;,&quot;tsType&quot;:&quot;string&quot;,&quot;section&quot;:&quot;App mode&quot;}}">
 class Component extends DCLogic {
   state = {
     mode: "web",
     webTab: "Visits",
+    webPage: "visitors",
+    manageTab: "Organization",
+    workplaceExpanded: true,
     builderOpen: false, builder: null, editingFormId: null, previewOpen: false, previewValues: {},
     drawerOpen: false, drawer: null, checkInNow: false,
     detailId: null, seriesOpen: false, showSeries: false, cancelConfirm: false,
@@ -699,6 +955,14 @@ class Component extends DCLogic {
       { id: "v4b", seriesId: "s-tw", name: "Tomás Wolf", email: "tomas@buildright.com", host: "Ravi Lal", visitType: "Contractor", building: "54 State St.", date: "Jul 7, 2026", expected: "7:30 AM", checkIn: "—", checkOut: "—", status: "Pre-registered", values: { c1: "BuildRight Inc." }, source: "prereg" },
       { id: "v4c", seriesId: "s-tw", name: "Tomás Wolf", email: "tomas@buildright.com", host: "Ravi Lal", visitType: "Contractor", building: "54 State St.", date: "Jul 8, 2026", expected: "7:30 AM", checkIn: "—", checkOut: "—", status: "Pre-registered", values: { c1: "BuildRight Inc." }, source: "prereg" },
     ],
+    documents: [
+      { id: "doc1", name: "Contractor Safety Agreement", docType: "agreement", status: "live", addedOn: "Jun 15, 2026", visitTypes: ["Contractor"], buildings: ["54 State St."], content: "By entering this facility, you acknowledge and agree to comply with all on-site safety procedures, including wearing required personal protective equipment, checking in at the security desk, and following all posted guidelines. Failure to comply may result in removal from the premises.", email: "safety@company.com" },
+      { id: "doc2", name: "NDA for VIP Visits", docType: "agreement", status: "live", addedOn: "May 3, 2026", visitTypes: ["VIP"], buildings: ["54 State St.", "Woolen Mills"], content: "This non-disclosure agreement governs the confidential information shared during your visit. By checking in you agree not to disclose any proprietary information you may encounter.", email: "legal@company.com" },
+      { id: "doc3", name: "Parking Instructions", docType: "attachment", status: "live", addedOn: "Apr 12, 2026", visitTypes: ["Vendor", "Contractor"], buildings: ["54 State St."], content: "", email: "", file: "parking-instructions.pdf" },
+    ],
+    addDocDropdown: false,
+    docBuilderOpen: false, docBuilder: null, editingDocId: null,
+    docBuilderNameError: false, docBuilderContentError: false, docBuilderFileError: false, docBuilderAssignError: false,
   };
 
   uid = (p) => p + Math.random().toString(36).slice(2, 8);
@@ -745,7 +1009,61 @@ class Component extends DCLogic {
   setModeWeb = () => this.setState({ mode: "web" });
   setModeTablet = () => this.setState({ mode: "tablet" });
   goVisits = () => this.setState({ webTab: "Visits" });
+  goVisitTypes = () => this.setState({ webTab: "Visit types" });
+  goDocuments = () => this.setState({ webTab: "Documents" });
   goForms = () => this.setState({ webTab: "Custom visit forms" });
+  goVisitorsPage = () => this.setState({ webPage: "visitors" });
+  goManagePage = () => this.setState({ webPage: "manage", manageTab: "Organization" });
+  goAnnouncementsPage = () => this.setState({ webPage: "announcements" });
+  goDeliveriesPage = () => this.setState({ webPage: "deliveries" });
+  goDashboardPage = () => this.setState({ webPage: "dashboard" });
+  goTicketsPage = () => this.setState({ webPage: "tickets" });
+  toggleWorkplace = () => this.setState(s => ({ workplaceExpanded: !s.workplaceExpanded }));
+  setManageTab = (tab) => this.setState({ manageTab: tab });
+
+  // ---------- documents ----------
+  openAddDocDropdown = () => this.setState({ addDocDropdown: true });
+  closeAddDocDropdown = () => this.setState({ addDocDropdown: false });
+  openDocBuilderNew = (type) => this.setState({ addDocDropdown: false, docBuilderOpen: true, editingDocId: null, docBuilder: { type, step: 1, name: "", content: "", email: "", visitTypes: [], buildings: [], file: null }, docBuilderNameError: false, docBuilderContentError: false, docBuilderFileError: false, docBuilderAssignError: false });
+  openDocBuilderEdit = (id) => { const d = this.state.documents.find(x => x.id === id); this.setState({ docBuilderOpen: true, editingDocId: id, docBuilder: { type: d.docType, step: 1, name: d.name, content: d.content || "", email: d.email || "", visitTypes: [...d.visitTypes], buildings: [...d.buildings], file: d.file || null }, docBuilderNameError: false, docBuilderContentError: false, docBuilderFileError: false, docBuilderAssignError: false }); };
+  closeDocBuilder = () => this.setState({ docBuilderOpen: false, docBuilder: null, editingDocId: null });
+  updDocBuilder = (patch) => this.setState(s => ({ docBuilder: { ...s.docBuilder, ...patch } }));
+  toggleDocBuilderList = (key, val) => this.setState(s => { const arr = s.docBuilder[key]; const has = arr.includes(val); return { docBuilderAssignError: false, docBuilder: { ...s.docBuilder, [key]: has ? arr.filter(x => x !== val) : [...arr, val] } }; });
+  onDocFile = () => this.updDocBuilder({ file: "document.pdf" });
+  removeDocFile = () => this.updDocBuilder({ file: null });
+  docBuilderArchive = () => {
+    const id = this.state.editingDocId; if (!id) return;
+    const doc = this.state.documents.find(d => d.id === id);
+    const ns = doc.status === "live" ? "archived" : "live";
+    this.setState(s => ({ documents: s.documents.map(d => d.id === id ? { ...d, status: ns } : d) }));
+    this.toast(ns === "archived" ? "Document archived" : "Document restored", ns === "archived" ? "fa-box-archive" : "fa-circle-check");
+  };
+  docBuilderBack = () => this.setState(s => ({ docBuilder: { ...s.docBuilder, step: s.docBuilder.step - 1 } }));
+  docBuilderPrimary = () => {
+    const b = this.state.docBuilder; const isAgr = b.type === "agreement"; const maxStep = isAgr ? 3 : 2;
+    if (b.step === 1) {
+      if (!b.name.trim()) { this.setState({ docBuilderNameError: true }); return; }
+      if (isAgr && !b.content.trim()) { this.setState({ docBuilderContentError: true }); return; }
+      if (!isAgr && !b.file) { this.setState({ docBuilderFileError: true }); return; }
+      this.setState({ docBuilderNameError: false, docBuilderContentError: false, docBuilderFileError: false });
+      this.updDocBuilder({ step: 2 }); return;
+    }
+    if (b.step === 2) {
+      if (!b.visitTypes.length || !b.buildings.length) { this.setState({ docBuilderAssignError: true }); return; }
+      this.setState({ docBuilderAssignError: false });
+      if (maxStep > 2) { this.updDocBuilder({ step: 3 }); return; }
+      this.saveDoc(); return;
+    }
+    if (b.step === 3) this.saveDoc();
+  };
+  saveDoc = () => {
+    const b = this.state.docBuilder; const eid = this.state.editingDocId;
+    const doc = { name: b.name.trim(), docType: b.type, status: "live", addedOn: this.todayStr(), visitTypes: b.visitTypes, buildings: b.buildings, content: b.content || "", email: b.email || "", file: b.file || null };
+    this.setState(s => { const id = s.editingDocId; const documents = id ? s.documents.map(d => d.id === id ? { ...doc, id, status: d.status } : d) : [...s.documents, { ...doc, id: this.uid("doc") }]; return { documents, docBuilderOpen: false, docBuilder: null, editingDocId: null }; });
+    this.toast(eid ? "Document updated" : "Document saved");
+  };
+  deleteDocument = (id) => { this.setState(s => ({ documents: s.documents.filter(d => d.id !== id) })); this.toast("Document deleted", "fa-trash-can"); };
+  toggleDocStatus = (id) => { const doc = this.state.documents.find(d => d.id === id); const ns = doc.status === "live" ? "archived" : "live"; this.setState(s => ({ documents: s.documents.map(d => d.id === id ? { ...d, status: ns } : d) })); this.toast(ns === "archived" ? "Document archived" : "Document restored"); };
   resetDemo = () => window.location.reload();
 
   // ---------- builder ----------
@@ -845,8 +1163,8 @@ class Component extends DCLogic {
 
   // ---------- tablet ----------
   updTablet = (patch) => this.setState(s => ({ tablet: { ...s.tablet, ...patch } }));
-  tapCheckIn = () => this.setState({ tablet: { step: "email", email: "", name: "", host: "", visitType: "", building: this.kiosk(), preregId: null, values: {}, found: false, emailError: false, selfError: false, reasonError: false, fieldsError: false } });
-  tabletBack = () => this.setState(s => { const st = s.tablet.step; const prev = st === "email" ? "welcome" : st === "self" ? "email" : st === "reason" ? "self" : st === "fields" ? (s.tablet.found ? "email" : "reason") : "welcome"; return { tablet: { ...s.tablet, step: prev, emailError: false, selfError: false, reasonError: false, fieldsError: false } }; });
+  tapCheckIn = () => this.setState({ tablet: { step: "email", email: "", name: "", host: "", visitType: "", building: this.kiosk(), preregId: null, values: {}, found: false, emailError: false, selfError: false, reasonError: false, fieldsError: false, pendingAgreements: [], agreementTotal: 0, agreementDeclined: false } });
+  tabletBack = () => this.setState(s => { const st = s.tablet.step; const prev = st === "email" ? "welcome" : st === "self" ? "email" : st === "reason" ? "self" : st === "agreement" ? (s.tablet.found ? "email" : "reason") : st === "fields" ? (s.tablet.found ? "email" : "reason") : "welcome"; return { tablet: { ...s.tablet, step: prev, pendingAgreements: [], agreementTotal: 0, agreementDeclined: false, emailError: false, selfError: false, reasonError: false, fieldsError: false } }; });
   onTEmail = (e) => this.updTablet({ email: e.target.value, emailError: false });
   onTName = (e) => this.updTablet({ name: e.target.value, selfError: false });
   onTHost = (e) => this.updTablet({ host: e.target.value, selfError: false });
@@ -854,15 +1172,24 @@ class Component extends DCLogic {
   setTValue = (fid, val) => this.setState(s => ({ tablet: { ...s.tablet, values: { ...s.tablet.values, [fid]: val }, fieldsError: false } }));
   toggleTMulti = (fid, opt) => this.setState(s => { const cur = s.tablet.values[fid] || []; const has = cur.includes(opt); return { tablet: { ...s.tablet, values: { ...s.tablet.values, [fid]: has ? cur.filter(x => x !== opt) : [...cur, opt] }, fieldsError: false } }; });
 
+  getApplicableAgreements = (visitType, building) => this.state.documents.filter(d => d.docType === "agreement" && d.status === "live" && d.visitTypes.includes(visitType) && d.buildings.includes(building));
+  enterAgreementsOrProceed = (baseTablet, visitType, building) => {
+    const agrs = this.getApplicableAgreements(visitType, building);
+    if (agrs.length > 0) {
+      this.setState({ tablet: { ...baseTablet, step: "agreement", pendingAgreements: agrs.map(d => d.id), agreementTotal: agrs.length, agreementDeclined: false } });
+    } else {
+      const guest = this.collectFields(visitType, building, "guest");
+      if (guest.length === 0) { this.setState({ tablet: baseTablet }, this.commitCheckIn); }
+      else this.setState({ tablet: { ...baseTablet, step: "fields" } });
+    }
+  };
   submitEmail = () => {
     const t = this.state.tablet; const email = (t.email || "").trim().toLowerCase();
     if (!email || email.indexOf("@") < 1) { this.updTablet({ emailError: true }); return; }
     const match = this.state.visits.find(v => v.status === "Pre-registered" && v.building === this.kiosk() && v.email.toLowerCase() === email);
     if (match) {
-      const guest = this.collectFields(match.visitType, this.kiosk(), "guest");
       const base = { ...t, name: match.name, host: match.host, visitType: match.visitType, building: this.kiosk(), preregId: match.id, found: true, values: {} };
-      if (guest.length === 0) { this.setState({ tablet: base }, this.commitCheckIn); }
-      else this.setState({ tablet: { ...base, step: "fields" } });
+      this.enterAgreementsOrProceed(base, match.visitType, this.kiosk());
     } else {
       this.updTablet({ step: "self", found: false, building: this.kiosk() });
     }
@@ -875,10 +1202,20 @@ class Component extends DCLogic {
   reasonContinue = () => {
     const t = this.state.tablet;
     if (!t.visitType) { this.updTablet({ reasonError: true }); return; }
-    const guest = this.collectFields(t.visitType, this.kiosk(), "guest");
-    if (guest.length === 0) this.commitCheckIn();
-    else this.updTablet({ step: "fields" });
+    this.enterAgreementsOrProceed({ ...t }, t.visitType, this.kiosk());
   };
+  agreementAccept = () => {
+    const t = this.state.tablet;
+    const remaining = t.pendingAgreements.slice(1);
+    if (remaining.length > 0) {
+      this.updTablet({ pendingAgreements: remaining });
+    } else {
+      const guest = this.collectFields(t.visitType, this.kiosk(), "guest");
+      if (guest.length === 0) this.commitCheckIn();
+      else this.updTablet({ step: "fields", pendingAgreements: [] });
+    }
+  };
+  agreementDecline = () => this.updTablet({ agreementDeclined: true });
   fieldsContinue = () => {
     const t = this.state.tablet;
     const guest = this.collectFields(t.visitType, this.kiosk(), "guest");
@@ -895,7 +1232,7 @@ class Component extends DCLogic {
       return { visits, tablet: { ...s.tablet, step: "complete" } };
     });
   };
-  tabletFinish = () => this.setState({ tablet: { step: "welcome", email: "", name: "", host: "", visitType: "", building: "", preregId: null, values: {}, found: false, emailError: false, selfError: false, reasonError: false, fieldsError: false } });
+  tabletFinish = () => this.setState({ tablet: { step: "welcome", email: "", name: "", host: "", visitType: "", building: "", preregId: null, values: {}, found: false, emailError: false, selfError: false, reasonError: false, fieldsError: false, pendingAgreements: [], agreementTotal: 0, agreementDeclined: false } });
 
   // ---------- field view builder ----------
   fieldView = (field, values, onVal, onToggle, onRadio, mode) => {
@@ -949,7 +1286,7 @@ class Component extends DCLogic {
       return { id: v.id, date: v.date, name: v.name, email: v.email, initials: this.initials(v.name), color: this.colorFor(v.name), host: v.host, hostInitials: this.initials(v.host), hostColor: this.colorFor(v.host), visitType: v.visitType, vtBg: vt.bg, vtBd: vt.bd, vtFg: vt.fg, expected: v.expected, checkIn: v.checkIn, checkInColor: "var(--color-text-secondary)", checkInWeight: "400", checkOut: v.checkOut, onClick: () => this.openDetail(v.id), onEdit: () => this.openDetail(v.id), onPrint: () => this.printBadge(v.id), onDelete: () => this.deleteVisit(v.id) };
     });
 
-    const formRows = s.forms.map(f => ({ id: f.id, name: f.name, buildingsLabel: f.buildings.join(", ") || "—", visitTypesLabel: f.visitTypes.join(", ") || "—", updatedBy: f.updatedBy, updatedOn: f.updatedOn, onEdit: () => this.openBuilderEdit(f.id), onDelete: () => this.deleteForm(f.id) }));
+    const formRows = s.forms.map(f => { const vtBadges = f.visitTypes.map(vt => { const st = this.vtStyle(vt); return { name: vt, bg: st.bg, bd: st.bd, fg: st.fg }; }); return { id: f.id, name: f.name, buildingsLabel: f.buildings.join(", ") || "—", visitTypesLabel: f.visitTypes.join(", ") || "—", visitTypeBadges: vtBadges, noVisitTypes: vtBadges.length === 0, updatedBy: f.updatedBy, updatedOn: f.updatedOn, onEdit: () => this.openBuilderEdit(f.id), onDelete: () => this.deleteForm(f.id) }; });
 
     // builder
     let builderVals = {};
@@ -1119,8 +1456,10 @@ class Component extends DCLogic {
     const tGuest = t.visitType ? this.collectFields(t.visitType, kiosk, "guest") : [];
     const tForm = t.visitType ? this.matchingForms(t.visitType, kiosk)[0] : null;
     const cardStyle = (sel) => "display:flex;align-items:center;gap:12px;padding:16px 18px;border-radius:12px;cursor:pointer;font-size:17px;font-weight:500;border:1.5px solid " + (sel ? "var(--color-link)" : "var(--color-border)") + ";background:" + (sel ? "var(--blue-1)" : "#fff") + ";color:" + (sel ? "var(--color-link)" : "var(--color-text)") + ";";
+    const tAgrDoc = (t.step === "agreement" && t.pendingAgreements && t.pendingAgreements.length > 0) ? s.documents.find(d => d.id === t.pendingAgreements[0]) : null;
+    const tAgrIndex = t.agreementTotal && t.pendingAgreements ? t.agreementTotal - t.pendingAgreements.length + 1 : 1;
     const tabletVals = {
-      tWelcome: t.step === "welcome", tEmailStep: t.step === "email", tSelfStep: t.step === "self", tReasonStep: t.step === "reason", tFieldsStep: t.step === "fields", tCompleteStep: t.step === "complete",
+      tWelcome: t.step === "welcome", tEmailStep: t.step === "email", tSelfStep: t.step === "self", tReasonStep: t.step === "reason", tAgreementStep: t.step === "agreement", tFieldsStep: t.step === "fields", tCompleteStep: t.step === "complete",
       tabletDate: this.tabletDateStr(),
       tEmail: t.email, tName: t.name, tHost: t.host,
       tEmailError: t.emailError, tSelfError: t.selfError, tReasonError: t.reasonError, tFieldsError: t.fieldsError,
@@ -1133,14 +1472,100 @@ class Component extends DCLogic {
       tFormTitle: tForm ? tForm.name : "A few details",
       tSessionVisitType: t.visitType, tSessionHost: t.host,
       tFieldViews: tGuest.map(f => this.fieldView(f, t.values, this.setTValue, this.toggleTMulti, this.setTValue, "tablet")),
+      tAgreementDeclined: !!(t.agreementDeclined), tAgreementNotDeclined: !(t.agreementDeclined),
+      tAgreementName: tAgrDoc ? tAgrDoc.name : "",
+      tAgreementContent: tAgrDoc ? tAgrDoc.content : "",
+      tAgreementCounter: t.agreementTotal > 1 ? ("Agreement " + tAgrIndex + " of " + t.agreementTotal) : "Agreement",
+      agreementAccept: this.agreementAccept, agreementDecline: this.agreementDecline, agreementStartOver: this.tabletFinish,
     };
+
+    let docBuilderVals = {};
+    if (s.docBuilderOpen && s.docBuilder) {
+      const b = s.docBuilder; const isAgr = b.type === "agreement"; const maxStep = isAgr ? 3 : 2;
+      const editDoc = s.editingDocId ? s.documents.find(d => d.id === s.editingDocId) : null;
+      const editStatus = editDoc ? editDoc.status : "live";
+      const cBase = "width:26px;height:26px;border-radius:50%;display:inline-flex;align-items:center;justify-content:center;font-size:13px;font-weight:500;flex-shrink:0;";
+      const cOn = cBase + "background:var(--color-link);color:#fff;";
+      const cOff = cBase + "background:#fff;color:var(--gray-6);border:1px solid var(--color-border);";
+      const lOn = "font-size:14px;font-weight:500;color:var(--color-text);";
+      const lOff = "font-size:14px;font-weight:400;color:var(--gray-7);";
+      const chip = (sel) => "display:inline-flex;align-items:center;padding:7px 13px;border-radius:20px;font-size:14px;cursor:pointer;user-select:none;border:1px solid " + (sel ? "var(--color-link)" : "var(--color-border)") + ";background:" + (sel ? "var(--blue-1)" : "#fff") + ";color:" + (sel ? "var(--color-link)" : "var(--color-text)") + ";font-weight:" + (sel ? "500" : "400") + ";";
+      docBuilderVals = {
+        docIsAgreement: isAgr, docIsAttachment: !isAgr,
+        docBuilderTitle: isAgr ? "Agreement" : "Attachment",
+        docBuilderStep1: b.step === 1, docBuilderStep2: b.step === 2, docBuilderStep3: b.step === 3,
+        docBuilderHasBack: b.step > 1,
+        docBuilderPrimaryLabel: b.step === maxStep ? (s.editingDocId ? "Save" : "Add document") : "Next",
+        docBuilderIsEditing: !!s.editingDocId,
+        docBuilderArchiveLabel: editStatus === "archived" ? "Restore" : "Archive",
+        docS1Circle: cOn, docS1Done: b.step > 1, docS1Num: b.step <= 1, docS1Label: lOn,
+        docS2Circle: b.step >= 2 ? cOn : cOff, docS2Done: b.step > 2, docS2Num: b.step <= 2, docS2Label: b.step >= 2 ? lOn : lOff,
+        docS3Circle: b.step === 3 ? cOn : cOff, docS3Label: b.step === 3 ? lOn : lOff,
+        docName: b.name, docContent: b.content, docEmail: b.email,
+        onDocName: (e) => this.updDocBuilder({ name: e.target.value }),
+        onDocContent: (e) => this.updDocBuilder({ content: e.target.value }),
+        onDocEmail: (e) => this.updDocBuilder({ email: e.target.value }),
+        docFile: b.file, docHasFile: !!b.file, docNoFile: !b.file, docFileName: b.file || "",
+        onDocFile: this.onDocFile, removeDocFile: this.removeDocFile,
+        docBuilderNameError: !!s.docBuilderNameError, docBuilderContentError: !!s.docBuilderContentError,
+        docBuilderFileError: !!s.docBuilderFileError, docBuilderAssignError: !!s.docBuilderAssignError,
+        docBuilderVisitTypes: s.visitTypes.map(t => ({ name: t.name, selected: b.visitTypes.includes(t.name), onToggle: () => this.toggleDocBuilderList("visitTypes", t.name), style: chip(b.visitTypes.includes(t.name)) })),
+        docBuilderBuildings: s.buildings.map(bl => ({ name: bl, selected: b.buildings.includes(bl), onToggle: () => this.toggleDocBuilderList("buildings", bl), style: chip(b.buildings.includes(bl)) })),
+      };
+    }
+
+    const standalone = (this.props.standaloneApp || "Off") === "On";
+    const manageTabs = ["Organization","Offices","Themes","Integrations","People","Group","Roles","Devices","Notifications","Billing"];
+    const navItemBase = "display:flex;align-items:center;gap:12px;height:40px;padding:0 12px;border-radius:6px;font-size:14px;cursor:pointer;";
+    const navActive = navItemBase + "background:rgba(255,255,255,.10);color:#fff;font-weight:500;";
+    const navInactive = navItemBase + "color:rgba(255,255,255,.65);";
+    const manageSubBase = "display:flex;align-items:center;height:36px;padding:0 16px;border-radius:6px;font-size:14px;cursor:pointer;margin-bottom:2px;";
+    const manageSubActive = manageSubBase + "background:var(--blue-1);color:var(--color-link);font-weight:500;";
+    const manageSubInactive = manageSubBase + "color:var(--color-text);";
+    const wpSubBase = "display:flex;align-items:center;height:36px;padding:0 12px 0 42px;border-radius:4px;font-size:14px;cursor:pointer;";
+    const wpSubActive = wpSubBase + "color:#fff;font-weight:500;background:rgba(255,255,255,.12);";
+    const wpSubInactive = wpSubBase + "color:rgba(255,255,255,.65);";
+    const pgIs = (p) => s.webPage === p;
 
     return {
       isWeb, isTablet, kioskLocation: kiosk,
-      visitsTab: s.webTab === "Visits", formsTab: s.webTab === "Custom visit forms",
+      showMap: !standalone, showSchedule: !standalone, showPeople: !standalone, showMeetingSpaces: !standalone,
+      showWorkplaceSection: !standalone,
+      workplaceExpanded: s.workplaceExpanded,
+      toggleWorkplace: this.toggleWorkplace,
+      workplaceChevron: s.workplaceExpanded ? "fa-chevron-up" : "fa-chevron-down",
+      dashboardSubStyle: pgIs("dashboard") ? wpSubActive : wpSubInactive,
+      ticketsSubStyle: pgIs("tickets") ? wpSubActive : wpSubInactive,
+      visitorsSubStyle: pgIs("visitors") ? wpSubActive : wpSubInactive,
+      deliveriesSubStyle: pgIs("deliveries") ? wpSubActive : wpSubInactive,
+      goDashboardPage: this.goDashboardPage, goTicketsPage: this.goTicketsPage, goDeliveriesPage: this.goDeliveriesPage,
+      showStandaloneVisitors: standalone,
+      visitorsNavStyle: pgIs("visitors") ? navActive : navInactive,
+      manageNavStyle: (standalone && pgIs("manage")) ? navActive : navInactive,
+      announcementsNavStyle: (standalone && pgIs("announcements")) ? navActive : navInactive,
+      deliveriesNavStyle: (standalone && pgIs("deliveries")) ? navActive : navInactive,
+      showAnnouncementsNav: standalone,
+      showDeliveriesNav: standalone,
+      goVisitorsPage: this.goVisitorsPage, goManagePage: this.goManagePage, goAnnouncementsPage: this.goAnnouncementsPage,
+      showVisitorsContent: pgIs("visitors"),
+      showManageContent: standalone && pgIs("manage"),
+      showPlaceholderContent: !pgIs("visitors") && !(standalone && pgIs("manage")),
+      placeholderContentTitle: s.webPage.charAt(0).toUpperCase() + s.webPage.slice(1),
+      manageSubItems: manageTabs.map(tab => ({ name: tab, style: s.manageTab === tab ? manageSubActive : manageSubInactive, onSelect: () => this.setManageTab(tab) })),
+      manageTabTitle: s.manageTab,
+      visitsTab: s.webTab === "Visits", visitTypesTab: s.webTab === "Visit types", documentsTab: s.webTab === "Documents", formsTab: s.webTab === "Custom visit forms",
       visitsTabStyle: s.webTab === "Visits" ? tabOn : tabOff,
+      visitTypesTabStyle: s.webTab === "Visit types" ? tabOn : tabOff,
+      documentsTabStyle: s.webTab === "Documents" ? tabOn : tabOff,
       formsTabStyle: s.webTab === "Custom visit forms" ? tabOn : tabOff,
-      goVisits: this.goVisits, goForms: this.goForms,
+      goVisits: this.goVisits, goVisitTypes: this.goVisitTypes, goDocuments: this.goDocuments, goForms: this.goForms,
+      visitTypeRows: s.visitTypes.map(vt => { const st = this.vtStyle(vt.name); return { name: vt.name, vtBg: st.bg, vtBd: st.bd, vtFg: st.fg }; }),
+      addDocDropdown: s.addDocDropdown, openAddDocDropdown: this.openAddDocDropdown, closeAddDocDropdown: this.closeAddDocDropdown,
+      openAgreementBuilder: () => this.openDocBuilderNew("agreement"), openAttachmentBuilder: () => this.openDocBuilderNew("attachment"),
+      docRows: s.documents.map(d => { const typeBg = d.docType === "agreement" ? "var(--blue-1)" : "var(--gray-1)"; const typeBd = d.docType === "agreement" ? "var(--color-info-border)" : "var(--color-border)"; const typeFg = d.docType === "agreement" ? "var(--color-link)" : "var(--gray-9)"; const statusBg = d.status === "live" ? "var(--green-1)" : "var(--gray-1)"; const statusBd = d.status === "live" ? "var(--color-success-border)" : "var(--color-border)"; const statusFg = d.status === "live" ? "var(--color-success)" : "var(--gray-6)"; const vtBadges = d.visitTypes.map(vt => { const st = this.vtStyle(vt); return { name: vt, bg: st.bg, bd: st.bd, fg: st.fg }; }); return { id: d.id, name: d.name, typeBg, typeBd, typeFg, typeLabel: d.docType === "agreement" ? "Agreement" : "Attachment", statusBg, statusBd, statusFg, statusLabel: d.status === "live" ? "Live" : "Archived", isArchived: d.status === "archived", addedOn: d.addedOn, vtBadges, noVtBadges: vtBadges.length === 0, buildingsLabel: d.buildings.join(", ") || "—", archiveIcon: d.status === "live" ? "fa-box-archive" : "fa-box-open", archiveTitle: d.status === "live" ? "Archive" : "Restore", onEdit: () => this.openDocBuilderEdit(d.id), onToggleStatus: () => this.toggleDocStatus(d.id), onDelete: () => this.deleteDocument(d.id) }; }),
+      docsEmpty: s.documents.length === 0,
+      docBuilderOpen: s.docBuilderOpen, closeDocBuilder: this.closeDocBuilder, docBuilderPrimary: this.docBuilderPrimary, docBuilderBack: this.docBuilderBack, docBuilderArchive: this.docBuilderArchive,
+      ...docBuilderVals,
       visitRows, openDrawer: this.openDrawer,
       formRows, formsEmpty: s.forms.length === 0, openBuilderNew: this.openBuilderNew,
       builderOpen: s.builderOpen, closeBuilder: this.closeBuilder, builderPrimary: this.builderPrimary, builderBack: this.builderBack, addField: this.addField, togglePreview: this.togglePreview,
@@ -1156,6 +1581,69 @@ class Component extends DCLogic {
     };
   }
 }
+</script>
+
+<!-- ============ TWEAKS PANEL ============ -->
+<style>
+  #tw-root{position:fixed;top:20px;left:20px;z-index:200;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;font-size:13.5px;}
+  #tw-btn{display:flex;align-items:center;gap:7px;height:36px;padding:0 14px;border-radius:20px;background:#1c2940;color:rgba(255,255,255,.9);font-size:13.5px;font-weight:500;cursor:pointer;box-shadow:0 4px 16px rgba(0,0,0,.3);user-select:none;border:none;outline:none;}
+  #tw-btn:hover{background:#243350;}
+  #tw-panel{margin-top:8px;background:#fff;border:1px solid #e5e7eb;border-radius:12px;box-shadow:0 8px 32px rgba(0,0,0,.16);width:252px;overflow:hidden;}
+  .tw-head{padding:12px 16px;font-size:11px;font-weight:700;color:#9ca3af;letter-spacing:.06em;text-transform:uppercase;border-bottom:1px solid #f3f4f6;}
+  .tw-sec{padding:12px 16px;border-bottom:1px solid #f3f4f6;}
+  .tw-sec:last-child{border-bottom:none;}
+  .tw-sec-lbl{font-size:11px;font-weight:700;color:#9ca3af;letter-spacing:.05em;text-transform:uppercase;margin-bottom:6px;}
+  .tw-opt{display:flex;align-items:center;gap:9px;padding:6px 8px;border-radius:7px;color:#374151;cursor:pointer;user-select:none;margin-bottom:2px;line-height:1.3;}
+  .tw-opt:last-child{margin-bottom:0;}
+  .tw-opt:hover{background:#f9fafb;}
+  .tw-opt.on{background:#eff6ff;color:#1d4ed8;font-weight:500;}
+  .tw-dot{width:16px;height:16px;border-radius:50%;border:1.5px solid #d1d5db;background:#fff;flex-shrink:0;box-sizing:border-box;}
+  .tw-opt.on .tw-dot{border-color:#2563eb;background:#2563eb;box-shadow:inset 0 0 0 3px #fff;}
+</style>
+<div id="tw-root">
+  <button id="tw-btn" onclick="twToggle()">
+    <svg width="14" height="12" viewBox="0 0 14 12" fill="none"><rect x="0" y="0.5" width="5" height="1.5" rx=".75" fill="currentColor"/><rect x="7" y="0.5" width="7" height="1.5" rx=".75" fill="currentColor"/><circle cx="6" cy="1.25" r="1.5" fill="currentColor"/><rect x="0" y="5" width="7" height="1.5" rx=".75" fill="currentColor"/><rect x="9" y="5" width="5" height="1.5" rx=".75" fill="currentColor"/><circle cx="8" cy="5.75" r="1.5" fill="currentColor"/><rect x="0" y="9.5" width="3" height="1.5" rx=".75" fill="currentColor"/><rect x="5" y="9.5" width="9" height="1.5" rx=".75" fill="currentColor"/><circle cx="4" cy="10.25" r="1.5" fill="currentColor"/></svg>
+    Tweaks
+  </button>
+  <div id="tw-panel" hidden>
+    <div class="tw-head">Tweaks</div>
+
+    <div class="tw-sec">
+      <div class="tw-sec-lbl">Create visit</div>
+      <div class="tw-opt on" data-prop="timeModel" data-val="Same time for all days" onclick="twSet(this)"><div class="tw-dot"></div>Same time for all days</div>
+      <div class="tw-opt"    data-prop="timeModel" data-val="Customizable per-day times" onclick="twSet(this)"><div class="tw-dot"></div>Customizable per-day times</div>
+    </div>
+
+    <div class="tw-sec">
+      <div class="tw-sec-lbl">Visit details</div>
+      <div class="tw-opt on" data-prop="seriesView" data-val="Inline expandable list" onclick="twSet(this)"><div class="tw-dot"></div>Inline expandable list</div>
+      <div class="tw-opt"    data-prop="seriesView" data-val="Full series view" onclick="twSet(this)"><div class="tw-dot"></div>Full series view</div>
+    </div>
+
+    <div class="tw-sec">
+      <div class="tw-sec-lbl">Arrival display</div>
+      <div class="tw-opt on" data-prop="kioskLocation" data-val="54 State St." onclick="twSet(this)"><div class="tw-dot"></div>54 State St.</div>
+      <div class="tw-opt"    data-prop="kioskLocation" data-val="Woolen Mills" onclick="twSet(this)"><div class="tw-dot"></div>Woolen Mills</div>
+    </div>
+    <div class="tw-sec">
+      <div class="tw-sec-lbl">App mode</div>
+      <div class="tw-opt on" data-prop="standaloneApp" data-val="Off" onclick="twSet(this)"><div class="tw-dot"></div>Off</div>
+      <div class="tw-opt"    data-prop="standaloneApp" data-val="On"  onclick="twSet(this)"><div class="tw-dot"></div>Standalone app</div>
+    </div>
+  </div>
+</div>
+<script>
+  var twVals = { timeModel: "Same time for all days", seriesView: "Inline expandable list", kioskLocation: "54 State St.", standaloneApp: "Off" };
+  function twToggle() { var p = document.getElementById("tw-panel"); p.hidden = !p.hidden; }
+  function twSet(el) {
+    var prop = el.dataset.prop, val = el.dataset.val;
+    twVals[prop] = val;
+    el.parentElement.querySelectorAll(".tw-opt[data-prop='" + prop + "']").forEach(function(o) {
+      o.classList.toggle("on", o.dataset.val === val);
+    });
+    var rn = window.__dcRootName && window.__dcRootName();
+    if (rn && window.__dcSetProps) window.__dcSetProps(rn, Object.assign({}, twVals));
+  }
 </script>
 </body>
 </html>
