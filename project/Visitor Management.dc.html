@@ -457,17 +457,42 @@
         <div style="flex:1;display:flex;flex-direction:column;padding:40px;overflow:auto;animation:rStep .3s ease;">
           <div onClick="{{ tabletBack }}" style="color:var(--color-link);font-size:15px;cursor:pointer;display:flex;align-items:center;gap:8px;margin-bottom:24px;"><i class="fa-solid fa-arrow-left"></i>Back</div>
           <div style="font-size:30px;font-weight:500;margin-bottom:6px;">Tell us about your visit</div>
-          <div style="font-size:16px;color:var(--color-text-secondary);margin-bottom:28px;">We didn't find a pre-registered visit for {{ tEmail }}.</div>
           <label style="font-size:14px;font-weight:600;color:var(--gray-9);margin-bottom:8px;">Full name</label>
-          <input value="{{ tName }}" onChange="{{ onTName }}" placeholder="Your name" style="height:56px;border:1.5px solid var(--color-border);border-radius:12px;padding:0 16px;font-size:18px;margin-bottom:22px;">
+          <input value="{{ tName }}" onChange="{{ onTName }}" placeholder="Your name" style="height:60px;border:1.5px solid var(--color-border);border-radius:12px;padding:0 18px;font-size:19px;margin-bottom:22px;">
           <label style="font-size:14px;font-weight:600;color:var(--gray-9);margin-bottom:8px;">Who are you visiting?</label>
-          <select value="{{ tHost }}" onChange="{{ onTHost }}" style="height:56px;border:1.5px solid var(--color-border);border-radius:12px;padding:0 14px;font-size:18px;margin-bottom:22px;background:#fff;">
+          <select value="{{ tHost }}" onChange="{{ onTHost }}" style="height:60px;border:1.5px solid var(--color-border);border-radius:12px;padding:0 18px;font-size:19px;margin-bottom:22px;background:#fff;">
             <option value="">Select a host</option>
             <sc-for list="{{ hostOptions }}" as="h" hint-placeholder-count="4"><option value="{{ h }}">{{ h }}</option></sc-for>
           </select>
           <sc-if value="{{ tSelfError }}"><div style="color:var(--color-error);font-size:14px;margin-top:8px;">Please fill in your name and host.</div></sc-if>
           <div style="flex:1;min-height:16px;"></div>
           <button onClick="{{ selfContinue }}" style="width:100%;height:64px;border-radius:14px;border:none;background:var(--color-primary);color:#fff;font:500 19px var(--font-sans);cursor:pointer;flex-shrink:0;">Continue</button>
+        </div>
+        </sc-if>
+
+        <!-- RETURNING VISITOR CONFIRMATION -->
+        <sc-if value="{{ tReturningStep }}">
+        <div style="flex:1;display:flex;flex-direction:column;padding:40px;overflow:auto;animation:rStep .3s ease;">
+          <div onClick="{{ tabletBack }}" style="color:var(--color-link);font-size:15px;cursor:pointer;display:flex;align-items:center;gap:8px;margin-bottom:24px;"><i class="fa-solid fa-arrow-left"></i>Back</div>
+          <div style="font-size:30px;font-weight:500;margin-bottom:6px;">Welcome back!</div>
+          <div style="font-size:16px;color:var(--color-text-secondary);margin-bottom:28px;line-height:1.5;">We found your details from a previous visit.</div>
+          <label style="font-size:14px;font-weight:600;color:var(--gray-9);margin-bottom:8px;">Full name</label>
+          <input value="{{ tName }}" onChange="{{ onTName }}" placeholder="Your name" style="height:60px;border:1.5px solid var(--color-border);border-radius:12px;padding:0 18px;font-size:19px;margin-bottom:22px;">
+          <label style="font-size:14px;font-weight:600;color:var(--gray-9);margin-bottom:8px;">Who are you visiting?</label>
+          <select value="{{ tHost }}" onChange="{{ onTHost }}" style="height:60px;border:1.5px solid var(--color-border);border-radius:12px;padding:0 18px;font-size:19px;margin-bottom:22px;background:#fff;">
+            <option value="">Select a host</option>
+            <sc-for list="{{ hostOptions }}" as="h" hint-placeholder-count="4"><option value="{{ h }}">{{ h }}</option></sc-for>
+          </select>
+          <label style="font-size:14px;font-weight:600;color:var(--gray-9);margin-bottom:12px;">Reason for your visit</label>
+          <div style="display:flex;flex-direction:column;gap:10px;margin-bottom:22px;">
+            <sc-for list="{{ tVisitTypeCards }}" as="c" hint-placeholder-count="4">
+            <div onClick="{{ c.onSelect }}" style="{{ c.style }}">{{ c.name }}</div>
+            </sc-for>
+          </div>
+          <sc-if value="{{ tSelfError }}"><div style="color:var(--color-error);font-size:14px;margin-bottom:8px;">Please fill in your name and select a host.</div></sc-if>
+          <sc-if value="{{ tReasonError }}"><div style="color:var(--color-error);font-size:14px;margin-bottom:8px;">Please select a reason for your visit.</div></sc-if>
+          <div style="flex:1;min-height:16px;"></div>
+          <button onClick="{{ returningContinue }}" style="width:100%;height:64px;border-radius:14px;border:none;background:var(--color-primary);color:#fff;font:500 19px var(--font-sans);cursor:pointer;flex-shrink:0;">Confirm and continue</button>
         </div>
         </sc-if>
 
@@ -535,7 +560,6 @@
         <sc-if value="{{ tFieldsStep }}">
         <div style="flex:1;display:flex;flex-direction:column;overflow:hidden;animation:rStep .3s ease;">
           <div style="padding:36px 40px 20px;border-bottom:1px solid var(--color-border-light);">
-            <div style="display:flex;align-items:center;gap:8px;color:var(--color-success);font-size:14px;font-weight:500;margin-bottom:10px;"><i class="fa-solid fa-circle-check"></i>{{ tFoundLabel }}</div>
             <div style="font-size:26px;font-weight:500;">{{ tFormTitle }}</div>
             <div style="font-size:15px;color:var(--color-text-secondary);margin-top:4px;">A few details are required for your {{ tSessionVisitType }} visit.</div>
           </div>
@@ -593,7 +617,23 @@
         <div style="display:flex;flex-direction:column;gap:10px;">
           <sc-for list="{{ drawerVisitors }}" as="p" hint-placeholder-count="1">
           <div style="display:flex;gap:8px;align-items:center;">
-            <input value="{{ p.name }}" onChange="{{ p.onName }}" placeholder="Full name" style="flex:1;height:36px;border:1px solid var(--color-border);border-radius:4px;padding:0 11px;font-size:14px;min-width:0;">
+            <div style="flex:1;position:relative;min-width:0;">
+              <input value="{{ p.name }}" onChange="{{ p.onName }}" placeholder="Full name" style="width:100%;box-sizing:border-box;height:36px;border:1px solid var(--color-border);border-radius:4px;padding:0 11px;font-size:14px;">
+              <sc-if value="{{ p.showSuggestions }}">
+              <div onClick="{{ dismissNameDropdown }}" style="position:fixed;inset:0;z-index:20;"></div>
+              <div style="position:absolute;top:calc(100% + 4px);left:0;right:0;z-index:21;background:#fff;border:1px solid var(--color-border);border-radius:8px;box-shadow:0 4px 16px rgba(0,0,0,.14);overflow:hidden;">
+                <sc-for list="{{ p.nameSuggestions }}" as="sg" hint-placeholder-count="2">
+                <div onClick="{{ sg.onSelect }}" style="display:flex;align-items:center;gap:10px;padding:10px 12px;cursor:pointer;" style-hover="background:var(--gray-1);">
+                  <span style="width:32px;height:32px;border-radius:50%;color:#fff;display:inline-flex;align-items:center;justify-content:center;font-weight:600;font-size:12px;flex-shrink:0;background:{{ sg.color }};">{{ sg.initials }}</span>
+                  <div style="min-width:0;">
+                    <div style="font-size:14px;font-weight:500;color:var(--color-text);">{{ sg.name }}</div>
+                    <div style="font-size:12px;color:var(--color-text-secondary);overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">{{ sg.email }}</div>
+                  </div>
+                </div>
+                </sc-for>
+              </div>
+              </sc-if>
+            </div>
             <input value="{{ p.email }}" onChange="{{ p.onEmail }}" placeholder="Email" style="flex:1;height:36px;border:1px solid var(--color-border);border-radius:4px;padding:0 11px;font-size:14px;min-width:0;">
             <sc-if value="{{ p.canRemove }}"><i onClick="{{ p.onRemove }}" class="fa-solid fa-xmark" style="color:var(--gray-6);cursor:pointer;width:20px;text-align:center;"></i></sc-if>
             <sc-if value="{{ p.noRemove }}"><span style="width:20px;flex-shrink:0;"></span></sc-if>
@@ -1048,7 +1088,7 @@ class Component extends DCLogic {
     builderOpen: false, builder: null, editingFormId: null, previewOpen: false, previewValues: {},
     drawerOpen: false, drawer: null, checkInNow: false,
     detailId: null, seriesOpen: false, showSeries: false, cancelConfirm: false,
-    tablet: { step: "welcome", email: "", name: "", host: "", visitType: "", building: "", preregId: null, values: {}, found: false, emailError: false, selfError: false, reasonError: false, fieldsError: false, pendingAgreements: [], agreementTotal: 0, agreementDeclined: false, hasSigned: false },
+    tablet: { step: "welcome", email: "", name: "", host: "", visitType: "", building: "", preregId: null, values: {}, returnVisit: null, found: false, emailError: false, selfError: false, reasonError: false, fieldsError: false, pendingAgreements: [], agreementTotal: 0, agreementDeclined: false, hasSigned: false, carryOverSigs: {}, sessionSigs: {} },
     toast: null,
     visitTypes: [
       { name: "VIP", icon: "fa-star" },
@@ -1295,7 +1335,7 @@ class Component extends DCLogic {
   deleteForm = (id) => { this.setState(s => ({ forms: s.forms.filter(f => f.id !== id) })); this.toast("Form deleted", "fa-trash-can"); };
 
   // ---------- create visit drawer ----------
-  openDrawer = () => { const ti = this.todayIso(); const p = this.isoParts(ti); this.setState({ drawerOpen: true, checkInNow: false, drawer: { visitors: [{ id: this.uid("p"), name: "", email: "" }], host: "Tiffany Yu", building: this.kiosk(), visitType: "", values: {}, dateMode: "single", days: [ti], rStart: null, rEnd: null, calY: p.y, calM: p.m, time: "9:00 AM", perDay: {}, showPerDay: false, pickerOpen: false } }); };
+  openDrawer = () => { const ti = this.todayIso(); const p = this.isoParts(ti); this.setState({ drawerOpen: true, checkInNow: false, drawer: { visitors: [{ id: this.uid("p"), name: "", email: "" }], host: "Tiffany Yu", building: this.kiosk(), visitType: "", values: {}, prefilledSignatures: {}, nameDropdownId: null, dateMode: "single", days: [ti], rStart: null, rEnd: null, calY: p.y, calM: p.m, time: "9:00 AM", perDay: {}, showPerDay: false, pickerOpen: false } }); };
   togglePicker = () => this.setState(s => ({ drawer: { ...s.drawer, pickerOpen: !s.drawer.pickerOpen } }));
   closePicker = () => this.updDrawer({ pickerOpen: false });
   setDateMode = (mode) => { const d = this.state.drawer; const all = this.effectiveDates(d); let patch = { dateMode: mode }; if (mode === "single") patch.days = all.length ? [all[0]] : []; else if (mode === "multi") patch.days = all; else { patch.rStart = all[0] || null; patch.rEnd = all.length > 1 ? all[all.length - 1] : null; } this.updDrawer(patch); };
@@ -1328,7 +1368,7 @@ class Component extends DCLogic {
     const visits = [];
     valid.forEach(v => { const sid = dates.length > 1 ? this.uid("s") : null; dates.forEach((iso, di) => {
       const canCheckIn = checkedIn && di === 0;
-      visits.push({ id: this.uid("v"), seriesId: sid, name: v.name.trim(), email: v.email.trim(), host: d.host, visitType: d.visitType, building: d.building, date: this.fmtIso(iso), expected: this.timeFor(d, iso), checkIn: canCheckIn ? this.nowTime() : "—", checkOut: "—", status: canCheckIn ? "Checked in" : "Pre-registered", values: { ...d.values }, source: "prereg" });
+      visits.push({ id: this.uid("v"), seriesId: sid, name: v.name.trim(), email: v.email.trim(), host: d.host, visitType: d.visitType, building: d.building, date: this.fmtIso(iso), expected: this.timeFor(d, iso), checkIn: canCheckIn ? this.nowTime() : "—", checkOut: "—", status: canCheckIn ? "Checked in" : "Pre-registered", values: { ...d.values }, signatures: { ...(d.prefilledSignatures || {}) }, source: "prereg" });
     }); });
     this.setState(s => ({ visits: [...visits, ...s.visits], drawerOpen: false, drawer: null }));
     const nd = dates.length, total = visits.length;
@@ -1360,6 +1400,14 @@ class Component extends DCLogic {
   cancelSeries = () => { const v = this.state.visits.find(x => x.id === this.state.detailId); const sid = v && v.seriesId; const n = this.seriesFor(v).length; this.setState(s => ({ visits: s.visits.filter(x => !sid || x.seriesId !== sid), detailId: null, cancelConfirm: false, seriesOpen: false, showSeries: false })); this.toast(n + " visits canceled", "fa-circle-check"); };
   printBadge = (id) => { const v = this.state.visits.find(x => x.id === id); this.toast("Badge sent to printer for " + (v ? v.name : "visitor"), "fa-id-card"); };
   deleteVisit = (id) => { this.setState(s => ({ visits: s.visits.filter(v => v.id !== id) })); this.toast("Visit deleted", "fa-trash-can"); };
+
+  // ---------- visitor memory ----------
+  lastVisitByEmail = (email) => [...this.state.visits].filter(v => v.email.toLowerCase() === email.toLowerCase()).sort((a, b) => this.strToIso(b.date).localeCompare(this.strToIso(a.date)))[0] || null;
+  allSignaturesByEmail = (email) => { const sigs = {}; this.state.visits.filter(v => v.email.toLowerCase() === email.toLowerCase()).forEach(v => { if (v.signatures) Object.entries(v.signatures).forEach(([id, data]) => { if (!sigs[id]) sigs[id] = data; }); }); return sigs; };
+  pastVisitorMatches = (query) => { if (!query) return []; const q = query.toLowerCase(); const seen = new Set(); const out = []; [...this.state.visits].sort((a, b) => this.strToIso(b.date).localeCompare(this.strToIso(a.date))).forEach(v => { if (!seen.has(v.email.toLowerCase()) && v.name.toLowerCase().includes(q)) { seen.add(v.email.toLowerCase()); out.push(v); } }); return out.slice(0, 5); };
+  selectPastVisitor = (visitorRowId, pv) => { const allSigs = this.allSignaturesByEmail(pv.email); this.setState(s => ({ drawer: { ...s.drawer, visitType: pv.visitType, values: { ...pv.values }, prefilledSignatures: allSigs, nameDropdownId: null, visitors: s.drawer.visitors.map(v => v.id === visitorRowId ? { ...v, name: pv.name, email: pv.email } : v) } })); };
+  dismissNameDropdown = () => this.updDrawer({ nameDropdownId: null });
+  returningContinue = () => { const t = this.state.tablet; if (!t.name.trim() || !t.host) { this.updTablet({ selfError: true }); return; } if (!t.visitType) { this.updTablet({ reasonError: true }); return; } const allSigs = this.allSignaturesByEmail(t.email); this.enterAgreementsOrProceed({ ...t }, t.visitType, this.kiosk(), allSigs); };
 
   webCheckIn = (id) => {
     const s = this.state;
@@ -1412,8 +1460,8 @@ class Component extends DCLogic {
 
   // ---------- tablet ----------
   updTablet = (patch) => this.setState(s => ({ tablet: { ...s.tablet, ...patch } }));
-  tapCheckIn = () => this.setState({ tablet: { step: "email", email: "", name: "", host: "", visitType: "", building: this.kiosk(), preregId: null, values: {}, found: false, emailError: false, selfError: false, reasonError: false, fieldsError: false, pendingAgreements: [], agreementTotal: 0, agreementDeclined: false, hasSigned: false } });
-  tabletBack = () => this.setState(s => { const st = s.tablet.step; const prev = st === "email" ? "welcome" : st === "self" ? "email" : st === "reason" ? "self" : st === "agreement" ? (s.tablet.found ? "email" : "reason") : st === "fields" ? (s.tablet.found ? "email" : "reason") : "welcome"; return { tablet: { ...s.tablet, step: prev, pendingAgreements: [], agreementTotal: 0, agreementDeclined: false, hasSigned: false, emailError: false, selfError: false, reasonError: false, fieldsError: false } }; });
+  tapCheckIn = () => this.setState({ tablet: { step: "email", email: "", name: "", host: "", visitType: "", building: this.kiosk(), preregId: null, values: {}, returnVisit: null, found: false, emailError: false, selfError: false, reasonError: false, fieldsError: false, pendingAgreements: [], agreementTotal: 0, agreementDeclined: false, hasSigned: false, carryOverSigs: {}, sessionSigs: {} } });
+  tabletBack = () => this.setState(s => { const st = s.tablet.step; const hasReturn = !!s.tablet.returnVisit; const prev = st === "email" ? "welcome" : st === "self" ? "email" : st === "returning" ? "email" : st === "reason" ? "self" : st === "agreement" ? (s.tablet.found ? "email" : hasReturn ? "returning" : "reason") : st === "fields" ? (s.tablet.found ? "email" : hasReturn ? "returning" : "reason") : "welcome"; return { tablet: { ...s.tablet, step: prev, pendingAgreements: [], agreementTotal: 0, agreementDeclined: false, hasSigned: false, emailError: false, selfError: false, reasonError: false, fieldsError: false } }; });
   onTEmail = (e) => this.updTablet({ email: e.target.value, emailError: false });
   onTName = (e) => this.updTablet({ name: e.target.value, selfError: false });
   onTHost = (e) => this.updTablet({ host: e.target.value, selfError: false });
@@ -1422,14 +1470,16 @@ class Component extends DCLogic {
   toggleTMulti = (fid, opt) => this.setState(s => { const cur = s.tablet.values[fid] || []; const has = cur.includes(opt); return { tablet: { ...s.tablet, values: { ...s.tablet.values, [fid]: has ? cur.filter(x => x !== opt) : [...cur, opt] }, fieldsError: false } }; });
 
   getApplicableAgreements = (visitType, building) => this.state.documents.filter(d => d.docType === "agreement" && d.status === "live" && d.visitTypes.includes(visitType) && d.buildings.includes(building));
-  enterAgreementsOrProceed = (baseTablet, visitType, building) => {
+  enterAgreementsOrProceed = (baseTablet, visitType, building, existingSigs = {}) => {
     const agrs = this.getApplicableAgreements(visitType, building);
-    if (agrs.length > 0) {
-      this.setState({ tablet: { ...baseTablet, step: "agreement", pendingAgreements: agrs.map(d => d.id), agreementTotal: agrs.length, agreementDeclined: false, hasSigned: false } });
+    const unsigned = agrs.filter(d => !existingSigs[d.id]);
+    const base = { ...baseTablet, carryOverSigs: existingSigs, sessionSigs: {} };
+    if (unsigned.length > 0) {
+      this.setState({ tablet: { ...base, step: "agreement", pendingAgreements: unsigned.map(d => d.id), agreementTotal: unsigned.length, agreementDeclined: false, hasSigned: false } });
     } else {
       const guest = this.collectFields(visitType, building, "guest");
-      if (guest.length === 0) { this.setState({ tablet: baseTablet }, this.commitCheckIn); }
-      else this.setState({ tablet: { ...baseTablet, step: "fields" } });
+      if (guest.length === 0) { this.setState({ tablet: base }, this.commitCheckIn); }
+      else this.setState({ tablet: { ...base, step: "fields" } });
     }
   };
   submitEmail = () => {
@@ -1437,11 +1487,17 @@ class Component extends DCLogic {
     if (!email || email.indexOf("@") < 1) { this.updTablet({ emailError: true }); return; }
     const match = this.state.visits.find(v => v.status === "Pre-registered" && v.building === this.kiosk() && v.email.toLowerCase() === email);
     if (match) {
-      const base = { ...t, name: match.name, host: match.host, visitType: match.visitType, building: this.kiosk(), preregId: match.id, found: true, values: {} };
-      this.enterAgreementsOrProceed(base, match.visitType, this.kiosk());
-    } else {
-      this.updTablet({ step: "self", found: false, building: this.kiosk() });
+      const allSigs = this.allSignaturesByEmail(email);
+      const base = { ...t, name: match.name, host: match.host, visitType: match.visitType, building: this.kiosk(), preregId: match.id, found: true, values: { ...match.values } };
+      this.enterAgreementsOrProceed(base, match.visitType, this.kiosk(), allSigs);
+      return;
     }
+    const past = this.lastVisitByEmail(email);
+    if (past) {
+      this.updTablet({ step: "returning", name: past.name, host: past.host, visitType: past.visitType, values: { ...past.values }, returnVisit: past, found: false, emailError: false });
+      return;
+    }
+    this.updTablet({ step: "self", found: false, building: this.kiosk() });
   };
   selfContinue = () => {
     const t = this.state.tablet;
@@ -1456,15 +1512,17 @@ class Component extends DCLogic {
   tapToSign = () => this.updTablet({ hasSigned: true });
   agreementAccept = () => {
     const t = this.state.tablet;
-    const doc = this.state.documents.find(d => d.id === t.pendingAgreements[0]);
+    const docId = t.pendingAgreements[0];
+    const doc = this.state.documents.find(d => d.id === docId);
     if (doc && doc.requireSignature && !t.hasSigned) { this.toast("Please sign before accepting", "fa-pen"); return; }
+    const newSessionSigs = { ...t.sessionSigs, [docId]: { signedAt: this.nowTime() } };
     const remaining = t.pendingAgreements.slice(1);
     if (remaining.length > 0) {
-      this.updTablet({ pendingAgreements: remaining, hasSigned: false });
+      this.updTablet({ pendingAgreements: remaining, hasSigned: false, sessionSigs: newSessionSigs });
     } else {
       const guest = this.collectFields(t.visitType, this.kiosk(), "guest");
-      if (guest.length === 0) this.commitCheckIn();
-      else this.updTablet({ step: "fields", pendingAgreements: [], hasSigned: false });
+      if (guest.length === 0) this.setState(s => ({ tablet: { ...s.tablet, sessionSigs: newSessionSigs } }), this.commitCheckIn);
+      else this.updTablet({ step: "fields", pendingAgreements: [], hasSigned: false, sessionSigs: newSessionSigs });
     }
   };
   agreementDecline = () => this.updTablet({ agreementDeclined: true });
@@ -1477,14 +1535,15 @@ class Component extends DCLogic {
   };
   commitCheckIn = () => {
     const t = this.state.tablet;
+    const allSigs = { ...(t.carryOverSigs || {}), ...(t.sessionSigs || {}) };
     this.setState(s => {
       let visits;
-      if (t.preregId) visits = s.visits.map(v => v.id === t.preregId ? { ...v, status: "Checked in", checkIn: this.nowTime(), values: { ...v.values, ...t.values } } : v);
-      else visits = [{ id: this.uid("v"), name: t.name.trim(), email: t.email.trim(), host: t.host, visitType: t.visitType, building: this.kiosk(), date: this.todayStr(), expected: "—", checkIn: this.nowTime(), checkOut: "—", status: "Checked in", values: { ...t.values }, source: "self" }, ...s.visits];
+      if (t.preregId) visits = s.visits.map(v => v.id === t.preregId ? { ...v, status: "Checked in", checkIn: this.nowTime(), values: { ...v.values, ...t.values }, signatures: { ...(v.signatures || {}), ...allSigs } } : v);
+      else visits = [{ id: this.uid("v"), name: t.name.trim(), email: t.email.trim(), host: t.host, visitType: t.visitType, building: this.kiosk(), date: this.todayStr(), expected: "—", checkIn: this.nowTime(), checkOut: "—", status: "Checked in", values: { ...t.values }, signatures: allSigs, source: "self" }, ...s.visits];
       return { visits, tablet: { ...s.tablet, step: "complete" } };
     });
   };
-  tabletFinish = () => this.setState({ tablet: { step: "welcome", email: "", name: "", host: "", visitType: "", building: "", preregId: null, values: {}, found: false, emailError: false, selfError: false, reasonError: false, fieldsError: false, pendingAgreements: [], agreementTotal: 0, agreementDeclined: false, hasSigned: false } });
+  tabletFinish = () => this.setState({ tablet: { step: "welcome", email: "", name: "", host: "", visitType: "", building: "", preregId: null, values: {}, returnVisit: null, found: false, emailError: false, selfError: false, reasonError: false, fieldsError: false, pendingAgreements: [], agreementTotal: 0, agreementDeclined: false, hasSigned: false, carryOverSigs: {}, sessionSigs: {} } });
 
   // ---------- field view builder ----------
   fieldView = (field, values, onVal, onToggle, onRadio, mode) => {
@@ -1667,7 +1726,7 @@ class Component extends DCLogic {
 
       drawerVals = {
         ...dateVals,
-        drawerVisitors: d.visitors.map(v => ({ id: v.id, name: v.name, email: v.email, canRemove: d.visitors.length > 1, noRemove: d.visitors.length <= 1, onName: (e) => this.updVisitor(v.id, { name: e.target.value }), onEmail: (e) => this.updVisitor(v.id, { email: e.target.value }), onRemove: () => this.removeVisitorRow(v.id) })),
+        drawerVisitors: (() => { const activeQuery = d.nameDropdownId ? (d.visitors.find(vi => vi.id === d.nameDropdownId) || {}).name || "" : ""; const suggestions = d.nameDropdownId && activeQuery ? this.pastVisitorMatches(activeQuery) : []; return d.visitors.map(v => { const rowSuggestions = d.nameDropdownId === v.id ? suggestions.map(pv => ({ name: pv.name, email: pv.email, initials: this.initials(pv.name), color: this.colorFor(pv.name), onSelect: () => this.selectPastVisitor(v.id, pv) })) : []; return { id: v.id, name: v.name, email: v.email, canRemove: d.visitors.length > 1, noRemove: d.visitors.length <= 1, onName: (e) => { const name = e.target.value; this.setState(s => ({ drawer: { ...s.drawer, nameDropdownId: name.length > 0 ? v.id : null, visitors: s.drawer.visitors.map(vi => vi.id === v.id ? { ...vi, name } : vi) } })); }, onEmail: (e) => this.updVisitor(v.id, { email: e.target.value }), onRemove: () => this.removeVisitorRow(v.id), showSuggestions: d.nameDropdownId === v.id && rowSuggestions.length > 0, nameSuggestions: rowSuggestions }; }); })(),
         drawerVisitorCount: d.visitors.filter(v => v.name.trim()).length,
         drawerHost: d.host, drawerBuilding: d.building, drawerVisitType: d.visitType,
         onDrawerHost: (e) => this.updDrawer({ host: e.target.value }),
@@ -1676,6 +1735,7 @@ class Component extends DCLogic {
         drawerHasFields: views.length > 0,
         drawerFieldViews: views,
         checkInNow: s.checkInNow, checkInNowBox: cb(s.checkInNow),
+        dismissNameDropdown: this.dismissNameDropdown,
       };
     }
 
@@ -1731,11 +1791,12 @@ class Component extends DCLogic {
     const t = s.tablet;
     const tGuest = t.visitType ? this.collectFields(t.visitType, kiosk, "guest") : [];
     const tForm = t.visitType ? this.matchingForms(t.visitType, kiosk)[0] : null;
-    const cardStyle = (sel) => "display:flex;align-items:center;gap:12px;padding:16px 18px;border-radius:12px;cursor:pointer;font-size:17px;font-weight:500;border:1.5px solid " + (sel ? "var(--color-link)" : "var(--color-border)") + ";background:" + (sel ? "var(--blue-1)" : "#fff") + ";color:" + (sel ? "var(--color-link)" : "var(--color-text)") + ";";
+    const cardStyle = (sel) => "display:flex;align-items:center;gap:12px;height:60px;padding:0 18px;border-radius:12px;cursor:pointer;font-size:17px;font-weight:500;border:1.5px solid " + (sel ? "var(--color-link)" : "var(--color-border)") + ";background:" + (sel ? "var(--blue-1)" : "#fff") + ";color:" + (sel ? "var(--color-link)" : "var(--color-text)") + ";";
     const tAgrDoc = (t.step === "agreement" && t.pendingAgreements && t.pendingAgreements.length > 0) ? s.documents.find(d => d.id === t.pendingAgreements[0]) : null;
     const tAgrIndex = t.agreementTotal && t.pendingAgreements ? t.agreementTotal - t.pendingAgreements.length + 1 : 1;
     const tabletVals = {
-      tWelcome: t.step === "welcome", tEmailStep: t.step === "email", tSelfStep: t.step === "self", tReasonStep: t.step === "reason", tAgreementStep: t.step === "agreement", tFieldsStep: t.step === "fields", tCompleteStep: t.step === "complete",
+      tWelcome: t.step === "welcome", tEmailStep: t.step === "email", tSelfStep: t.step === "self", tReturningStep: t.step === "returning", tReasonStep: t.step === "reason", tAgreementStep: t.step === "agreement", tFieldsStep: t.step === "fields", tCompleteStep: t.step === "complete",
+      returningContinue: this.returningContinue,
       tabletDate: this.tabletDateStr(),
       tEmail: t.email, tName: t.name, tHost: t.host,
       tEmailError: t.emailError, tSelfError: t.selfError, tReasonError: t.reasonError, tFieldsError: t.fieldsError,
