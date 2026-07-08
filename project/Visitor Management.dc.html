@@ -89,30 +89,79 @@
         </div>
 
         <!-- VISITS TAB -->
+        <!-- Visits calendar popover -->
+        <sc-if value="{{ visitsCalOpen }}">
+        <div onClick="{{ closeVisitsCal }}" style="position:fixed;inset:0;z-index:20;"></div>
+        <div style="position:fixed;top:170px;left:270px;z-index:21;background:#fff;border:1px solid var(--color-border);border-radius:8px;box-shadow:0 8px 32px rgba(0,0,0,.16);display:flex;overflow:hidden;">
+          <div style="width:130px;padding:10px 8px;border-right:1px solid var(--color-border-light);display:flex;flex-direction:column;gap:2px;">
+            <div onClick="{{ setVisitsTodayFilter }}" style="{{ vcFilterTodayStyle }}">Today</div>
+            <div onClick="{{ setVisitsWeekFilter }}" style="{{ vcFilterWeekStyle }}">This week</div>
+          </div>
+          <div style="padding:14px 12px;">
+            <div style="display:flex;align-items:center;justify-content:space-between;padding:0 4px 12px;">
+              <div style="display:flex;gap:10px;"><i onClick="{{ vcCalPrevYear }}" class="fa-solid fa-angles-left" style="color:var(--gray-7);cursor:pointer;font-size:12px;"></i><i onClick="{{ vcCalPrevMonth }}" class="fa-solid fa-angle-left" style="color:var(--gray-7);cursor:pointer;font-size:13px;"></i></div>
+              <div style="font-size:14px;font-weight:500;">{{ vcCalMonthLabel }}</div>
+              <div style="display:flex;gap:10px;"><i onClick="{{ vcCalNextMonth }}" class="fa-solid fa-angle-right" style="color:var(--gray-7);cursor:pointer;font-size:13px;"></i><i onClick="{{ vcCalNextYear }}" class="fa-solid fa-angles-right" style="color:var(--gray-7);cursor:pointer;font-size:12px;"></i></div>
+            </div>
+            <div style="display:grid;grid-template-columns:repeat(7,34px);margin-bottom:4px;">
+              <sc-for list="{{ dowLabels }}" as="w" hint-placeholder-count="7"><div style="text-align:center;font-size:12px;color:var(--gray-7);height:22px;line-height:22px;">{{ w }}</div></sc-for>
+            </div>
+            <div style="display:grid;grid-template-columns:repeat(7,34px);row-gap:2px;">
+              <sc-for list="{{ vcCalCells }}" as="c" hint-placeholder-count="42"><div style="{{ c.style }}">{{ c.day }}</div></sc-for>
+            </div>
+          </div>
+        </div>
+        </sc-if>
+
         <sc-if value="{{ visitsTab }}" hint-placeholder-val="{{ true }}">
         <div>
           <div style="display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:16px;flex-wrap:wrap;">
             <div style="display:flex;gap:8px;align-items:center;">
-              <div style="display:inline-flex;align-items:center;gap:8px;height:32px;border:1px solid var(--color-border);border-radius:4px;padding:0 11px;font-size:14px;background:#fff;cursor:pointer;"><i class="fa-solid fa-location-dot" style="color:var(--gray-7);font-size:13px;"></i><span>54 State St.</span><i class="fa-solid fa-angle-down" style="color:var(--gray-7);font-size:12px;"></i></div>
-              <div style="display:inline-flex;align-items:center;gap:8px;height:32px;border:1px solid var(--color-border);border-radius:4px;padding:0 11px;font-size:14px;background:#fff;cursor:pointer;"><i class="fa-solid fa-calendar" style="color:var(--gray-7);font-size:13px;"></i><span>Nov 24, 2026</span><i class="fa-solid fa-arrow-right-long" style="color:var(--gray-7);font-size:11px;"></i><span>Dec 31, 2026</span></div>
+              <div style="position:relative;">
+                <div onClick="{{ openBuildingDropdown }}" style="display:inline-flex;align-items:center;gap:8px;height:32px;border:1px solid var(--color-border);border-radius:4px;padding:0 11px;font-size:14px;background:#fff;cursor:pointer;"><i class="fa-solid fa-location-dot" style="color:var(--gray-7);font-size:13px;"></i><span>{{ visitsBuildingLabel }}</span><i class="fa-solid fa-angle-down" style="color:var(--gray-7);font-size:12px;"></i></div>
+                <sc-if value="{{ visitsBuildingOpen }}">
+                <div onClick="{{ closeBuildingDropdown }}" style="position:fixed;inset:0;z-index:20;"></div>
+                <div style="position:absolute;top:calc(100% + 4px);left:0;z-index:21;background:#fff;border:1px solid var(--color-border);border-radius:6px;box-shadow:0 4px 16px rgba(0,0,0,.12);min-width:180px;padding:4px;">
+                  <sc-for list="{{ visitsBuildingOptions }}" as="b" hint-placeholder-count="3">
+                  <div onClick="{{ b.onSelect }}" style="display:flex;align-items:center;justify-content:space-between;height:34px;padding:0 12px;border-radius:4px;font-size:14px;cursor:pointer;color:var(--color-text);" style-hover="background:var(--gray-1);">
+                    <span>{{ b.name }}</span>
+                    <sc-if value="{{ b.active }}"><i class="fa-solid fa-check" style="font-size:12px;color:var(--color-link);"></i></sc-if>
+                  </div>
+                  </sc-for>
+                </div>
+                </sc-if>
+              </div>
+              <div onClick="{{ openVisitsCal }}" style="display:inline-flex;align-items:center;gap:8px;height:32px;border:1px solid var(--color-border);border-radius:4px;padding:0 11px;font-size:14px;background:#fff;cursor:pointer;"><i class="fa-solid fa-calendar" style="color:var(--gray-7);font-size:13px;"></i><span>{{ visitsDateLabel }}</span><i class="fa-solid fa-angle-down" style="color:var(--gray-7);font-size:12px;"></i></div>
             </div>
             <div style="display:flex;gap:8px;align-items:center;">
               <button style="display:inline-flex;align-items:center;gap:8px;height:32px;padding:0 12px;border-radius:4px;font:500 14px/22px var(--font-sans);border:1px solid var(--color-border);background:#fff;color:var(--color-text);cursor:pointer;"><i class="fa-solid fa-arrow-up-from-bracket" style="font-size:12px;"></i>Export</button>
               <button onClick="{{ openDrawer }}" style="display:inline-flex;align-items:center;gap:8px;height:32px;padding:0 16px;border-radius:4px;font:500 14px/22px var(--font-sans);border:1px solid transparent;background:var(--color-primary);color:#fff;cursor:pointer;"><i class="fa-solid fa-plus" style="font-size:12px;"></i>Create visitor</button>
             </div>
           </div>
+          <sc-if value="{{ showBulkBar }}">
+          <div style="display:flex;align-items:center;gap:8px;padding:10px 14px;background:var(--blue-1);border:1px solid var(--color-info-border);border-radius:8px;margin-bottom:10px;">
+            <span style="font-size:13px;font-weight:600;color:var(--color-link);flex:1;">{{ selectedCountLabel }}</span>
+            <button onClick="{{ bulkPrint }}" style="display:inline-flex;align-items:center;height:30px;padding:0 12px;border-radius:4px;font:500 13px/22px var(--font-sans);border:1px solid var(--color-info-border);background:#fff;color:var(--color-text);cursor:pointer;">Print badges</button>
+            <button onClick="{{ bulkCheckIn }}" style="display:inline-flex;align-items:center;height:30px;padding:0 12px;border-radius:4px;font:500 13px/22px var(--font-sans);border:1px solid var(--color-border);background:#fff;color:var(--color-text);cursor:pointer;">Check in</button>
+            <button onClick="{{ bulkCancelVisits }}" style="display:inline-flex;align-items:center;height:30px;padding:0 12px;border-radius:4px;font:500 13px/22px var(--font-sans);border:1px solid var(--color-border);background:#fff;color:var(--color-text);cursor:pointer;">Cancel visits</button>
+            <div onClick="{{ clearSelection }}" style="width:28px;height:28px;display:flex;align-items:center;justify-content:center;cursor:pointer;border-radius:4px;color:var(--color-link);" style-hover="background:rgba(0,0,0,.08);"><i class="fa-solid fa-xmark" style="font-size:14px;"></i></div>
+          </div>
+          </sc-if>
           <div style="background:#fff;border:1px solid var(--color-border);border-radius:8px;overflow:hidden;">
             <div style="display:flex;padding:12px 20px;background:var(--gray-1);font-size:12px;font-weight:600;color:var(--gray-8);border-bottom:1px solid var(--color-border-light);">
-              <span style="width:36px;flex-shrink:0;display:flex;align-items:center;"><input type="checkbox" style="width:15px;height:15px;cursor:pointer;accent-color:var(--color-link);"></span><span style="flex:1;">Date</span><span style="flex:2;">Visitor</span><span style="flex:1.5;">Host</span><span style="flex:1.2;">Visit type</span><span style="flex:1;">Expected time</span><span style="flex:1;">Check in</span><span style="flex:1;">Check out</span><span style="width:96px;text-align:right;">Actions</span>
+              <span style="width:36px;flex-shrink:0;display:flex;align-items:center;"><span onClick="{{ onHeaderCheckbox }}" style="{{ headerCbStyle }}"><sc-if value="{{ headerCbHasIcon }}"><i class="fa-solid {{ headerCbIcon }}" style="font-size:10px;color:#fff;"></i></sc-if></span></span><span style="flex:1;">Date</span><span style="flex:2;">Visitor</span><span style="flex:1.5;">Host</span><span style="flex:1.2;">Visit type</span><span style="flex:1;">Expected time</span><span style="flex:1;">Check in</span><span style="flex:1;">Check out</span><span style="width:96px;text-align:right;">Actions</span>
             </div>
             <sc-for list="{{ visitRows }}" as="v" hint-placeholder-count="3">
-            <div style="display:flex;align-items:center;padding:12px 20px;font-size:14px;border-bottom:1px solid var(--color-border-light);">
-              <span style="width:36px;flex-shrink:0;display:flex;align-items:center;"><input type="checkbox" style="width:15px;height:15px;cursor:pointer;accent-color:var(--color-link);"></span><span style="flex:1;color:var(--color-text-secondary);">{{ v.date }}</span>
+            <div style="{{ v.rowStyle }}">
+              <span style="width:36px;flex-shrink:0;display:flex;align-items:center;"><span onClick="{{ v.onSelect }}" style="{{ v.rowCbStyle }}"><sc-if value="{{ v.selected }}"><i class="fa-solid fa-check" style="font-size:10px;color:#fff;"></i></sc-if></span></span><span style="flex:1;color:var(--color-text-secondary);">{{ v.date }}</span>
               <span onClick="{{ v.onClick }}" style="flex:2;cursor:pointer;min-width:0;font-weight:500;color:var(--color-link);overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">{{ v.name }}</span>
               <span style="flex:1.5;color:var(--color-text-secondary);display:flex;align-items:center;gap:8px;min-width:0;"><span style="width:24px;height:24px;border-radius:50%;color:#fff;display:inline-flex;align-items:center;justify-content:center;font-weight:600;font-size:10px;flex-shrink:0;background:{{ v.hostColor }};">{{ v.hostInitials }}</span><span style="overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">{{ v.host }}</span></span>
               <span style="flex:1.2;"><span style="display:inline-flex;align-items:center;height:24px;padding:0 8px;border-radius:4px;font-size:12px;font-weight:500;background:{{ v.vtBg }};border:1px solid {{ v.vtBd }};color:{{ v.vtFg }};">{{ v.visitType }}</span></span>
               <span style="flex:1;color:var(--color-text-secondary);">{{ v.expected }}</span>
-              <span style="flex:1;color:{{ v.checkInColor }};font-weight:{{ v.checkInWeight }};">{{ v.checkIn }}</span>
+              <span style="flex:1;">
+                <sc-if value="{{ v.showCheckInBtn }}"><button onClick="{{ v.onCheckIn }}" style="display:inline-flex;align-items:center;height:26px;padding:0 10px;border-radius:4px;font:500 12px/22px var(--font-sans);border:1px solid var(--color-border);background:#fff;color:var(--color-text);cursor:pointer;white-space:nowrap;">Check in</button></sc-if>
+                <sc-if value="{{ v.showCheckInTime }}"><span style="color:var(--color-text-secondary);">{{ v.checkIn }}</span></sc-if>
+              </span>
               <span style="flex:1;color:var(--color-text-secondary);">{{ v.checkOut }}</span>
               <span style="width:96px;display:flex;justify-content:flex-end;gap:14px;">
                 <i onClick="{{ v.onEdit }}" class="fa-solid fa-pen" title="Edit" style="color:var(--gray-7);cursor:pointer;font-size:13px;"></i>
@@ -302,6 +351,24 @@
           </sc-if>
           <sc-if value="{{ detailNoFields }}"><div style="font-size:13px;color:var(--color-text-tertiary);">No custom forms apply to this visit.</div></sc-if>
         </div>
+        <sc-if value="{{ detailHasAgreements }}">
+        <div style="border-top:1px solid var(--color-border-light);padding-top:18px;margin-top:18px;">
+          <div style="font-size:12px;font-weight:600;color:var(--gray-7);text-transform:uppercase;letter-spacing:.06em;margin-bottom:12px;">Agreements</div>
+          <sc-for list="{{ detailSignatureViews }}" as="ag" hint-placeholder-count="1">
+          <div style="margin-bottom:14px;">
+            <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:6px;">
+              <span style="font-size:14px;font-weight:500;color:var(--color-text);">{{ ag.name }}</span>
+              <span style="{{ ag.badgeStyle }}"><i class="fa-solid fa-check" style="font-size:10px;"></i>{{ ag.badgeText }}</span>
+            </div>
+            <sc-if value="{{ ag.showSig }}">
+            <div style="border:1px solid var(--color-border);border-radius:8px;padding:10px 16px;background:#fafafa;">
+              <svg viewBox="0 0 280 70" xmlns="http://www.w3.org/2000/svg" style="width:100%;height:54px;display:block;"><path d="M14,52 C24,24 38,58 58,38 C72,26 80,48 100,40 C116,34 126,54 146,42 C160,32 170,52 190,44 C204,36 214,52 234,46 C246,42 256,50 266,48" fill="none" stroke="#1a1a2e" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            </div>
+            </sc-if>
+          </div>
+          </sc-for>
+        </div>
+        </sc-if>
         </sc-if>
 
         <!-- FULL SERIES VIEW -->
@@ -443,6 +510,19 @@
           <div style="flex:1;overflow:auto;padding:28px 40px;">
             <div style="font-size:16px;line-height:1.75;color:var(--color-text);white-space:pre-wrap;">{{ tAgreementContent }}</div>
           </div>
+          <sc-if value="{{ tAgreementRequiresSig }}">
+          <div style="padding:16px 40px;border-top:1px solid var(--color-border-light);flex-shrink:0;">
+            <div style="font-size:13px;font-weight:600;color:var(--gray-7);margin-bottom:10px;text-transform:uppercase;letter-spacing:.06em;">Signature</div>
+            <div onClick="{{ tapToSign }}" style="border:1.5px solid var(--color-border);border-radius:12px;height:110px;background:#fafafa;display:flex;align-items:center;justify-content:center;cursor:pointer;overflow:hidden;">
+              <sc-if value="{{ tHasNotSigned }}">
+              <div style="display:flex;flex-direction:column;align-items:center;gap:8px;color:var(--gray-6);"><i class="fa-solid fa-pen-nib" style="font-size:22px;"></i><span style="font-size:14px;">Tap to sign</span></div>
+              </sc-if>
+              <sc-if value="{{ tHasSigned }}">
+              <svg viewBox="0 0 320 90" xmlns="http://www.w3.org/2000/svg" style="width:280px;height:80px;"><path d="M18,65 C30,30 48,72 72,48 C88,32 96,58 118,50 C136,44 148,68 168,52 C184,38 196,62 218,54 C236,46 248,66 268,58 C280,52 292,62 302,60" fill="none" stroke="#1a1a2e" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+              </sc-if>
+            </div>
+          </div>
+          </sc-if>
           <div style="padding:20px 40px 32px;border-top:1px solid var(--color-border-light);display:flex;flex-direction:column;gap:12px;flex-shrink:0;">
             <button onClick="{{ agreementAccept }}" style="width:100%;height:64px;border-radius:14px;border:none;background:var(--color-primary);color:#fff;font:500 19px var(--font-sans);cursor:pointer;">I agree</button>
             <button onClick="{{ agreementDecline }}" style="width:100%;height:52px;border-radius:14px;border:1.5px solid #fca5a5;background:#fff;color:var(--color-error);font:500 16px var(--font-sans);cursor:pointer;">Decline</button>
@@ -698,9 +778,9 @@
               <sc-if value="{{ f.isFileType }}">
               <div style="padding:0 16px 12px 44px;"><div style="border:1.5px dashed var(--color-border);border-radius:4px;padding:16px;text-align:center;color:var(--gray-7);font-size:13px;"><i class="fa-solid fa-arrow-up-from-bracket" style="margin-right:8px;"></i>Visitor will upload a file</div></div>
               </sc-if>
-              <div style="background:var(--gray-1);border-top:1px solid var(--color-border);padding:12px 16px;display:flex;align-items:center;justify-content:flex-end;gap:20px;flex-wrap:wrap;">
+              <div style="background:var(--gray-1);border-top:1px solid var(--color-border);padding:12px 16px;display:flex;align-items:center;gap:20px;flex-wrap:wrap;">
+                <div onClick="{{ f.toggleGuest }}" style="display:flex;align-items:center;gap:8px;cursor:pointer;font-size:13px;color:var(--gray-9);margin-right:auto;"><span style="{{ f.guestBox }}"><sc-if value="{{ f.guest }}"><i class="fa-solid fa-check" style="font-size:10px;color:#fff;"></i></sc-if></span>Ask visitor at check-in</div>
                 <sc-if value="{{ f.showMulti }}"><div onClick="{{ f.toggleMulti }}" style="display:flex;align-items:center;gap:8px;cursor:pointer;font-size:13px;color:var(--gray-9);"><span style="{{ f.multiBox }}"><sc-if value="{{ f.multi }}"><i class="fa-solid fa-check" style="font-size:10px;color:#fff;"></i></sc-if></span>Multi-select</div></sc-if>
-                <div onClick="{{ f.toggleGuest }}" style="display:flex;align-items:center;gap:8px;cursor:pointer;font-size:13px;color:var(--gray-9);"><span style="{{ f.guestBox }}"><sc-if value="{{ f.guest }}"><i class="fa-solid fa-check" style="font-size:10px;color:#fff;"></i></sc-if></span>Guest fill out</div>
                 <div onClick="{{ f.toggleBadge }}" style="display:flex;align-items:center;gap:8px;cursor:pointer;font-size:13px;color:var(--gray-9);"><span style="{{ f.badgeBox }}"><sc-if value="{{ f.badge }}"><i class="fa-solid fa-check" style="font-size:10px;color:#fff;"></i></sc-if></span>Display on badge</div>
                 <div onClick="{{ f.toggleRequired }}" style="display:flex;align-items:center;gap:8px;cursor:pointer;font-size:13px;color:var(--gray-9);"><span style="{{ f.reqBox }}"><sc-if value="{{ f.required }}"><i class="fa-solid fa-check" style="font-size:10px;color:#fff;"></i></sc-if></span>Required</div>
                 <i onClick="{{ f.remove }}" class="fa-solid fa-trash-can" style="color:var(--red-6);cursor:pointer;font-size:14px;"></i>
@@ -800,9 +880,7 @@
       <div style="display:flex;align-items:center;">
         <div style="display:flex;align-items:center;gap:12px;"><span style="{{ docS1Circle }}"><sc-if value="{{ docS1Done }}"><i class="fa-solid fa-check" style="font-size:12px;"></i></sc-if><sc-if value="{{ docS1Num }}">1</sc-if></span><span style="{{ docS1Label }}">Agreement content</span></div>
         <div style="width:80px;height:1px;background:var(--color-border);margin:0 20px;"></div>
-        <div style="display:flex;align-items:center;gap:12px;"><span style="{{ docS2Circle }}"><sc-if value="{{ docS2Done }}"><i class="fa-solid fa-check" style="font-size:12px;"></i></sc-if><sc-if value="{{ docS2Num }}">2</sc-if></span><span style="{{ docS2Label }}">Building &amp; visit type</span></div>
-        <div style="width:80px;height:1px;background:var(--color-border);margin:0 20px;"></div>
-        <div style="display:flex;align-items:center;gap:12px;"><span style="{{ docS3Circle }}">3</span><span style="{{ docS3Label }}">Notification email</span></div>
+        <div style="display:flex;align-items:center;gap:12px;"><span style="{{ docS2Circle }}"><sc-if value="{{ docS2Num }}">2</sc-if></span><span style="{{ docS2Label }}">Settings</span></div>
       </div>
       </sc-if>
       <sc-if value="{{ docIsAttachment }}">
@@ -864,31 +942,38 @@
         </sc-if>
 
         <sc-if value="{{ docBuilderStep2 }}">
-        <div style="background:#fff;border:1px solid var(--color-border);border-radius:4px;padding:24px;">
-          <div style="font-size:18px;font-weight:500;letter-spacing:-.02em;margin-bottom:4px;">Where this document applies</div>
-          <div style="font-size:14px;color:var(--color-text-secondary);margin-bottom:20px;">This document will apply when a visitor's visit type and building both match.</div>
-          <div style="font-size:13px;font-weight:600;color:var(--gray-9);margin-bottom:10px;">Visit types</div>
-          <div style="display:flex;flex-wrap:wrap;gap:8px;margin-bottom:24px;">
-            <sc-for list="{{ docBuilderVisitTypes }}" as="t" hint-placeholder-count="4">
-            <div onClick="{{ t.onToggle }}" style="{{ t.style }}"><sc-if value="{{ t.selected }}"><i class="fa-solid fa-check" style="font-size:10px;margin-right:6px;"></i></sc-if>{{ t.name }}</div>
-            </sc-for>
+        <div style="display:flex;flex-direction:column;gap:16px;">
+          <div style="background:#fff;border:1px solid var(--color-border);border-radius:4px;padding:24px;">
+            <div style="font-size:18px;font-weight:500;letter-spacing:-.02em;margin-bottom:4px;">Where this document applies</div>
+            <div style="font-size:14px;color:var(--color-text-secondary);margin-bottom:20px;">This document will apply when a visitor's visit type and building both match.</div>
+            <div style="font-size:13px;font-weight:600;color:var(--gray-9);margin-bottom:10px;">Visit types</div>
+            <div style="display:flex;flex-wrap:wrap;gap:8px;margin-bottom:24px;">
+              <sc-for list="{{ docBuilderVisitTypes }}" as="t" hint-placeholder-count="4">
+              <div onClick="{{ t.onToggle }}" style="{{ t.style }}"><sc-if value="{{ t.selected }}"><i class="fa-solid fa-check" style="font-size:10px;margin-right:6px;"></i></sc-if>{{ t.name }}</div>
+              </sc-for>
+            </div>
+            <div style="font-size:13px;font-weight:600;color:var(--gray-9);margin-bottom:10px;">Buildings</div>
+            <div style="display:flex;flex-wrap:wrap;gap:8px;">
+              <sc-for list="{{ docBuilderBuildings }}" as="b" hint-placeholder-count="2">
+              <div onClick="{{ b.onToggle }}" style="{{ b.style }}"><sc-if value="{{ b.selected }}"><i class="fa-solid fa-check" style="font-size:10px;margin-right:6px;"></i></sc-if>{{ b.name }}</div>
+              </sc-for>
+            </div>
+            <sc-if value="{{ docBuilderAssignError }}"><div style="color:var(--color-error);font-size:13px;margin-top:16px;">Select at least one visit type and one building.</div></sc-if>
           </div>
-          <div style="font-size:13px;font-weight:600;color:var(--gray-9);margin-bottom:10px;">Buildings</div>
-          <div style="display:flex;flex-wrap:wrap;gap:8px;">
-            <sc-for list="{{ docBuilderBuildings }}" as="b" hint-placeholder-count="2">
-            <div onClick="{{ b.onToggle }}" style="{{ b.style }}"><sc-if value="{{ b.selected }}"><i class="fa-solid fa-check" style="font-size:10px;margin-right:6px;"></i></sc-if>{{ b.name }}</div>
-            </sc-for>
+          <sc-if value="{{ docIsAgreement }}">
+          <div style="background:#fff;border:1px solid var(--color-border);border-radius:4px;padding:24px;">
+            <div style="font-size:18px;font-weight:500;letter-spacing:-.02em;margin-bottom:20px;">Options</div>
+            <div onClick="{{ toggleDocRequireSig }}" style="display:flex;align-items:flex-start;gap:12px;cursor:pointer;margin-bottom:20px;">
+              <span style="{{ docReqSigBox }};margin-top:1px;"><sc-if value="{{ docRequireSig }}"><i class="fa-solid fa-check" style="font-size:10px;color:#fff;"></i></sc-if></span>
+              <div><div style="font-size:14px;font-weight:500;color:var(--color-text);line-height:1.3;">Require signature</div><div style="font-size:13px;color:var(--color-text-secondary);margin-top:3px;">Visitor must draw their signature on the arrival display before accepting. The signature is stored in Visit details.</div></div>
+            </div>
+            <div style="border-top:1px solid var(--color-border-light);padding-top:20px;">
+              <label style="display:block;font-size:13px;font-weight:600;color:var(--gray-9);margin-bottom:6px;">Notification email</label>
+              <div style="font-size:13px;color:var(--color-text-secondary);margin-bottom:10px;">When a visitor signs this agreement, a completed copy will be sent to this address. Leave blank to skip.</div>
+              <input value="{{ docEmail }}" onChange="{{ onDocEmail }}" placeholder="e.g. legal@company.com" type="email" style="width:100%;height:36px;border:1px solid var(--color-border);border-radius:4px;padding:0 11px;font-size:14px;box-sizing:border-box;">
+            </div>
           </div>
-          <sc-if value="{{ docBuilderAssignError }}"><div style="color:var(--color-error);font-size:13px;margin-top:16px;">Select at least one visit type and one building.</div></sc-if>
-        </div>
-        </sc-if>
-
-        <sc-if value="{{ docBuilderStep3 }}">
-        <div style="background:#fff;border:1px solid var(--color-border);border-radius:4px;padding:24px;">
-          <div style="font-size:18px;font-weight:500;letter-spacing:-.02em;margin-bottom:4px;">Notification email</div>
-          <div style="font-size:14px;color:var(--color-text-secondary);margin-bottom:20px;">When a visitor signs this agreement, a completed copy will be sent to this address. Leave blank to skip.</div>
-          <label style="display:block;font-size:13px;font-weight:600;color:var(--gray-9);margin-bottom:6px;">Email address</label>
-          <input value="{{ docEmail }}" onChange="{{ onDocEmail }}" placeholder="e.g. legal@company.com" type="email" style="width:100%;height:36px;border:1px solid var(--color-border);border-radius:4px;padding:0 11px;font-size:14px;box-sizing:border-box;">
+          </sc-if>
         </div>
         </sc-if>
 
@@ -903,6 +988,45 @@
     <div onClick="{{ setModeTablet }}" style="{{ tabletSegStyle }}"><i class="fa-solid fa-tablet-screen-button" style="font-size:12px;"></i>Arrival display</div>
     <div onClick="{{ resetDemo }}" title="Reset demo" style="width:34px;height:34px;border-radius:50%;display:flex;align-items:center;justify-content:center;color:rgba(255,255,255,.6);cursor:pointer;"><i class="fa-solid fa-rotate-left" style="font-size:13px;"></i></div>
   </div>
+
+  <!-- ============ CHECK-IN WARNING MODAL ============ -->
+  <sc-if value="{{ checkInModalOpen }}">
+  <div style="position:fixed;inset:0;z-index:85;background:rgba(0,0,0,.4);display:flex;align-items:center;justify-content:center;">
+    <div style="background:#fff;border-radius:12px;box-shadow:0 24px 64px rgba(0,0,0,.25);width:440px;max-width:calc(100vw - 40px);overflow:hidden;animation:rPop .2s ease;">
+      <div style="padding:24px 24px 20px;">
+        <div style="display:flex;align-items:center;gap:12px;margin-bottom:16px;">
+          <div style="width:40px;height:40px;border-radius:50%;background:#FFF7ED;border:1px solid #FED7AA;display:flex;align-items:center;justify-content:center;flex-shrink:0;">
+            <i class="fa-solid fa-triangle-exclamation" style="color:#EA580C;font-size:16px;"></i>
+          </div>
+          <div>
+            <div style="font-size:16px;font-weight:600;color:var(--color-text);">Incomplete information</div>
+            <div style="font-size:13px;color:var(--color-text-secondary);margin-top:2px;">{{ checkInModalSubtitle }}</div>
+          </div>
+        </div>
+        <sc-if value="{{ checkInModalHasAgreements }}">
+        <div style="background:var(--gray-1);border-radius:8px;padding:14px;margin-bottom:10px;">
+          <div style="font-size:12px;font-weight:600;color:var(--gray-8);text-transform:uppercase;letter-spacing:.04em;margin-bottom:8px;">Unsigned agreements</div>
+          <sc-for list="{{ checkInModalAgreements }}" as="ag" hint-placeholder-count="1">
+          <div style="display:flex;align-items:center;gap:8px;font-size:13px;color:var(--color-text);padding:3px 0;">
+            <i class="fa-solid fa-file-signature" style="color:var(--gray-6);font-size:12px;width:14px;flex-shrink:0;"></i>{{ ag.name }}
+          </div>
+          </sc-for>
+        </div>
+        </sc-if>
+        <sc-if value="{{ checkInModalHasMissingFields }}">
+        <div style="background:var(--gray-1);border-radius:8px;padding:14px;">
+          <div style="font-size:12px;font-weight:600;color:var(--gray-8);text-transform:uppercase;letter-spacing:.04em;margin-bottom:4px;">Required form fields</div>
+          <div style="font-size:13px;color:var(--color-text-secondary);">Some required fields haven't been filled in.</div>
+        </div>
+        </sc-if>
+      </div>
+      <div style="display:flex;justify-content:flex-end;gap:10px;padding:16px 24px;border-top:1px solid var(--color-border-light);">
+        <button onClick="{{ closeCheckInModal }}" style="height:36px;padding:0 16px;border-radius:6px;font:500 14px/22px var(--font-sans);border:1px solid var(--color-border);background:#fff;color:var(--color-text);cursor:pointer;">Cancel</button>
+        <button onClick="{{ confirmWebCheckIn }}" style="height:36px;padding:0 16px;border-radius:6px;font:500 14px/22px var(--font-sans);border:1px solid transparent;background:var(--color-primary);color:#fff;cursor:pointer;">Check in anyway</button>
+      </div>
+    </div>
+  </div>
+  </sc-if>
 
   <!-- ============ TOAST ============ -->
   <sc-if value="{{ showToast }}">
@@ -924,7 +1048,7 @@ class Component extends DCLogic {
     builderOpen: false, builder: null, editingFormId: null, previewOpen: false, previewValues: {},
     drawerOpen: false, drawer: null, checkInNow: false,
     detailId: null, seriesOpen: false, showSeries: false, cancelConfirm: false,
-    tablet: { step: "welcome", email: "", name: "", host: "", visitType: "", building: "", preregId: null, values: {}, found: false, emailError: false, selfError: false, reasonError: false, fieldsError: false },
+    tablet: { step: "welcome", email: "", name: "", host: "", visitType: "", building: "", preregId: null, values: {}, found: false, emailError: false, selfError: false, reasonError: false, fieldsError: false, pendingAgreements: [], agreementTotal: 0, agreementDeclined: false, hasSigned: false },
     toast: null,
     visitTypes: [
       { name: "VIP", icon: "fa-star" },
@@ -946,23 +1070,92 @@ class Component extends DCLogic {
           { id: "c4", label: "On-site emergency contact", type: "phone", guest: true, badge: false, required: false, multi: false, options: [] },
         ],
       },
+      {
+        id: "f2", name: "Candidate visit form",
+        buildings: ["54 State St."], visitTypes: ["Candidate"],
+        updatedBy: "Tiffany Yu", updatedOn: "Jul 1, 2026",
+        fields: [
+          { id: "p1", label: "Position applied for", type: "short", guest: false, badge: true, required: true, multi: false, options: [] },
+          { id: "p2", label: "Interview round", type: "multiple", guest: false, badge: true, required: true, multi: false, options: ["Phone Screen", "1st Round", "2nd Round", "Final Round"] },
+          { id: "p3", label: "Referral source", type: "short", guest: true, badge: false, required: false, multi: false, options: [] },
+          { id: "p4", label: "Dietary restrictions", type: "short", guest: true, badge: false, required: false, multi: false, options: [] },
+        ],
+      },
     ],
     visits: [
       { id: "v1", name: "Priya Nair", email: "priya@partnerco.com", host: "Amara Khan", visitType: "VIP", building: "54 State St.", date: "Jul 2, 2026", expected: "8:30 AM", checkIn: "8:40 AM", checkOut: "—", status: "Checked in", values: {}, source: "prereg" },
       { id: "v2", name: "Dana Lopez", email: "dana@vendorco.com", host: "Tiffany Yu", visitType: "Vendor", building: "54 State St.", date: "Jul 2, 2026", expected: "2:00 PM", checkIn: "—", checkOut: "—", status: "Pre-registered", values: {}, source: "prereg" },
-      { id: "v3", name: "Marcus Bell", email: "marcus@applicant.com", host: "Jordan Miller", visitType: "Candidate", building: "54 State St.", date: "Jul 2, 2026", expected: "9:00 AM", checkIn: "9:12 AM", checkOut: "10:30 AM", status: "Checked in", values: {}, source: "self" },
+      { id: "v3", name: "Marcus Bell", email: "marcus@applicant.com", host: "Jordan Miller", visitType: "Candidate", building: "54 State St.", date: "Jul 2, 2026", expected: "9:00 AM", checkIn: "9:12 AM", checkOut: "10:30 AM", status: "Checked in", values: { p1: "Engineering Manager", p2: "Final Round", p3: "", p4: "" }, source: "self" },
       { id: "v4a", seriesId: "s-tw", name: "Tomás Wolf", email: "tomas@buildright.com", host: "Ravi Lal", visitType: "Contractor", building: "54 State St.", date: "Jul 6, 2026", expected: "7:30 AM", checkIn: "—", checkOut: "—", status: "Pre-registered", values: { c1: "BuildRight Inc." }, source: "prereg" },
       { id: "v4b", seriesId: "s-tw", name: "Tomás Wolf", email: "tomas@buildright.com", host: "Ravi Lal", visitType: "Contractor", building: "54 State St.", date: "Jul 7, 2026", expected: "7:30 AM", checkIn: "—", checkOut: "—", status: "Pre-registered", values: { c1: "BuildRight Inc." }, source: "prereg" },
+      { id: "v5a", name: "Priya Sundaram", email: "priya.s@techcorp.com", host: "Ravi Lal", visitType: "Contractor", building: "54 State St.", date: "Jul 7, 2026", expected: "8:00 AM", checkIn: "8:06 AM", checkOut: "—", status: "Checked in", values: { c1: "TechCorp Services", c2: "CERT-2026-1142", c3: ["Lobby", "Server room"], c4: "415-555-0280" }, signatures: { doc1: { signedAt: "8:06 AM" } }, source: "prereg" },
+      { id: "v5b", name: "Derek Osei", email: "derek.osei@buildright.com", host: "David Park", visitType: "Contractor", building: "54 State St.", date: "Jul 7, 2026", expected: "9:15 AM", checkIn: "9:19 AM", checkOut: "—", status: "Checked in", values: { c1: "BuildRight Inc.", c2: "CERT-2025-9910", c3: ["Lobby", "Roof"], c4: "510-555-0147" }, signatures: { doc1: { signedAt: "9:19 AM" } }, source: "prereg" },
+      { id: "v6a", name: "Jordan Price", email: "jordan.price@applicant.com", host: "Jordan Miller", visitType: "Candidate", building: "54 State St.", date: "Jul 7, 2026", expected: "10:00 AM", checkIn: "—", checkOut: "—", status: "Pre-registered", values: { p1: "Frontend Engineer", p2: "2nd Round" }, source: "prereg" },
       { id: "v4c", seriesId: "s-tw", name: "Tomás Wolf", email: "tomas@buildright.com", host: "Ravi Lal", visitType: "Contractor", building: "54 State St.", date: "Jul 8, 2026", expected: "7:30 AM", checkIn: "—", checkOut: "—", status: "Pre-registered", values: { c1: "BuildRight Inc." }, source: "prereg" },
+      { id: "t001", name: "Emily Carter", email: "emily.carter@partnerco.com", host: "Tiffany Yu", visitType: "VIP", building: "54 State St.", date: "Jul 6, 2026", expected: "7:00 AM", checkIn: "7:05 AM", checkOut: "—", status: "Checked in", values: {}, source: "prereg" },
+      { id: "t002", name: "James Wu", email: "james.wu@vendorco.com", host: "Amara Khan", visitType: "Vendor", building: "54 State St.", date: "Jul 6, 2026", expected: "7:15 AM", checkIn: "7:18 AM", checkOut: "—", status: "Checked in", values: {}, source: "prereg" },
+      { id: "t003", name: "Sophia Patel", email: "sophia.patel@buildright.com", host: "Ravi Lal", visitType: "Contractor", building: "54 State St.", date: "Jul 6, 2026", expected: "7:30 AM", checkIn: "7:34 AM", checkOut: "—", status: "Checked in", values: { c1: "BuildRight Inc.", c2: "CERT-2024-8821", c3: ["Lobby", "Server room"], c4: "415-555-0192" }, signatures: { doc1: { signedAt: "7:34 AM" } }, source: "prereg" },
+      { id: "t004", name: "Aiden Torres", email: "aiden.torres@recruit.com", host: "Jordan Miller", visitType: "Candidate", building: "54 State St.", date: "Jul 6, 2026", expected: "7:45 AM", checkIn: "7:49 AM", checkOut: "—", status: "Checked in", values: { p1: "Senior Software Engineer", p2: "2nd Round", p3: "LinkedIn", p4: "" }, source: "prereg" },
+      { id: "t005", name: "Isabella Clark", email: "isabella.clark@globalco.com", host: "Marcus Webb", visitType: "VIP", building: "Woolen Mills", date: "Jul 6, 2026", expected: "8:00 AM", checkIn: "8:02 AM", checkOut: "—", status: "Checked in", values: {}, source: "prereg" },
+      { id: "t006", name: "Noah Williams", email: "noah.williams@supplierco.com", host: "Sarah Chen", visitType: "Vendor", building: "54 State St.", date: "Jul 6, 2026", expected: "8:15 AM", checkIn: "8:19 AM", checkOut: "—", status: "Checked in", values: {}, source: "prereg" },
+      { id: "t007", name: "Mia Nguyen", email: "mia.nguyen@buildcorp.com", host: "David Park", visitType: "Contractor", building: "54 State St.", date: "Jul 6, 2026", expected: "8:30 AM", checkIn: "8:37 AM", checkOut: "—", status: "Checked in", values: { c1: "BuildCorp LLC", c2: "OSH-1092-B", c3: ["Lobby", "Loading dock"], c4: "" }, signatures: { doc1: { signedAt: "8:37 AM" } }, source: "prereg" },
+      { id: "t008", name: "William Harris", email: "will.harris@applicant.com", host: "Lisa Torres", visitType: "Candidate", building: "54 State St.", date: "Jul 6, 2026", expected: "8:45 AM", checkIn: "8:52 AM", checkOut: "—", status: "Checked in", values: { p1: "Product Designer", p2: "1st Round", p3: "Employee referral", p4: "Vegetarian" }, source: "prereg" },
+      { id: "t009", name: "Emma Rodriguez", email: "emma.r@partnerco.com", host: "Tiffany Yu", visitType: "VIP", building: "54 State St.", date: "Jul 6, 2026", expected: "9:00 AM", checkIn: "9:03 AM", checkOut: "—", status: "Checked in", values: {}, source: "prereg" },
+      { id: "t010", name: "Oliver Kim", email: "oliver.kim@vendorco.com", host: "Amara Khan", visitType: "Vendor", building: "54 State St.", date: "Jul 6, 2026", expected: "9:15 AM", checkIn: "9:21 AM", checkOut: "—", status: "Checked in", values: {}, source: "prereg" },
+      { id: "t011", name: "Ava Martinez", email: "ava.martinez@buildright.com", host: "Ravi Lal", visitType: "Contractor", building: "54 State St.", date: "Jul 6, 2026", expected: "9:30 AM", checkIn: "9:33 AM", checkOut: "—", status: "Checked in", values: { c1: "BuildRight Inc.", c2: "CERT-2025-3301", c3: ["Lobby", "Roof", "Server room"], c4: "408-555-0371" }, signatures: { doc1: { signedAt: "9:33 AM" } }, source: "prereg" },
+      { id: "t012", name: "Ethan Brown", email: "ethan.brown@talent.com", host: "Jordan Miller", visitType: "Candidate", building: "54 State St.", date: "Jul 6, 2026", expected: "9:45 AM", checkIn: "9:51 AM", checkOut: "—", status: "Checked in", values: { p1: "Senior Software Engineer", p2: "Final Round", p3: "Indeed", p4: "" }, source: "prereg" },
+      { id: "t013", name: "Charlotte Lee", email: "charlotte.lee@globalco.com", host: "Marcus Webb", visitType: "VIP", building: "54 State St.", date: "Jul 6, 2026", expected: "10:00 AM", checkIn: "10:06 AM", checkOut: "—", status: "Checked in", values: {}, source: "prereg" },
+      { id: "t014", name: "Mason Davis", email: "mason.davis@supplierco.com", host: "Sarah Chen", visitType: "Vendor", building: "54 State St.", date: "Jul 6, 2026", expected: "10:15 AM", checkIn: "10:19 AM", checkOut: "—", status: "Checked in", values: {}, source: "prereg" },
+      { id: "t015", name: "Amelia Wilson", email: "amelia.wilson@buildcorp.com", host: "David Park", visitType: "Contractor", building: "Woolen Mills", date: "Jul 6, 2026", expected: "10:30 AM", checkIn: "10:35 AM", checkOut: "—", status: "Checked in", values: {}, source: "prereg" },
+      { id: "t016", name: "Lucas Harris", email: "lucas.harris@recruit.com", host: "Lisa Torres", visitType: "Candidate", building: "54 State St.", date: "Jul 6, 2026", expected: "10:45 AM", checkIn: "—", checkOut: "—", status: "Pre-registered", values: { p1: "UX Designer", p2: "Phone Screen" }, source: "prereg" },
+      { id: "t017", name: "Harper Thompson", email: "harper.t@partnerco.com", host: "Tiffany Yu", visitType: "VIP", building: "54 State St.", date: "Jul 6, 2026", expected: "11:00 AM", checkIn: "—", checkOut: "—", status: "Pre-registered", values: {}, source: "prereg" },
+      { id: "t018", name: "Benjamin Jackson", email: "ben.jackson@vendorco.com", host: "Amara Khan", visitType: "Vendor", building: "54 State St.", date: "Jul 6, 2026", expected: "11:15 AM", checkIn: "—", checkOut: "—", status: "Pre-registered", values: {}, source: "prereg" },
+      { id: "t019", name: "Evelyn White", email: "evelyn.white@buildright.com", host: "Ravi Lal", visitType: "Contractor", building: "54 State St.", date: "Jul 6, 2026", expected: "11:30 AM", checkIn: "—", checkOut: "—", status: "Pre-registered", values: { c1: "BuildRight Inc." }, source: "prereg" },
+      { id: "t020", name: "Henry Martin", email: "henry.martin@talent.com", host: "Jordan Miller", visitType: "Candidate", building: "54 State St.", date: "Jul 6, 2026", expected: "11:45 AM", checkIn: "—", checkOut: "—", status: "Pre-registered", values: { p1: "Data Scientist", p2: "1st Round" }, source: "prereg" },
+      { id: "t021", name: "Abigail Taylor", email: "abigail.t@globalco.com", host: "Marcus Webb", visitType: "VIP", building: "54 State St.", date: "Jul 6, 2026", expected: "12:00 PM", checkIn: "—", checkOut: "—", status: "Pre-registered", values: {}, source: "prereg" },
+      { id: "t022", name: "Alexander Moore", email: "alex.moore@supplierco.com", host: "Sarah Chen", visitType: "Vendor", building: "54 State St.", date: "Jul 6, 2026", expected: "12:15 PM", checkIn: "—", checkOut: "—", status: "Pre-registered", values: {}, source: "prereg" },
+      { id: "t023", name: "Elizabeth Anderson", email: "liz.anderson@buildcorp.com", host: "David Park", visitType: "Contractor", building: "54 State St.", date: "Jul 6, 2026", expected: "12:30 PM", checkIn: "—", checkOut: "—", status: "Pre-registered", values: { c1: "BuildCorp LLC" }, source: "prereg" },
+      { id: "t024", name: "Daniel Thomas", email: "daniel.thomas@recruit.com", host: "Lisa Torres", visitType: "Candidate", building: "54 State St.", date: "Jul 6, 2026", expected: "12:45 PM", checkIn: "—", checkOut: "—", status: "Pre-registered", values: { p1: "DevOps Engineer", p2: "2nd Round" }, source: "prereg" },
+      { id: "t025", name: "Sofia Garcia", email: "sofia.garcia@partnerco.com", host: "Tiffany Yu", visitType: "VIP", building: "Woolen Mills", date: "Jul 6, 2026", expected: "1:00 PM", checkIn: "—", checkOut: "—", status: "Pre-registered", values: {}, source: "prereg" },
+      { id: "t026", name: "Matthew Chen", email: "matt.chen@vendorco.com", host: "Amara Khan", visitType: "Vendor", building: "54 State St.", date: "Jul 6, 2026", expected: "1:15 PM", checkIn: "—", checkOut: "—", status: "Pre-registered", values: {}, source: "prereg" },
+      { id: "t027", name: "Victoria Hall", email: "victoria.hall@buildright.com", host: "Ravi Lal", visitType: "Contractor", building: "54 State St.", date: "Jul 6, 2026", expected: "1:30 PM", checkIn: "—", checkOut: "—", status: "Pre-registered", values: { c1: "BuildRight Inc." }, source: "prereg" },
+      { id: "t028", name: "Jackson Lewis", email: "jackson.lewis@talent.com", host: "Jordan Miller", visitType: "Candidate", building: "54 State St.", date: "Jul 6, 2026", expected: "1:45 PM", checkIn: "—", checkOut: "—", status: "Pre-registered", values: { p1: "Senior Software Engineer", p2: "1st Round" }, source: "prereg" },
+      { id: "t029", name: "Scarlett Scott", email: "scarlett.s@globalco.com", host: "Marcus Webb", visitType: "VIP", building: "54 State St.", date: "Jul 6, 2026", expected: "2:00 PM", checkIn: "—", checkOut: "—", status: "Pre-registered", values: {}, source: "prereg" },
+      { id: "t030", name: "Aria Young", email: "aria.young@supplierco.com", host: "Sarah Chen", visitType: "Vendor", building: "54 State St.", date: "Jul 6, 2026", expected: "2:15 PM", checkIn: "—", checkOut: "—", status: "Pre-registered", values: {}, source: "prereg" },
+      { id: "t031", name: "Lucas Allen", email: "lucas.allen@buildcorp.com", host: "David Park", visitType: "Contractor", building: "54 State St.", date: "Jul 6, 2026", expected: "2:30 PM", checkIn: "—", checkOut: "—", status: "Pre-registered", values: { c1: "BuildCorp LLC" }, source: "prereg" },
+      { id: "t032", name: "Grace King", email: "grace.king@recruit.com", host: "Lisa Torres", visitType: "Candidate", building: "54 State St.", date: "Jul 6, 2026", expected: "2:45 PM", checkIn: "—", checkOut: "—", status: "Pre-registered", values: { p1: "Product Manager", p2: "Final Round" }, source: "prereg" },
+      { id: "t033", name: "Cameron Wright", email: "cam.wright@partnerco.com", host: "Tiffany Yu", visitType: "VIP", building: "54 State St.", date: "Jul 6, 2026", expected: "3:00 PM", checkIn: "—", checkOut: "—", status: "Pre-registered", values: {}, source: "prereg" },
+      { id: "t034", name: "Chloe Mitchell", email: "chloe.m@vendorco.com", host: "Amara Khan", visitType: "Vendor", building: "54 State St.", date: "Jul 6, 2026", expected: "3:15 PM", checkIn: "—", checkOut: "—", status: "Pre-registered", values: {}, source: "prereg" },
+      { id: "t035", name: "Nathan Baker", email: "nathan.baker@buildright.com", host: "Ravi Lal", visitType: "Contractor", building: "Woolen Mills", date: "Jul 6, 2026", expected: "3:30 PM", checkIn: "—", checkOut: "—", status: "Pre-registered", values: {}, source: "prereg" },
+      { id: "t036", name: "Stella Nelson", email: "stella.nelson@talent.com", host: "Jordan Miller", visitType: "Candidate", building: "54 State St.", date: "Jul 6, 2026", expected: "3:45 PM", checkIn: "—", checkOut: "—", status: "Pre-registered", values: { p1: "Marketing Manager", p2: "Phone Screen" }, source: "prereg" },
+      { id: "t037", name: "Isaac Rivera", email: "isaac.rivera@globalco.com", host: "Marcus Webb", visitType: "VIP", building: "54 State St.", date: "Jul 6, 2026", expected: "4:00 PM", checkIn: "—", checkOut: "—", status: "Pre-registered", values: {}, source: "prereg" },
+      { id: "t038", name: "Riley Hill", email: "riley.hill@supplierco.com", host: "Sarah Chen", visitType: "Vendor", building: "54 State St.", date: "Jul 6, 2026", expected: "4:15 PM", checkIn: "—", checkOut: "—", status: "Pre-registered", values: {}, source: "prereg" },
+      { id: "t039", name: "Zachary Campbell", email: "zach.c@buildcorp.com", host: "David Park", visitType: "Contractor", building: "54 State St.", date: "Jul 6, 2026", expected: "4:30 PM", checkIn: "—", checkOut: "—", status: "Pre-registered", values: { c1: "BuildCorp LLC" }, source: "prereg" },
+      { id: "t040", name: "Penelope Green", email: "pen.green@recruit.com", host: "Lisa Torres", visitType: "Candidate", building: "54 State St.", date: "Jul 6, 2026", expected: "4:45 PM", checkIn: "—", checkOut: "—", status: "Pre-registered", values: { p1: "Sales Engineer", p2: "1st Round" }, source: "prereg" },
+      { id: "t041", name: "Ryan Adams", email: "ryan.adams@partnerco.com", host: "Tiffany Yu", visitType: "VIP", building: "54 State St.", date: "Jul 6, 2026", expected: "5:00 PM", checkIn: "—", checkOut: "—", status: "Pre-registered", values: {}, source: "prereg" },
+      { id: "t042", name: "Luna Morrison", email: "luna.m@vendorco.com", host: "Amara Khan", visitType: "Vendor", building: "54 State St.", date: "Jul 6, 2026", expected: "5:15 PM", checkIn: "—", checkOut: "—", status: "Pre-registered", values: {}, source: "prereg" },
+      { id: "t043", name: "Tyler Carter", email: "tyler.carter@buildright.com", host: "Ravi Lal", visitType: "Contractor", building: "54 State St.", date: "Jul 6, 2026", expected: "5:30 PM", checkIn: "—", checkOut: "—", status: "Pre-registered", values: { c1: "BuildRight Inc." }, source: "prereg" },
+      { id: "t044", name: "Naomi Evans", email: "naomi.evans@talent.com", host: "Jordan Miller", visitType: "Candidate", building: "54 State St.", date: "Jul 6, 2026", expected: "5:45 PM", checkIn: "—", checkOut: "—", status: "Pre-registered", values: { p1: "Data Analyst", p2: "2nd Round" }, source: "prereg" },
+      { id: "t045", name: "Connor Mitchell", email: "connor.m@globalco.com", host: "Marcus Webb", visitType: "VIP", building: "Woolen Mills", date: "Jul 6, 2026", expected: "6:00 PM", checkIn: "—", checkOut: "—", status: "Pre-registered", values: {}, source: "prereg" },
+      { id: "t046", name: "Layla Phillips", email: "layla.p@supplierco.com", host: "Sarah Chen", visitType: "Vendor", building: "54 State St.", date: "Jul 6, 2026", expected: "6:15 PM", checkIn: "—", checkOut: "—", status: "Pre-registered", values: {}, source: "prereg" },
+      { id: "t047", name: "Jordan Roberts", email: "jordan.r@buildcorp.com", host: "David Park", visitType: "Contractor", building: "54 State St.", date: "Jul 6, 2026", expected: "6:30 PM", checkIn: "—", checkOut: "—", status: "Pre-registered", values: { c1: "BuildCorp LLC" }, source: "prereg" },
+      { id: "t048", name: "Maya Stewart", email: "maya.stewart@recruit.com", host: "Lisa Torres", visitType: "Candidate", building: "54 State St.", date: "Jul 6, 2026", expected: "6:45 PM", checkIn: "—", checkOut: "—", status: "Pre-registered", values: { p1: "Frontend Engineer", p2: "1st Round" }, source: "prereg" },
+      { id: "t049", name: "Owen Turner", email: "owen.turner@partnerco.com", host: "Tiffany Yu", visitType: "VIP", building: "54 State St.", date: "Jul 6, 2026", expected: "7:00 PM", checkIn: "—", checkOut: "—", status: "Pre-registered", values: {}, source: "prereg" },
+      { id: "t050", name: "Zara Hassan", email: "zara.hassan@vendorco.com", host: "Amara Khan", visitType: "Vendor", building: "54 State St.", date: "Jul 6, 2026", expected: "7:15 PM", checkIn: "—", checkOut: "—", status: "Pre-registered", values: {}, source: "prereg" },
     ],
     documents: [
-      { id: "doc1", name: "Contractor Safety Agreement", docType: "agreement", status: "live", addedOn: "Jun 15, 2026", visitTypes: ["Contractor"], buildings: ["54 State St."], content: "By entering this facility, you acknowledge and agree to comply with all on-site safety procedures, including wearing required personal protective equipment, checking in at the security desk, and following all posted guidelines. Failure to comply may result in removal from the premises.", email: "safety@company.com" },
-      { id: "doc2", name: "NDA for VIP Visits", docType: "agreement", status: "live", addedOn: "May 3, 2026", visitTypes: ["VIP"], buildings: ["54 State St.", "Woolen Mills"], content: "This non-disclosure agreement governs the confidential information shared during your visit. By checking in you agree not to disclose any proprietary information you may encounter.", email: "legal@company.com" },
+      { id: "doc1", name: "Contractor Safety Agreement", docType: "agreement", status: "live", addedOn: "Jun 15, 2026", visitTypes: ["Contractor"], buildings: ["54 State St."], content: "By entering this facility, you acknowledge and agree to comply with all on-site safety procedures, including wearing required personal protective equipment, checking in at the security desk, and following all posted guidelines. Failure to comply may result in removal from the premises.", email: "safety@company.com", requireSignature: true },
+      { id: "doc2", name: "NDA for VIP Visits", docType: "agreement", status: "live", addedOn: "May 3, 2026", visitTypes: ["VIP"], buildings: ["54 State St.", "Woolen Mills"], content: "This non-disclosure agreement governs the confidential information shared during your visit. By checking in you agree not to disclose any proprietary information you may encounter.", email: "legal@company.com", requireSignature: false },
       { id: "doc3", name: "Parking Instructions", docType: "attachment", status: "live", addedOn: "Apr 12, 2026", visitTypes: ["Vendor", "Contractor"], buildings: ["54 State St."], content: "", email: "", file: "parking-instructions.pdf" },
     ],
+    visitsDateFilter: "today",
+    visitsCalOpen: false, visitsCalY: null, visitsCalM: null,
+    visitsBuildingFilter: "54 State St.", visitsBuildingOpen: false,
     addDocDropdown: false,
     docBuilderOpen: false, docBuilder: null, editingDocId: null,
     docBuilderNameError: false, docBuilderContentError: false, docBuilderFileError: false, docBuilderAssignError: false,
+    checkInModal: null,
+    selectedVisitIds: [],
   };
 
   uid = (p) => p + Math.random().toString(36).slice(2, 8);
@@ -1024,8 +1217,8 @@ class Component extends DCLogic {
   // ---------- documents ----------
   openAddDocDropdown = () => this.setState({ addDocDropdown: true });
   closeAddDocDropdown = () => this.setState({ addDocDropdown: false });
-  openDocBuilderNew = (type) => this.setState({ addDocDropdown: false, docBuilderOpen: true, editingDocId: null, docBuilder: { type, step: 1, name: "", content: "", email: "", visitTypes: [], buildings: [], file: null }, docBuilderNameError: false, docBuilderContentError: false, docBuilderFileError: false, docBuilderAssignError: false });
-  openDocBuilderEdit = (id) => { const d = this.state.documents.find(x => x.id === id); this.setState({ docBuilderOpen: true, editingDocId: id, docBuilder: { type: d.docType, step: 1, name: d.name, content: d.content || "", email: d.email || "", visitTypes: [...d.visitTypes], buildings: [...d.buildings], file: d.file || null }, docBuilderNameError: false, docBuilderContentError: false, docBuilderFileError: false, docBuilderAssignError: false }); };
+  openDocBuilderNew = (type) => this.setState({ addDocDropdown: false, docBuilderOpen: true, editingDocId: null, docBuilder: { type, step: 1, name: "", content: "", email: "", visitTypes: [], buildings: [], file: null, requireSignature: false }, docBuilderNameError: false, docBuilderContentError: false, docBuilderFileError: false, docBuilderAssignError: false });
+  openDocBuilderEdit = (id) => { const d = this.state.documents.find(x => x.id === id); this.setState({ docBuilderOpen: true, editingDocId: id, docBuilder: { type: d.docType, step: 1, name: d.name, content: d.content || "", email: d.email || "", visitTypes: [...d.visitTypes], buildings: [...d.buildings], file: d.file || null, requireSignature: d.requireSignature || false }, docBuilderNameError: false, docBuilderContentError: false, docBuilderFileError: false, docBuilderAssignError: false }); };
   closeDocBuilder = () => this.setState({ docBuilderOpen: false, docBuilder: null, editingDocId: null });
   updDocBuilder = (patch) => this.setState(s => ({ docBuilder: { ...s.docBuilder, ...patch } }));
   toggleDocBuilderList = (key, val) => this.setState(s => { const arr = s.docBuilder[key]; const has = arr.includes(val); return { docBuilderAssignError: false, docBuilder: { ...s.docBuilder, [key]: has ? arr.filter(x => x !== val) : [...arr, val] } }; });
@@ -1040,7 +1233,7 @@ class Component extends DCLogic {
   };
   docBuilderBack = () => this.setState(s => ({ docBuilder: { ...s.docBuilder, step: s.docBuilder.step - 1 } }));
   docBuilderPrimary = () => {
-    const b = this.state.docBuilder; const isAgr = b.type === "agreement"; const maxStep = isAgr ? 3 : 2;
+    const b = this.state.docBuilder; const isAgr = b.type === "agreement";
     if (b.step === 1) {
       if (!b.name.trim()) { this.setState({ docBuilderNameError: true }); return; }
       if (isAgr && !b.content.trim()) { this.setState({ docBuilderContentError: true }); return; }
@@ -1051,14 +1244,12 @@ class Component extends DCLogic {
     if (b.step === 2) {
       if (!b.visitTypes.length || !b.buildings.length) { this.setState({ docBuilderAssignError: true }); return; }
       this.setState({ docBuilderAssignError: false });
-      if (maxStep > 2) { this.updDocBuilder({ step: 3 }); return; }
       this.saveDoc(); return;
     }
-    if (b.step === 3) this.saveDoc();
   };
   saveDoc = () => {
     const b = this.state.docBuilder; const eid = this.state.editingDocId;
-    const doc = { name: b.name.trim(), docType: b.type, status: "live", addedOn: this.todayStr(), visitTypes: b.visitTypes, buildings: b.buildings, content: b.content || "", email: b.email || "", file: b.file || null };
+    const doc = { name: b.name.trim(), docType: b.type, status: "live", addedOn: this.todayStr(), visitTypes: b.visitTypes, buildings: b.buildings, content: b.content || "", email: b.email || "", file: b.file || null, requireSignature: b.requireSignature || false };
     this.setState(s => { const id = s.editingDocId; const documents = id ? s.documents.map(d => d.id === id ? { ...doc, id, status: d.status } : d) : [...s.documents, { ...doc, id: this.uid("doc") }]; return { documents, docBuilderOpen: false, docBuilder: null, editingDocId: null }; });
     this.toast(eid ? "Document updated" : "Document saved");
   };
@@ -1150,6 +1341,15 @@ class Component extends DCLogic {
   closeDetail = () => this.setState({ detailId: null, seriesOpen: false, showSeries: false, cancelConfirm: false });
   seriesFor = (v) => { if (!v || !v.seriesId) return v ? [v] : []; return this.state.visits.filter(x => x.seriesId === v.seriesId); };
   dateKey = (s) => { const t = Date.parse(s); return isNaN(t) ? 0 : t; };
+  strToIso = (str) => { if (!str || str === "—") return ""; const c = str.replace(",", "").split(" "); if (c.length < 3) return ""; const m = this.MOABBR.indexOf(c[0]); if (m < 0) return ""; return c[2] + "-" + this.pad2(m + 1) + "-" + this.pad2(Number(c[1])); };
+  getWeekRange = () => { const today = new Date(); const dow = today.getDay(); const mo = new Date(today); mo.setDate(today.getDate() + (dow === 0 ? -6 : 1 - dow)); const su = new Date(mo); su.setDate(mo.getDate() + 6); return { start: this.isoOf(mo), end: this.isoOf(su) }; };
+  openBuildingDropdown = () => this.setState({ visitsBuildingOpen: true, visitsCalOpen: false });
+  closeBuildingDropdown = () => this.setState({ visitsBuildingOpen: false });
+  setVisitsBuilding = (b) => this.setState({ visitsBuildingFilter: b, visitsBuildingOpen: false });
+  openVisitsCal = () => { const p = this.isoParts(this.todayIso()); this.setState({ visitsCalOpen: true, visitsBuildingOpen: false, visitsCalY: p.y, visitsCalM: p.m }); };
+  closeVisitsCal = () => this.setState({ visitsCalOpen: false });
+  setVisitsFilter = (f) => this.setState({ visitsDateFilter: f, visitsCalOpen: false });
+  visitsCalShift = (dm, dy) => { let m = this.state.visitsCalM + dm, y = this.state.visitsCalY + dy; while (m < 0) { m += 12; y--; } while (m > 11) { m -= 12; y++; } this.setState({ visitsCalY: y, visitsCalM: m }); };
   seriesInline = () => this.props.seriesView !== "Full series view";
   toggleSeries = () => { if (this.seriesInline()) this.setState(s => ({ seriesOpen: !s.seriesOpen })); else this.setState({ showSeries: true }); };
   backFromSeries = () => this.setState({ showSeries: false });
@@ -1161,10 +1361,59 @@ class Component extends DCLogic {
   printBadge = (id) => { const v = this.state.visits.find(x => x.id === id); this.toast("Badge sent to printer for " + (v ? v.name : "visitor"), "fa-id-card"); };
   deleteVisit = (id) => { this.setState(s => ({ visits: s.visits.filter(v => v.id !== id) })); this.toast("Visit deleted", "fa-trash-can"); };
 
+  webCheckIn = (id) => {
+    const s = this.state;
+    const v = s.visits.find(x => x.id === id);
+    if (!v) return;
+    const applicableAgreements = this.getApplicableAgreements(v.visitType, v.building);
+    const missingAgreements = applicableAgreements.filter(d => !(v.signatures && v.signatures[d.id]));
+    const allFields = [];
+    this.matchingForms(v.visitType, v.building).forEach(f => f.fields.forEach(fl => allFields.push(fl)));
+    const hasMissingFields = allFields.some(fl => {
+      if (!fl.required) return false;
+      const val = v.values[fl.id];
+      return Array.isArray(val) ? val.length === 0 : (!val || !String(val).trim());
+    });
+    if (missingAgreements.length > 0 || hasMissingFields) {
+      this.setState({ checkInModal: { visitIds: [id], missingAgreements: missingAgreements.map(d => ({ id: d.id, name: d.name })), hasMissingFields } });
+    } else {
+      this.doWebCheckIn([id]);
+    }
+  };
+  doWebCheckIn = (ids) => {
+    const toCheckIn = this.state.visits.filter(v => ids.includes(v.id) && (!v.checkIn || v.checkIn === "—"));
+    const count = toCheckIn.length;
+    const firstName = count > 0 ? toCheckIn[0].name : "Visitor";
+    const now = this.nowTime();
+    this.setState(s => ({ visits: s.visits.map(vx => ids.includes(vx.id) && (!vx.checkIn || vx.checkIn === "—") ? { ...vx, status: "Checked in", checkIn: now } : vx), checkInModal: null, selectedVisitIds: [] }));
+    this.toast(count === 1 ? firstName + " checked in" : count + " visitors checked in");
+  };
+  closeCheckInModal = () => this.setState({ checkInModal: null });
+  toggleVisitSelect = (id) => this.setState(s => { const sel = s.selectedVisitIds; return { selectedVisitIds: sel.includes(id) ? sel.filter(x => x !== id) : [...sel, id] }; });
+  clearSelection = () => this.setState({ selectedVisitIds: [] });
+  bulkCheckIn = () => {
+    const s = this.state;
+    const toCheckIn = s.visits.filter(v => s.selectedVisitIds.includes(v.id) && (!v.checkIn || v.checkIn === "—"));
+    if (!toCheckIn.length) { this.toast("Selected visitors are already checked in"); return; }
+    const seenIds = new Set(); const missingAgreements = []; let hasMissingFields = false;
+    toCheckIn.forEach(v => {
+      this.getApplicableAgreements(v.visitType, v.building).filter(d => !(v.signatures && v.signatures[d.id])).forEach(d => { if (!seenIds.has(d.id)) { seenIds.add(d.id); missingAgreements.push({ id: d.id, name: d.name }); } });
+      const allFields = []; this.matchingForms(v.visitType, v.building).forEach(f => f.fields.forEach(fl => allFields.push(fl)));
+      if (allFields.some(fl => { if (!fl.required) return false; const val = v.values[fl.id]; return Array.isArray(val) ? val.length === 0 : (!val || !String(val).trim()); })) hasMissingFields = true;
+    });
+    if (missingAgreements.length > 0 || hasMissingFields) {
+      this.setState({ checkInModal: { visitIds: toCheckIn.map(v => v.id), missingAgreements, hasMissingFields } });
+    } else {
+      this.doWebCheckIn(toCheckIn.map(v => v.id));
+    }
+  };
+  bulkPrint = () => this.toast("Print badges is coming soon", "fa-id-card");
+  bulkCancelVisits = () => this.toast("Cancel visits is coming soon", "fa-ban");
+
   // ---------- tablet ----------
   updTablet = (patch) => this.setState(s => ({ tablet: { ...s.tablet, ...patch } }));
-  tapCheckIn = () => this.setState({ tablet: { step: "email", email: "", name: "", host: "", visitType: "", building: this.kiosk(), preregId: null, values: {}, found: false, emailError: false, selfError: false, reasonError: false, fieldsError: false, pendingAgreements: [], agreementTotal: 0, agreementDeclined: false } });
-  tabletBack = () => this.setState(s => { const st = s.tablet.step; const prev = st === "email" ? "welcome" : st === "self" ? "email" : st === "reason" ? "self" : st === "agreement" ? (s.tablet.found ? "email" : "reason") : st === "fields" ? (s.tablet.found ? "email" : "reason") : "welcome"; return { tablet: { ...s.tablet, step: prev, pendingAgreements: [], agreementTotal: 0, agreementDeclined: false, emailError: false, selfError: false, reasonError: false, fieldsError: false } }; });
+  tapCheckIn = () => this.setState({ tablet: { step: "email", email: "", name: "", host: "", visitType: "", building: this.kiosk(), preregId: null, values: {}, found: false, emailError: false, selfError: false, reasonError: false, fieldsError: false, pendingAgreements: [], agreementTotal: 0, agreementDeclined: false, hasSigned: false } });
+  tabletBack = () => this.setState(s => { const st = s.tablet.step; const prev = st === "email" ? "welcome" : st === "self" ? "email" : st === "reason" ? "self" : st === "agreement" ? (s.tablet.found ? "email" : "reason") : st === "fields" ? (s.tablet.found ? "email" : "reason") : "welcome"; return { tablet: { ...s.tablet, step: prev, pendingAgreements: [], agreementTotal: 0, agreementDeclined: false, hasSigned: false, emailError: false, selfError: false, reasonError: false, fieldsError: false } }; });
   onTEmail = (e) => this.updTablet({ email: e.target.value, emailError: false });
   onTName = (e) => this.updTablet({ name: e.target.value, selfError: false });
   onTHost = (e) => this.updTablet({ host: e.target.value, selfError: false });
@@ -1176,7 +1425,7 @@ class Component extends DCLogic {
   enterAgreementsOrProceed = (baseTablet, visitType, building) => {
     const agrs = this.getApplicableAgreements(visitType, building);
     if (agrs.length > 0) {
-      this.setState({ tablet: { ...baseTablet, step: "agreement", pendingAgreements: agrs.map(d => d.id), agreementTotal: agrs.length, agreementDeclined: false } });
+      this.setState({ tablet: { ...baseTablet, step: "agreement", pendingAgreements: agrs.map(d => d.id), agreementTotal: agrs.length, agreementDeclined: false, hasSigned: false } });
     } else {
       const guest = this.collectFields(visitType, building, "guest");
       if (guest.length === 0) { this.setState({ tablet: baseTablet }, this.commitCheckIn); }
@@ -1204,15 +1453,18 @@ class Component extends DCLogic {
     if (!t.visitType) { this.updTablet({ reasonError: true }); return; }
     this.enterAgreementsOrProceed({ ...t }, t.visitType, this.kiosk());
   };
+  tapToSign = () => this.updTablet({ hasSigned: true });
   agreementAccept = () => {
     const t = this.state.tablet;
+    const doc = this.state.documents.find(d => d.id === t.pendingAgreements[0]);
+    if (doc && doc.requireSignature && !t.hasSigned) { this.toast("Please sign before accepting", "fa-pen"); return; }
     const remaining = t.pendingAgreements.slice(1);
     if (remaining.length > 0) {
-      this.updTablet({ pendingAgreements: remaining });
+      this.updTablet({ pendingAgreements: remaining, hasSigned: false });
     } else {
       const guest = this.collectFields(t.visitType, this.kiosk(), "guest");
       if (guest.length === 0) this.commitCheckIn();
-      else this.updTablet({ step: "fields", pendingAgreements: [] });
+      else this.updTablet({ step: "fields", pendingAgreements: [], hasSigned: false });
     }
   };
   agreementDecline = () => this.updTablet({ agreementDeclined: true });
@@ -1232,7 +1484,7 @@ class Component extends DCLogic {
       return { visits, tablet: { ...s.tablet, step: "complete" } };
     });
   };
-  tabletFinish = () => this.setState({ tablet: { step: "welcome", email: "", name: "", host: "", visitType: "", building: "", preregId: null, values: {}, found: false, emailError: false, selfError: false, reasonError: false, fieldsError: false, pendingAgreements: [], agreementTotal: 0, agreementDeclined: false } });
+  tabletFinish = () => this.setState({ tablet: { step: "welcome", email: "", name: "", host: "", visitType: "", building: "", preregId: null, values: {}, found: false, emailError: false, selfError: false, reasonError: false, fieldsError: false, pendingAgreements: [], agreementTotal: 0, agreementDeclined: false, hasSigned: false } });
 
   // ---------- field view builder ----------
   fieldView = (field, values, onVal, onToggle, onRadio, mode) => {
@@ -1279,11 +1531,33 @@ class Component extends DCLogic {
     const tabOff = tabBase + "font-weight:400;color:var(--color-text-secondary);border-bottom:2px solid transparent;margin-bottom:-1px;";
 
     // visit rows (latest date first)
-    const sortedVisits = [...s.visits].sort((a, b) => this.dateKey(b.date) - this.dateKey(a.date));
+    const ti = this.todayIso();
+    const wkRange = this.getWeekRange();
+    const sortedVisits = [...s.visits].sort((a, b) => {
+      const ai = this.strToIso(a.date), bi = this.strToIso(b.date);
+      if (ai !== bi) return ai < bi ? 1 : -1;
+      return (a.expected || "").localeCompare(b.expected || "");
+    }).filter(v => {
+      const iso = this.strToIso(v.date);
+      if (s.visitsDateFilter === "today" && iso !== ti) return false;
+      if (s.visitsDateFilter === "week" && (iso < wkRange.start || iso > wkRange.end)) return false;
+      if (s.visitsBuildingFilter !== "All" && v.building !== s.visitsBuildingFilter) return false;
+      return true;
+    });
+    const selSet = new Set(s.selectedVisitIds);
+    const filteredVisitIds = sortedVisits.map(v => v.id);
+    const visibleSelectedCount = filteredVisitIds.filter(id => selSet.has(id)).length;
+    const allVisibleSelected = filteredVisitIds.length > 0 && visibleSelectedCount === filteredVisitIds.length;
+    const someVisibleSelected = visibleSelectedCount > 0 && !allVisibleSelected;
+    const cbBase = "width:16px;height:16px;flex-shrink:0;border-radius:3px;display:inline-flex;align-items:center;justify-content:center;cursor:pointer;border:1px solid ";
+    const headerCbStyle = (allVisibleSelected || someVisibleSelected) ? cbBase + "var(--color-link);background:var(--color-link);" : cbBase + "var(--color-border);background:#fff;";
     const visitRows = sortedVisits.map(v => {
       const vt = this.vtStyle(v.visitType);
       const isIn = v.checkIn && v.checkIn !== "—";
-      return { id: v.id, date: v.date, name: v.name, email: v.email, initials: this.initials(v.name), color: this.colorFor(v.name), host: v.host, hostInitials: this.initials(v.host), hostColor: this.colorFor(v.host), visitType: v.visitType, vtBg: vt.bg, vtBd: vt.bd, vtFg: vt.fg, expected: v.expected, checkIn: v.checkIn, checkInColor: "var(--color-text-secondary)", checkInWeight: "400", checkOut: v.checkOut, onClick: () => this.openDetail(v.id), onEdit: () => this.openDetail(v.id), onPrint: () => this.printBadge(v.id), onDelete: () => this.deleteVisit(v.id) };
+      const sel = selSet.has(v.id);
+      const rowCbStyle = cbBase + (sel ? "var(--color-link);background:var(--color-link);" : "var(--color-border);background:#fff;");
+      const rowStyle = "display:flex;align-items:center;padding:12px 20px;font-size:14px;border-bottom:1px solid var(--color-border-light);background:" + (sel ? "var(--blue-1)" : "transparent") + ";";
+      return { id: v.id, date: v.date, name: v.name, email: v.email, initials: this.initials(v.name), color: this.colorFor(v.name), host: v.host, hostInitials: this.initials(v.host), hostColor: this.colorFor(v.host), visitType: v.visitType, vtBg: vt.bg, vtBd: vt.bd, vtFg: vt.fg, expected: v.expected, checkIn: v.checkIn, checkInColor: "var(--color-text-secondary)", checkInWeight: "400", showCheckInBtn: !isIn, showCheckInTime: isIn, onCheckIn: () => this.webCheckIn(v.id), checkOut: v.checkOut, selected: sel, rowCbStyle, rowStyle, onSelect: () => this.toggleVisitSelect(v.id), onClick: () => this.openDetail(v.id), onEdit: () => this.openDetail(v.id), onPrint: () => this.printBadge(v.id), onDelete: () => this.deleteVisit(v.id) };
     });
 
     const formRows = s.forms.map(f => { const vtBadges = f.visitTypes.map(vt => { const st = this.vtStyle(vt); return { name: vt, bg: st.bg, bd: st.bd, fg: st.fg }; }); return { id: f.id, name: f.name, buildingsLabel: f.buildings.join(", ") || "—", visitTypesLabel: f.visitTypes.join(", ") || "—", visitTypeBadges: vtBadges, noVisitTypes: vtBadges.length === 0, updatedBy: f.updatedBy, updatedOn: f.updatedOn, onEdit: () => this.openBuilderEdit(f.id), onDelete: () => this.deleteForm(f.id) }; });
@@ -1447,6 +1721,8 @@ class Component extends DCLogic {
           cancelConfirm: !!s.cancelConfirm, dismissCancel: this.dismissCancel, cancelThisDay: this.cancelThisDay, cancelSeries: this.cancelSeries,
           cancelSeriesLabel: "Entire series (" + series.length + ")",
           detailHasFields: fviews.length > 0, detailNoFields: fviews.length === 0, detailFieldViews: fviews,
+          detailSignatureViews: s.documents.filter(d => d.docType === "agreement" && d.status === "live" && d.visitTypes.includes(v.visitType) && d.buildings.includes(v.building)).map(d => { const sig = v.signatures && v.signatures[d.id]; const isSigned = !!sig; const signedAt = sig ? sig.signedAt : ""; const reqSig = !!d.requireSignature; const badgeBase = "display:inline-flex;align-items:center;gap:5px;height:22px;padding:0 8px;border-radius:4px;font-size:12px;font-weight:500;"; return { name: d.name, badgeStyle: isSigned ? badgeBase + "background:var(--green-1);border:1px solid var(--color-success-border);color:var(--color-success);" : badgeBase + "background:var(--gray-1);border:1px solid var(--color-border);color:var(--gray-6);", badgeText: isSigned ? ("Signed " + signedAt) : "Not yet signed", showSig: isSigned && reqSig }; }),
+          detailHasAgreements: s.documents.some(d => d.docType === "agreement" && d.status === "live" && d.visitTypes.includes(v.visitType) && d.buildings.includes(v.building)),
         };
       }
     }
@@ -1476,12 +1752,16 @@ class Component extends DCLogic {
       tAgreementName: tAgrDoc ? tAgrDoc.name : "",
       tAgreementContent: tAgrDoc ? tAgrDoc.content : "",
       tAgreementCounter: t.agreementTotal > 1 ? ("Agreement " + tAgrIndex + " of " + t.agreementTotal) : "Agreement",
+      tAgreementRequiresSig: !!(tAgrDoc && tAgrDoc.requireSignature),
+      tHasSigned: !!(t.hasSigned),
+      tHasNotSigned: !(t.hasSigned),
+      tapToSign: this.tapToSign,
       agreementAccept: this.agreementAccept, agreementDecline: this.agreementDecline, agreementStartOver: this.tabletFinish,
     };
 
     let docBuilderVals = {};
     if (s.docBuilderOpen && s.docBuilder) {
-      const b = s.docBuilder; const isAgr = b.type === "agreement"; const maxStep = isAgr ? 3 : 2;
+      const b = s.docBuilder; const isAgr = b.type === "agreement";
       const editDoc = s.editingDocId ? s.documents.find(d => d.id === s.editingDocId) : null;
       const editStatus = editDoc ? editDoc.status : "live";
       const cBase = "width:26px;height:26px;border-radius:50%;display:inline-flex;align-items:center;justify-content:center;font-size:13px;font-weight:500;flex-shrink:0;";
@@ -1490,17 +1770,17 @@ class Component extends DCLogic {
       const lOn = "font-size:14px;font-weight:500;color:var(--color-text);";
       const lOff = "font-size:14px;font-weight:400;color:var(--gray-7);";
       const chip = (sel) => "display:inline-flex;align-items:center;padding:7px 13px;border-radius:20px;font-size:14px;cursor:pointer;user-select:none;border:1px solid " + (sel ? "var(--color-link)" : "var(--color-border)") + ";background:" + (sel ? "var(--blue-1)" : "#fff") + ";color:" + (sel ? "var(--color-link)" : "var(--color-text)") + ";font-weight:" + (sel ? "500" : "400") + ";";
+      const cb2 = (on) => "width:16px;height:16px;flex-shrink:0;border-radius:3px;display:inline-flex;align-items:center;justify-content:center;border:1px solid " + (on ? "var(--color-link)" : "var(--color-border)") + ";background:" + (on ? "var(--color-link)" : "#fff") + ";";
       docBuilderVals = {
         docIsAgreement: isAgr, docIsAttachment: !isAgr,
         docBuilderTitle: isAgr ? "Agreement" : "Attachment",
-        docBuilderStep1: b.step === 1, docBuilderStep2: b.step === 2, docBuilderStep3: b.step === 3,
+        docBuilderStep1: b.step === 1, docBuilderStep2: b.step === 2,
         docBuilderHasBack: b.step > 1,
-        docBuilderPrimaryLabel: b.step === maxStep ? (s.editingDocId ? "Save" : "Add document") : "Next",
+        docBuilderPrimaryLabel: b.step === 2 ? (s.editingDocId ? "Save" : "Add document") : "Next",
         docBuilderIsEditing: !!s.editingDocId,
         docBuilderArchiveLabel: editStatus === "archived" ? "Restore" : "Archive",
         docS1Circle: cOn, docS1Done: b.step > 1, docS1Num: b.step <= 1, docS1Label: lOn,
-        docS2Circle: b.step >= 2 ? cOn : cOff, docS2Done: b.step > 2, docS2Num: b.step <= 2, docS2Label: b.step >= 2 ? lOn : lOff,
-        docS3Circle: b.step === 3 ? cOn : cOff, docS3Label: b.step === 3 ? lOn : lOff,
+        docS2Circle: b.step >= 2 ? cOn : cOff, docS2Num: b.step <= 2, docS2Label: b.step >= 2 ? lOn : lOff,
         docName: b.name, docContent: b.content, docEmail: b.email,
         onDocName: (e) => this.updDocBuilder({ name: e.target.value }),
         onDocContent: (e) => this.updDocBuilder({ content: e.target.value }),
@@ -1511,8 +1791,30 @@ class Component extends DCLogic {
         docBuilderFileError: !!s.docBuilderFileError, docBuilderAssignError: !!s.docBuilderAssignError,
         docBuilderVisitTypes: s.visitTypes.map(t => ({ name: t.name, selected: b.visitTypes.includes(t.name), onToggle: () => this.toggleDocBuilderList("visitTypes", t.name), style: chip(b.visitTypes.includes(t.name)) })),
         docBuilderBuildings: s.buildings.map(bl => ({ name: bl, selected: b.buildings.includes(bl), onToggle: () => this.toggleDocBuilderList("buildings", bl), style: chip(b.buildings.includes(bl)) })),
+        docRequireSig: !!(b.requireSignature), toggleDocRequireSig: () => this.updDocBuilder({ requireSignature: !b.requireSignature }),
+        docReqSigBox: cb2(b.requireSignature),
       };
     }
+
+    // visits calendar
+    const vcOpen = s.visitsCalOpen && s.webTab === "Visits";
+    const vcY = s.visitsCalY !== null ? s.visitsCalY : new Date().getFullYear();
+    const vcM = s.visitsCalM !== null ? s.visitsCalM : new Date().getMonth();
+    const vcFirst = new Date(vcY, vcM, 1);
+    const vcStartDow = vcFirst.getDay();
+    const vcCellStyle = (inMonth, iso) => {
+      const isToday = iso === ti; const inWk = iso >= wkRange.start && iso <= wkRange.end;
+      let c = "height:32px;display:flex;align-items:center;justify-content:center;font-size:14px;cursor:default;user-select:none;border-radius:6px;";
+      if (isToday) return c + "background:var(--color-link);color:#fff;font-weight:500;border-radius:50%;";
+      if (inWk && s.visitsDateFilter === "week") return c + "background:var(--blue-1);color:var(--color-text);";
+      if (!inMonth) return c + "color:var(--gray-6);";
+      return c + "color:var(--color-text);";
+    };
+    const vcCells = [];
+    for (let i = 0; i < 42; i++) { const dt = new Date(vcY, vcM, 1 - vcStartDow + i); const iso = this.isoOf(dt); vcCells.push({ day: dt.getDate(), style: vcCellStyle(dt.getMonth() === vcM, iso) }); }
+    const vcQBase = "display:flex;align-items:center;height:34px;padding:0 14px;border-radius:6px;font-size:14px;cursor:pointer;font-weight:400;";
+    const vcQActive = vcQBase + "background:var(--blue-1);color:var(--color-link);font-weight:500;";
+    const vcQInactive = vcQBase + "color:var(--color-text);";
 
     const standalone = (this.props.standaloneApp || "Off") === "On";
     const manageTabs = ["Organization","Offices","Themes","Integrations","People","Group","Roles","Devices","Notifications","Billing"];
@@ -1566,7 +1868,34 @@ class Component extends DCLogic {
       docsEmpty: s.documents.length === 0,
       docBuilderOpen: s.docBuilderOpen, closeDocBuilder: this.closeDocBuilder, docBuilderPrimary: this.docBuilderPrimary, docBuilderBack: this.docBuilderBack, docBuilderArchive: this.docBuilderArchive,
       ...docBuilderVals,
+      dowLabels: this.DOW,
+      visitsBuildingLabel: s.visitsBuildingFilter,
+      visitsBuildingOpen: s.visitsBuildingOpen && s.webTab === "Visits",
+      openBuildingDropdown: this.openBuildingDropdown, closeBuildingDropdown: this.closeBuildingDropdown,
+      visitsBuildingOptions: ["All", ...s.buildings].map(b => ({ name: b, active: s.visitsBuildingFilter === b, onSelect: () => this.setVisitsBuilding(b) })),
+      visitsCalOpen: vcOpen, openVisitsCal: this.openVisitsCal, closeVisitsCal: this.closeVisitsCal,
+      visitsDateLabel: s.visitsDateFilter === "today" ? "Today" : "This week",
+      visitsFilterToday: s.visitsDateFilter === "today", visitsFilterWeek: s.visitsDateFilter === "week",
+      setVisitsTodayFilter: () => this.setVisitsFilter("today"), setVisitsWeekFilter: () => this.setVisitsFilter("week"),
+      vcFilterTodayStyle: s.visitsDateFilter === "today" ? vcQActive : vcQInactive,
+      vcFilterWeekStyle: s.visitsDateFilter === "week" ? vcQActive : vcQInactive,
+      vcCalMonthLabel: this.MOFULL[vcM] + "  " + vcY, vcCalCells: vcCells,
+      vcCalPrevMonth: () => this.visitsCalShift(-1, 0), vcCalNextMonth: () => this.visitsCalShift(1, 0),
+      vcCalPrevYear: () => this.visitsCalShift(0, -1), vcCalNextYear: () => this.visitsCalShift(0, 1),
       visitRows, openDrawer: this.openDrawer,
+      showBulkBar: s.selectedVisitIds.length > 1,
+      selectedCountLabel: s.selectedVisitIds.length + " selected",
+      headerCbStyle, headerCbHasIcon: allVisibleSelected || someVisibleSelected,
+      headerCbIcon: allVisibleSelected ? "fa-check" : "fa-minus",
+      onHeaderCheckbox: allVisibleSelected ? () => this.setState({ selectedVisitIds: [] }) : () => this.setState({ selectedVisitIds: filteredVisitIds }),
+      bulkCheckIn: this.bulkCheckIn, bulkPrint: this.bulkPrint, bulkCancelVisits: this.bulkCancelVisits, clearSelection: this.clearSelection,
+      checkInModalOpen: !!s.checkInModal,
+      checkInModalAgreements: s.checkInModal ? s.checkInModal.missingAgreements : [],
+      checkInModalHasAgreements: !!(s.checkInModal && s.checkInModal.missingAgreements.length > 0),
+      checkInModalHasMissingFields: !!(s.checkInModal && s.checkInModal.hasMissingFields),
+      checkInModalSubtitle: (s.checkInModal && s.checkInModal.visitIds && s.checkInModal.visitIds.length > 1) ? "Some visitors haven't completed all required items." : "This visitor hasn't completed all required items.",
+      confirmWebCheckIn: s.checkInModal ? () => this.doWebCheckIn(s.checkInModal.visitIds) : () => {},
+      closeCheckInModal: this.closeCheckInModal,
       formRows, formsEmpty: s.forms.length === 0, openBuilderNew: this.openBuilderNew,
       builderOpen: s.builderOpen, closeBuilder: this.closeBuilder, builderPrimary: this.builderPrimary, builderBack: this.builderBack, addField: this.addField, togglePreview: this.togglePreview,
       ...builderVals,
