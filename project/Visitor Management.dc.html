@@ -182,7 +182,7 @@
           </div>
           <div style="background:#fff;border:1px solid var(--color-border);border-radius:8px;overflow:hidden;">
             <div style="display:flex;padding:12px 20px;background:var(--gray-1);font-size:12px;font-weight:600;color:var(--gray-8);border-bottom:1px solid var(--color-border-light);">
-              <span style="flex:1;">Visit type</span><span style="flex:1.5;">Location</span><span style="width:80px;text-align:right;">Actions</span>
+              <span style="flex:1;">Visit type</span><span style="flex:1.5;position:relative;"><div onClick="{{ openVtLocationFilter }}" style="display:inline-flex;align-items:center;gap:4px;cursor:pointer;user-select:none;"><span style="{{ vtLocationFilterLabelStyle }}">{{ vtLocationFilterLabel }}</span><i class="fa-solid fa-chevron-down" style="font-size:9px;color:{{ vtLocationFilterChevronColor }};"></i></div><sc-if value="{{ vtLocationFilterOpen }}"><div onClick="{{ closeVtLocationFilter }}" style="position:fixed;inset:0;z-index:20;"></div><div style="position:absolute;top:calc(100% + 6px);left:0;z-index:21;background:#fff;border:1px solid var(--color-border);border-radius:8px;box-shadow:0 6px 24px rgba(0,0,0,.12);overflow:hidden;min-width:180px;font-weight:400;"><sc-for list="{{ vtLocationFilterOptions }}" as="opt" hint-placeholder-count="4"><div onClick="{{ opt.onSelect }}" style="{{ opt.rowStyle }}" style-hover="background:var(--gray-1);"><sc-if value="{{ opt.active }}"><i class="fa-solid fa-check" style="font-size:10px;color:var(--color-link);width:14px;flex-shrink:0;"></i></sc-if><sc-if value="{{ opt.inactive }}"><span style="width:14px;flex-shrink:0;display:inline-block;"></span></sc-if>{{ opt.label }}</div></sc-for></div></sc-if></span><span style="width:80px;text-align:right;">Actions</span>
             </div>
             <sc-for list="{{ visitTypeRows }}" as="vt" hint-placeholder-count="4">
             <div style="display:flex;align-items:center;padding:14px 20px;font-size:14px;border-bottom:1px solid var(--color-border-light);">
@@ -1230,6 +1230,7 @@ class Component extends DCLogic {
     builderOpen: false, builder: null, editingFormId: null, previewOpen: false, previewValues: {},
     drawerOpen: false, drawer: null, checkInNow: false,
     addVtDrawerOpen: false, addVtName: "", addVtBuildings: [], addVtBuildingsOpen: false, addVtNameError: false,
+    vtLocationFilter: "All", vtLocationFilterOpen: false,
     builderBuildingsOpen: false, builderVtOpen: false,
     docBuildingsOpen: false, docVtOpen: false,
     detailId: null, seriesOpen: false, showSeries: false, cancelConfirm: false,
@@ -1495,6 +1496,10 @@ class Component extends DCLogic {
   updDrawer = (patch) => this.setState(s => ({ drawer: { ...s.drawer, ...patch } }));
 
   // ---------- add visit type drawer ----------
+  openVtLocationFilter = () => this.setState({ vtLocationFilterOpen: true });
+  closeVtLocationFilter = () => this.setState({ vtLocationFilterOpen: false });
+  setVtLocationFilter = (val) => this.setState({ vtLocationFilter: val, vtLocationFilterOpen: false });
+
   openAddVtDrawer = () => this.setState(s => ({ addVtDrawerOpen: true, addVtName: "", addVtBuildings: [...s.buildings], addVtBuildingsOpen: false, addVtNameError: false }));
   closeAddVtDrawer = () => this.setState({ addVtDrawerOpen: false, addVtName: "", addVtBuildings: [], addVtBuildingsOpen: false, addVtNameError: false });
   onAddVtName = (e) => this.setState({ addVtName: e.target.value, addVtNameError: false });
@@ -2124,7 +2129,13 @@ class Component extends DCLogic {
       documentsTabStyle: s.webTab === "Documents" ? tabOn : tabOff,
       formsTabStyle: s.webTab === "Custom visit forms" ? tabOn : tabOff,
       goVisits: this.goVisits, goVisitTypes: this.goVisitTypes, goDocuments: this.goDocuments, goForms: this.goForms,
-      visitTypeRows: s.visitTypes.map(vt => { const st = this.vtStyle(vt.name); const allBld = vt.buildings === null || (vt.buildings && vt.buildings.length === s.buildings.length); const locationLabel = allBld ? "All buildings" : (vt.buildings || []).join(", "); return { name: vt.name, vtBg: st.bg, vtBd: st.bd, vtFg: st.fg, locationLabel }; }),
+      visitTypeRows: s.visitTypes.filter(vt => { const f = s.vtLocationFilter; if (f === "All") return true; const allBld = vt.buildings === null || (vt.buildings && vt.buildings.length === s.buildings.length); if (f === "All buildings") return allBld; return allBld || (vt.buildings && vt.buildings.includes(f)); }).map(vt => { const st = this.vtStyle(vt.name); const allBld = vt.buildings === null || (vt.buildings && vt.buildings.length === s.buildings.length); const locationLabel = allBld ? "All buildings" : (vt.buildings || []).join(", "); return { name: vt.name, vtBg: st.bg, vtBd: st.bd, vtFg: st.fg, locationLabel }; }),
+      vtLocationFilterOpen: s.vtLocationFilterOpen, openVtLocationFilter: this.openVtLocationFilter, closeVtLocationFilter: this.closeVtLocationFilter,
+      vtLocationFilterActive: s.vtLocationFilter !== "All",
+      vtLocationFilterLabel: s.vtLocationFilter === "All" ? "Location" : s.vtLocationFilter,
+      vtLocationFilterLabelStyle: "color:" + (s.vtLocationFilter !== "All" ? "var(--color-link)" : "var(--gray-8)") + ";font-weight:" + (s.vtLocationFilter !== "All" ? "600" : "600") + ";",
+      vtLocationFilterChevronColor: s.vtLocationFilter !== "All" ? "var(--color-link)" : "var(--gray-6)",
+      vtLocationFilterOptions: ["All", "All buildings", ...s.buildings].map(opt => ({ label: opt === "All" ? "All locations" : opt, active: s.vtLocationFilter === opt, inactive: s.vtLocationFilter !== opt, onSelect: () => this.setVtLocationFilter(opt), rowStyle: "display:flex;align-items:center;gap:8px;padding:8px 14px;cursor:pointer;font-size:13px;color:" + (s.vtLocationFilter === opt ? "var(--color-link)" : "var(--color-text)") + ";" })),
       openAddVtDrawer: this.openAddVtDrawer, addVtDrawerOpen: s.addVtDrawerOpen, closeAddVtDrawer: this.closeAddVtDrawer, saveAddVtDrawer: this.saveAddVtDrawer,
       addVtName: s.addVtName, onAddVtName: this.onAddVtName, addVtNameError: s.addVtNameError,
       addVtNameBorderColor: s.addVtNameError ? "var(--color-error)" : "var(--color-border)",
