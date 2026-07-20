@@ -178,15 +178,16 @@
         <sc-if value="{{ visitTypesTab }}">
         <div>
           <div style="display:flex;align-items:flex-start;justify-content:flex-end;margin-bottom:16px;">
-            <button style="display:inline-flex;align-items:center;gap:8px;height:32px;padding:0 16px;border-radius:4px;font:500 14px/22px var(--font-sans);border:1px solid transparent;background:var(--color-primary);color:#fff;cursor:pointer;"><i class="fa-solid fa-plus" style="font-size:12px;"></i>Add visit type</button>
+            <button onClick="{{ openAddVtDrawer }}" style="display:inline-flex;align-items:center;gap:8px;height:32px;padding:0 16px;border-radius:4px;font:500 14px/22px var(--font-sans);border:1px solid transparent;background:var(--color-primary);color:#fff;cursor:pointer;"><i class="fa-solid fa-plus" style="font-size:12px;"></i>Add visit type</button>
           </div>
           <div style="background:#fff;border:1px solid var(--color-border);border-radius:8px;overflow:hidden;">
             <div style="display:flex;padding:12px 20px;background:var(--gray-1);font-size:12px;font-weight:600;color:var(--gray-8);border-bottom:1px solid var(--color-border-light);">
-              <span style="flex:1;">Visit type</span><span style="width:80px;text-align:right;">Actions</span>
+              <span style="flex:1;">Visit type</span><span style="flex:1.5;">Location</span><span style="width:80px;text-align:right;">Actions</span>
             </div>
             <sc-for list="{{ visitTypeRows }}" as="vt" hint-placeholder-count="4">
             <div style="display:flex;align-items:center;padding:14px 20px;font-size:14px;border-bottom:1px solid var(--color-border-light);">
               <span style="flex:1;"><span style="display:inline-flex;align-items:center;height:24px;padding:0 8px;border-radius:4px;font-size:12px;font-weight:500;background:{{ vt.vtBg }};border:1px solid {{ vt.vtBd }};color:{{ vt.vtFg }};">{{ vt.name }}</span></span>
+              <span style="flex:1.5;color:var(--color-text-secondary);font-size:13px;">{{ vt.locationLabel }}</span>
               <span style="width:80px;display:flex;justify-content:flex-end;gap:14px;">
                 <i class="fa-solid fa-pen" style="color:var(--gray-7);cursor:pointer;font-size:13px;"></i>
                 <i class="fa-solid fa-trash-can" style="color:var(--gray-7);cursor:pointer;font-size:13px;"></i>
@@ -747,6 +748,49 @@
   </div>
   </sc-if>
 
+  <!-- ============ ADD VISIT TYPE DRAWER ============ -->
+  <sc-if value="{{ addVtDrawerOpen }}">
+  <div onClick="{{ closeAddVtDrawer }}" style="position:fixed;inset:0;background:rgba(0,0,0,.45);z-index:40;animation:rFade .18s ease;"></div>
+  <div style="position:fixed;top:0;right:0;bottom:0;width:400px;background:#fff;z-index:41;box-shadow:var(--shadow-lg);display:flex;flex-direction:column;animation:rDrawer .22s ease;">
+    <div style="display:flex;align-items:center;justify-content:space-between;padding:20px 24px;border-bottom:1px solid var(--color-border-light);flex-shrink:0;">
+      <h3 style="font:500 20px/28px var(--font-sans);margin:0;">Add visit type</h3>
+      <i onClick="{{ closeAddVtDrawer }}" class="fa-solid fa-xmark" style="cursor:pointer;color:var(--gray-7);font-size:18px;"></i>
+    </div>
+    <div style="flex:1;overflow:auto;padding:20px 24px;display:flex;flex-direction:column;gap:20px;">
+      <div>
+        <label style="display:block;font-size:13px;font-weight:600;color:var(--gray-9);margin-bottom:6px;">Visit type</label>
+        <input value="{{ addVtName }}" onChange="{{ onAddVtName }}" placeholder="e.g. Guest, Interview, Delivery" style="width:100%;box-sizing:border-box;height:36px;border:1px solid {{ addVtNameBorderColor }};border-radius:4px;padding:0 11px;font-size:14px;">
+        <sc-if value="{{ addVtNameError }}"><div style="color:var(--color-error);font-size:12px;margin-top:4px;">Visit type name is required.</div></sc-if>
+      </div>
+      <div style="position:relative;">
+        <label style="display:block;font-size:13px;font-weight:600;color:var(--gray-9);margin-bottom:6px;">Building</label>
+        <div onClick="{{ openAddVtBuildingsDropdown }}" style="min-height:36px;border:1px solid var(--color-border);border-radius:4px;padding:3px 32px 3px 4px;display:flex;flex-wrap:wrap;gap:4px;align-items:center;cursor:pointer;background:#fff;position:relative;">
+          <sc-for list="{{ addVtBuildingTags }}" as="tag" hint-placeholder-count="2">
+          <span style="display:inline-flex;align-items:center;gap:3px;height:22px;padding:0 4px 0 8px;border-radius:4px;background:rgba(0,0,0,.06);font-size:12px;color:var(--color-text);">{{ tag.name }}<i onClick="{{ tag.onRemove }}" class="fa-solid fa-xmark" style="font-size:10px;color:var(--gray-7);cursor:pointer;padding:2px 3px;"></i></span>
+          </sc-for>
+          <sc-if value="{{ addVtBuildingsEmpty }}"><span style="color:var(--gray-6);font-size:14px;padding:0 4px;">Select buildings</span></sc-if>
+          <i class="fa-solid fa-chevron-down" style="position:absolute;right:10px;top:50%;transform:translateY(-50%);color:var(--gray-6);font-size:12px;pointer-events:none;"></i>
+        </div>
+        <sc-if value="{{ addVtBuildingsDropdownOpen }}">
+        <div onClick="{{ closeAddVtBuildingsDropdown }}" style="position:fixed;inset:0;z-index:50;"></div>
+        <div style="position:absolute;top:calc(100% + 4px);left:0;right:0;z-index:51;background:#fff;border:1px solid var(--color-border);border-radius:8px;box-shadow:0 6px 24px rgba(0,0,0,.12);overflow:hidden;">
+          <sc-for list="{{ addVtBuildingDropdownOptions }}" as="opt" hint-placeholder-count="5">
+          <div onClick="{{ opt.onToggle }}" style="display:flex;align-items:center;gap:10px;padding:8px 14px;cursor:pointer;font-size:14px;" style-hover="background:var(--gray-1);">
+            <span style="{{ opt.cbStyle }}"><sc-if value="{{ opt.selected }}"><i class="fa-solid fa-check" style="font-size:10px;color:#fff;"></i></sc-if></span>
+            <span>{{ opt.name }}</span>
+          </div>
+          </sc-for>
+        </div>
+        </sc-if>
+      </div>
+    </div>
+    <div style="display:flex;justify-content:flex-end;gap:12px;padding:16px 24px;border-top:1px solid var(--color-border-light);flex-shrink:0;">
+      <button onClick="{{ closeAddVtDrawer }}" style="height:32px;padding:0 16px;border-radius:4px;font:500 14px var(--font-sans);background:#fff;color:var(--color-text);border:1px solid var(--color-border);cursor:pointer;">Cancel</button>
+      <button onClick="{{ saveAddVtDrawer }}" style="height:32px;padding:0 16px;border-radius:4px;font:500 14px var(--font-sans);background:var(--color-primary);color:#fff;border:1px solid transparent;cursor:pointer;">Add visit type</button>
+    </div>
+  </div>
+  </sc-if>
+
   <!-- ============ FORM BUILDER (full screen, 2-stage) ============ -->
   <sc-if value="{{ builderOpen }}">
   <div data-screen-label="Form builder" style="position:fixed;inset:0;background:var(--color-bg-layout);z-index:50;display:flex;flex-direction:column;animation:rFade .2s ease;">
@@ -839,19 +883,68 @@
           <div style="background:#fff;border:1px solid var(--color-border);border-radius:4px;padding:24px;">
             <div style="font-size:18px;font-weight:500;letter-spacing:-.02em;margin-bottom:4px;">Where this form applies</div>
             <div style="font-size:14px;color:var(--color-text-secondary);margin-bottom:20px;">This form appears when a visitor's visit type and building both match your selection.</div>
-            <div style="font-size:13px;font-weight:600;color:var(--gray-9);margin-bottom:10px;">Visit types</div>
-            <div style="display:flex;flex-wrap:wrap;gap:8px;margin-bottom:24px;">
-              <sc-for list="{{ builderVisitTypes }}" as="t" hint-placeholder-count="4">
-              <div onClick="{{ t.onToggle }}" style="{{ t.style }}"><sc-if value="{{ t.selected }}"><i class="fa-solid fa-check" style="font-size:10px;margin-right:6px;"></i></sc-if>{{ t.name }}</div>
-              </sc-for>
+            <div style="font-size:13px;font-weight:600;color:var(--gray-9);margin-bottom:8px;">Buildings</div>
+            <div style="position:relative;margin-bottom:24px;">
+              <div onClick="{{ openBuilderBldDropdown }}" style="min-height:36px;border:1px solid var(--color-border);border-radius:4px;padding:3px 32px 3px 4px;display:flex;flex-wrap:wrap;gap:4px;align-items:center;cursor:pointer;background:#fff;position:relative;">
+                <sc-for list="{{ builderBldTags }}" as="tag" hint-placeholder-count="2">
+                <span style="display:inline-flex;align-items:center;gap:3px;height:22px;padding:0 4px 0 8px;border-radius:4px;background:rgba(0,0,0,.06);font-size:12px;color:var(--color-text);">{{ tag.name }}<i onClick="{{ tag.onRemove }}" class="fa-solid fa-xmark" style="font-size:10px;color:var(--gray-7);cursor:pointer;padding:2px 3px;"></i></span>
+                </sc-for>
+                <sc-if value="{{ builderBldEmpty }}"><span style="color:var(--gray-6);font-size:14px;padding:0 4px;">Select buildings</span></sc-if>
+                <i class="fa-solid fa-chevron-down" style="position:absolute;right:10px;top:50%;transform:translateY(-50%);color:var(--gray-6);font-size:12px;pointer-events:none;"></i>
+              </div>
+              <sc-if value="{{ builderBldDropdownOpen }}">
+              <div onClick="{{ closeBuilderBldDropdown }}" style="position:fixed;inset:0;z-index:50;"></div>
+              <div style="position:absolute;top:calc(100% + 4px);left:0;right:0;z-index:51;background:#fff;border:1px solid var(--color-border);border-radius:8px;box-shadow:0 6px 24px rgba(0,0,0,.12);overflow:hidden;">
+                <div onClick="{{ builderBldSelectAll }}" style="display:flex;align-items:center;gap:10px;padding:8px 14px;cursor:pointer;font-size:14px;border-bottom:1px solid var(--color-border-light);" style-hover="background:var(--gray-1);">
+                  <span style="{{ builderBldSelectAllCbStyle }}"><sc-if value="{{ builderBldAllSelected }}"><i class="fa-solid fa-check" style="font-size:10px;color:#fff;"></i></sc-if><sc-if value="{{ builderBldSomeSelected }}"><i class="fa-solid fa-minus" style="font-size:10px;color:#fff;"></i></sc-if></span>
+                  <span style="font-weight:500;">Select all</span>
+                </div>
+                <sc-for list="{{ builderBldOptions }}" as="opt" hint-placeholder-count="5">
+                <div onClick="{{ opt.onToggle }}" style="display:flex;align-items:center;gap:10px;padding:8px 14px;cursor:pointer;font-size:14px;" style-hover="background:var(--gray-1);">
+                  <span style="{{ opt.cbStyle }}"><sc-if value="{{ opt.selected }}"><i class="fa-solid fa-check" style="font-size:10px;color:#fff;"></i></sc-if></span>
+                  <span>{{ opt.name }}</span>
+                </div>
+                </sc-for>
+              </div>
+              </sc-if>
             </div>
-            <div style="font-size:13px;font-weight:600;color:var(--gray-9);margin-bottom:10px;">Buildings</div>
-            <div style="display:flex;flex-wrap:wrap;gap:8px;">
-              <sc-for list="{{ builderBuildings }}" as="b" hint-placeholder-count="2">
-              <div onClick="{{ b.onToggle }}" style="{{ b.style }}"><sc-if value="{{ b.selected }}"><i class="fa-solid fa-check" style="font-size:10px;margin-right:6px;"></i></sc-if>{{ b.name }}</div>
-              </sc-for>
+            <div style="font-size:13px;font-weight:600;color:var(--gray-9);margin-bottom:8px;">Visit types</div>
+            <div style="position:relative;margin-bottom:12px;">
+              <div onClick="{{ openBuilderVtDropdown }}" style="min-height:36px;border:1px solid var(--color-border);border-radius:4px;padding:3px 32px 3px 4px;display:flex;flex-wrap:wrap;gap:4px;align-items:center;cursor:pointer;background:#fff;position:relative;">
+                <sc-for list="{{ builderVtTags }}" as="tag" hint-placeholder-count="2">
+                <span style="display:inline-flex;align-items:center;gap:3px;height:22px;padding:0 4px 0 8px;border-radius:4px;background:rgba(0,0,0,.06);font-size:12px;color:var(--color-text);"><sc-if value="{{ tag.hasWarning }}"><i class="fa-solid fa-triangle-exclamation" style="font-size:9px;color:#D97706;margin-right:1px;"></i></sc-if>{{ tag.name }}<i onClick="{{ tag.onRemove }}" class="fa-solid fa-xmark" style="font-size:10px;color:var(--gray-7);cursor:pointer;padding:2px 3px;"></i></span>
+                </sc-for>
+                <sc-if value="{{ builderVtEmpty }}"><span style="color:var(--gray-6);font-size:14px;padding:0 4px;">Select visit types</span></sc-if>
+                <i class="fa-solid fa-chevron-down" style="position:absolute;right:10px;top:50%;transform:translateY(-50%);color:var(--gray-6);font-size:12px;pointer-events:none;"></i>
+              </div>
+              <sc-if value="{{ builderVtDropdownOpen }}">
+              <div onClick="{{ closeBuilderVtDropdown }}" style="position:fixed;inset:0;z-index:50;"></div>
+              <div style="position:absolute;top:calc(100% + 4px);left:0;right:0;z-index:51;background:#fff;border:1px solid var(--color-border);border-radius:8px;box-shadow:0 6px 24px rgba(0,0,0,.12);overflow:hidden;">
+                <div onClick="{{ builderVtSelectAll }}" style="display:flex;align-items:center;gap:10px;padding:8px 14px;cursor:pointer;font-size:14px;border-bottom:1px solid var(--color-border-light);" style-hover="background:var(--gray-1);">
+                  <span style="{{ builderVtSelectAllCbStyle }}"><sc-if value="{{ builderVtAllSelected }}"><i class="fa-solid fa-check" style="font-size:10px;color:#fff;"></i></sc-if><sc-if value="{{ builderVtSomeSelected }}"><i class="fa-solid fa-minus" style="font-size:10px;color:#fff;"></i></sc-if></span>
+                  <span style="font-weight:500;">Select all</span>
+                </div>
+                <sc-for list="{{ builderVtOptions }}" as="opt" hint-placeholder-count="4">
+                <div onClick="{{ opt.onToggle }}" style="display:flex;align-items:center;gap:10px;padding:8px 14px;cursor:pointer;font-size:14px;" style-hover="background:var(--gray-1);">
+                  <span style="{{ opt.cbStyle }}"><sc-if value="{{ opt.selected }}"><i class="fa-solid fa-check" style="font-size:10px;color:#fff;"></i></sc-if></span>
+                  <span style="flex:1;">{{ opt.name }}</span>
+                  <sc-if value="{{ opt.hasRestriction }}"><span title="{{ opt.restrictionLabel }}" style="display:inline-flex;align-items:center;justify-content:center;width:18px;height:18px;border-radius:50%;background:var(--gray-2);color:var(--gray-7);cursor:help;font-size:10px;flex-shrink:0;"><i class="fa-solid fa-building"></i></span></sc-if>
+                </div>
+                </sc-for>
+              </div>
+              </sc-if>
             </div>
-            <sc-if value="{{ builderAssignError }}"><div style="color:var(--color-error);font-size:13px;margin-top:16px;">Select at least one visit type and one building.</div></sc-if>
+            <sc-if value="{{ builderBldWarning }}">
+            <div style="background:#FFFBEB;border:1px solid #FDE68A;border-radius:6px;padding:12px 14px;display:flex;gap:10px;align-items:flex-start;margin-bottom:12px;">
+              <i class="fa-solid fa-triangle-exclamation" style="color:#D97706;font-size:14px;margin-top:1px;flex-shrink:0;"></i>
+              <div style="flex:1;">
+                <div style="font-size:13px;font-weight:500;color:#92400E;margin-bottom:3px;">Building mismatch</div>
+                <div style="font-size:13px;color:#92400E;line-height:1.4;">{{ builderBldWarningMsg }}</div>
+                <div onClick="{{ builderAddMissingBuildings }}" style="font-size:13px;font-weight:500;color:#D97706;cursor:pointer;margin-top:6px;display:inline-block;">Add missing buildings →</div>
+              </div>
+            </div>
+            </sc-if>
+            <sc-if value="{{ builderAssignError }}"><div style="color:var(--color-error);font-size:13px;margin-top:4px;">Select at least one visit type and one building.</div></sc-if>
           </div>
         </div>
         </sc-if>
@@ -986,19 +1079,68 @@
           <div style="background:#fff;border:1px solid var(--color-border);border-radius:4px;padding:24px;">
             <div style="font-size:18px;font-weight:500;letter-spacing:-.02em;margin-bottom:4px;">Where this document applies</div>
             <div style="font-size:14px;color:var(--color-text-secondary);margin-bottom:20px;">This document will apply when a visitor's visit type and building both match.</div>
-            <div style="font-size:13px;font-weight:600;color:var(--gray-9);margin-bottom:10px;">Visit types</div>
-            <div style="display:flex;flex-wrap:wrap;gap:8px;margin-bottom:24px;">
-              <sc-for list="{{ docBuilderVisitTypes }}" as="t" hint-placeholder-count="4">
-              <div onClick="{{ t.onToggle }}" style="{{ t.style }}"><sc-if value="{{ t.selected }}"><i class="fa-solid fa-check" style="font-size:10px;margin-right:6px;"></i></sc-if>{{ t.name }}</div>
-              </sc-for>
+            <div style="font-size:13px;font-weight:600;color:var(--gray-9);margin-bottom:8px;">Buildings</div>
+            <div style="position:relative;margin-bottom:24px;">
+              <div onClick="{{ openDocBldDropdown }}" style="min-height:36px;border:1px solid var(--color-border);border-radius:4px;padding:3px 32px 3px 4px;display:flex;flex-wrap:wrap;gap:4px;align-items:center;cursor:pointer;background:#fff;position:relative;">
+                <sc-for list="{{ docBldTags }}" as="tag" hint-placeholder-count="2">
+                <span style="display:inline-flex;align-items:center;gap:3px;height:22px;padding:0 4px 0 8px;border-radius:4px;background:rgba(0,0,0,.06);font-size:12px;color:var(--color-text);">{{ tag.name }}<i onClick="{{ tag.onRemove }}" class="fa-solid fa-xmark" style="font-size:10px;color:var(--gray-7);cursor:pointer;padding:2px 3px;"></i></span>
+                </sc-for>
+                <sc-if value="{{ docBldEmpty }}"><span style="color:var(--gray-6);font-size:14px;padding:0 4px;">Select buildings</span></sc-if>
+                <i class="fa-solid fa-chevron-down" style="position:absolute;right:10px;top:50%;transform:translateY(-50%);color:var(--gray-6);font-size:12px;pointer-events:none;"></i>
+              </div>
+              <sc-if value="{{ docBldDropdownOpen }}">
+              <div onClick="{{ closeDocBldDropdown }}" style="position:fixed;inset:0;z-index:50;"></div>
+              <div style="position:absolute;top:calc(100% + 4px);left:0;right:0;z-index:51;background:#fff;border:1px solid var(--color-border);border-radius:8px;box-shadow:0 6px 24px rgba(0,0,0,.12);overflow:hidden;">
+                <div onClick="{{ docBldSelectAll }}" style="display:flex;align-items:center;gap:10px;padding:8px 14px;cursor:pointer;font-size:14px;border-bottom:1px solid var(--color-border-light);" style-hover="background:var(--gray-1);">
+                  <span style="{{ docBldSelectAllCbStyle }}"><sc-if value="{{ docBldAllSelected }}"><i class="fa-solid fa-check" style="font-size:10px;color:#fff;"></i></sc-if><sc-if value="{{ docBldSomeSelected }}"><i class="fa-solid fa-minus" style="font-size:10px;color:#fff;"></i></sc-if></span>
+                  <span style="font-weight:500;">Select all</span>
+                </div>
+                <sc-for list="{{ docBldOptions }}" as="opt" hint-placeholder-count="5">
+                <div onClick="{{ opt.onToggle }}" style="display:flex;align-items:center;gap:10px;padding:8px 14px;cursor:pointer;font-size:14px;" style-hover="background:var(--gray-1);">
+                  <span style="{{ opt.cbStyle }}"><sc-if value="{{ opt.selected }}"><i class="fa-solid fa-check" style="font-size:10px;color:#fff;"></i></sc-if></span>
+                  <span>{{ opt.name }}</span>
+                </div>
+                </sc-for>
+              </div>
+              </sc-if>
             </div>
-            <div style="font-size:13px;font-weight:600;color:var(--gray-9);margin-bottom:10px;">Buildings</div>
-            <div style="display:flex;flex-wrap:wrap;gap:8px;">
-              <sc-for list="{{ docBuilderBuildings }}" as="b" hint-placeholder-count="2">
-              <div onClick="{{ b.onToggle }}" style="{{ b.style }}"><sc-if value="{{ b.selected }}"><i class="fa-solid fa-check" style="font-size:10px;margin-right:6px;"></i></sc-if>{{ b.name }}</div>
-              </sc-for>
+            <div style="font-size:13px;font-weight:600;color:var(--gray-9);margin-bottom:8px;">Visit types</div>
+            <div style="position:relative;margin-bottom:12px;">
+              <div onClick="{{ openDocVtDropdown }}" style="min-height:36px;border:1px solid var(--color-border);border-radius:4px;padding:3px 32px 3px 4px;display:flex;flex-wrap:wrap;gap:4px;align-items:center;cursor:pointer;background:#fff;position:relative;">
+                <sc-for list="{{ docVtTags }}" as="tag" hint-placeholder-count="2">
+                <span style="display:inline-flex;align-items:center;gap:3px;height:22px;padding:0 4px 0 8px;border-radius:4px;background:rgba(0,0,0,.06);font-size:12px;color:var(--color-text);"><sc-if value="{{ tag.hasWarning }}"><i class="fa-solid fa-triangle-exclamation" style="font-size:9px;color:#D97706;margin-right:1px;"></i></sc-if>{{ tag.name }}<i onClick="{{ tag.onRemove }}" class="fa-solid fa-xmark" style="font-size:10px;color:var(--gray-7);cursor:pointer;padding:2px 3px;"></i></span>
+                </sc-for>
+                <sc-if value="{{ docVtEmpty }}"><span style="color:var(--gray-6);font-size:14px;padding:0 4px;">Select visit types</span></sc-if>
+                <i class="fa-solid fa-chevron-down" style="position:absolute;right:10px;top:50%;transform:translateY(-50%);color:var(--gray-6);font-size:12px;pointer-events:none;"></i>
+              </div>
+              <sc-if value="{{ docVtDropdownOpen }}">
+              <div onClick="{{ closeDocVtDropdown }}" style="position:fixed;inset:0;z-index:50;"></div>
+              <div style="position:absolute;top:calc(100% + 4px);left:0;right:0;z-index:51;background:#fff;border:1px solid var(--color-border);border-radius:8px;box-shadow:0 6px 24px rgba(0,0,0,.12);overflow:hidden;">
+                <div onClick="{{ docVtSelectAll }}" style="display:flex;align-items:center;gap:10px;padding:8px 14px;cursor:pointer;font-size:14px;border-bottom:1px solid var(--color-border-light);" style-hover="background:var(--gray-1);">
+                  <span style="{{ docVtSelectAllCbStyle }}"><sc-if value="{{ docVtAllSelected }}"><i class="fa-solid fa-check" style="font-size:10px;color:#fff;"></i></sc-if><sc-if value="{{ docVtSomeSelected }}"><i class="fa-solid fa-minus" style="font-size:10px;color:#fff;"></i></sc-if></span>
+                  <span style="font-weight:500;">Select all</span>
+                </div>
+                <sc-for list="{{ docVtOptions }}" as="opt" hint-placeholder-count="4">
+                <div onClick="{{ opt.onToggle }}" style="display:flex;align-items:center;gap:10px;padding:8px 14px;cursor:pointer;font-size:14px;" style-hover="background:var(--gray-1);">
+                  <span style="{{ opt.cbStyle }}"><sc-if value="{{ opt.selected }}"><i class="fa-solid fa-check" style="font-size:10px;color:#fff;"></i></sc-if></span>
+                  <span style="flex:1;">{{ opt.name }}</span>
+                  <sc-if value="{{ opt.hasRestriction }}"><span title="{{ opt.restrictionLabel }}" style="display:inline-flex;align-items:center;justify-content:center;width:18px;height:18px;border-radius:50%;background:var(--gray-2);color:var(--gray-7);cursor:help;font-size:10px;flex-shrink:0;"><i class="fa-solid fa-building"></i></span></sc-if>
+                </div>
+                </sc-for>
+              </div>
+              </sc-if>
             </div>
-            <sc-if value="{{ docBuilderAssignError }}"><div style="color:var(--color-error);font-size:13px;margin-top:16px;">Select at least one visit type and one building.</div></sc-if>
+            <sc-if value="{{ docBldWarning }}">
+            <div style="background:#FFFBEB;border:1px solid #FDE68A;border-radius:6px;padding:12px 14px;display:flex;gap:10px;align-items:flex-start;margin-bottom:12px;">
+              <i class="fa-solid fa-triangle-exclamation" style="color:#D97706;font-size:14px;margin-top:1px;flex-shrink:0;"></i>
+              <div style="flex:1;">
+                <div style="font-size:13px;font-weight:500;color:#92400E;margin-bottom:3px;">Building mismatch</div>
+                <div style="font-size:13px;color:#92400E;line-height:1.4;">{{ docBldWarningMsg }}</div>
+                <div onClick="{{ docAddMissingBuildings }}" style="font-size:13px;font-weight:500;color:#D97706;cursor:pointer;margin-top:6px;display:inline-block;">Add missing buildings →</div>
+              </div>
+            </div>
+            </sc-if>
+            <sc-if value="{{ docBuilderAssignError }}"><div style="color:var(--color-error);font-size:13px;margin-top:4px;">Select at least one visit type and one building.</div></sc-if>
           </div>
           <sc-if value="{{ docIsAgreement }}">
           <div style="background:#fff;border:1px solid var(--color-border);border-radius:4px;padding:24px;">
@@ -1087,16 +1229,19 @@ class Component extends DCLogic {
     workplaceExpanded: true,
     builderOpen: false, builder: null, editingFormId: null, previewOpen: false, previewValues: {},
     drawerOpen: false, drawer: null, checkInNow: false,
+    addVtDrawerOpen: false, addVtName: "", addVtBuildings: [], addVtBuildingsOpen: false, addVtNameError: false,
+    builderBuildingsOpen: false, builderVtOpen: false,
+    docBuildingsOpen: false, docVtOpen: false,
     detailId: null, seriesOpen: false, showSeries: false, cancelConfirm: false,
     tablet: { step: "welcome", email: "", name: "", host: "", visitType: "", building: "", preregId: null, values: {}, returnVisit: null, found: false, emailError: false, selfError: false, reasonError: false, fieldsError: false, pendingAgreements: [], agreementTotal: 0, agreementDeclined: false, hasSigned: false, carryOverSigs: {}, sessionSigs: {} },
     toast: null,
     visitTypes: [
-      { name: "VIP", icon: "fa-star" },
-      { name: "Vendor", icon: "fa-truck" },
-      { name: "Candidate", icon: "fa-user-tie" },
-      { name: "Contractor", icon: "fa-helmet-safety" },
+      { name: "VIP", icon: "fa-star", buildings: null },
+      { name: "Vendor", icon: "fa-truck", buildings: null },
+      { name: "Candidate", icon: "fa-user-tie", buildings: null },
+      { name: "Contractor", icon: "fa-helmet-safety", buildings: ["54 State St.", "400 Market St."] },
     ],
-    buildings: ["54 State St.", "Woolen Mills"],
+    buildings: ["54 State St.", "Woolen Mills", "400 Market St.", "Innovation Hub", "Downtown Annex"],
     hosts: ["Tiffany Yu", "Jordan Miller", "Amara Khan", "Ravi Lal", "Liam Chen"],
     forms: [
       {
@@ -1348,6 +1493,29 @@ class Component extends DCLogic {
   removeDateChip = (iso, e) => { if (e && e.stopPropagation) e.stopPropagation(); const d = this.state.drawer; if (d.dateMode === "range") this.updDrawer({ rStart: null, rEnd: null }); else this.updDrawer({ days: d.days.filter(x => x !== iso) }); };
   closeDrawer = () => this.setState({ drawerOpen: false, drawer: null });
   updDrawer = (patch) => this.setState(s => ({ drawer: { ...s.drawer, ...patch } }));
+
+  // ---------- add visit type drawer ----------
+  openAddVtDrawer = () => this.setState(s => ({ addVtDrawerOpen: true, addVtName: "", addVtBuildings: [...s.buildings], addVtBuildingsOpen: false, addVtNameError: false }));
+  closeAddVtDrawer = () => this.setState({ addVtDrawerOpen: false, addVtName: "", addVtBuildings: [], addVtBuildingsOpen: false, addVtNameError: false });
+  onAddVtName = (e) => this.setState({ addVtName: e.target.value, addVtNameError: false });
+  toggleAddVtBuilding = (bld) => this.setState(s => { const has = s.addVtBuildings.includes(bld); return { addVtBuildings: has ? s.addVtBuildings.filter(x => x !== bld) : [...s.addVtBuildings, bld] }; });
+  removeAddVtBuilding = (bld, e) => { if (e && e.stopPropagation) e.stopPropagation(); this.toggleAddVtBuilding(bld); };
+  openAddVtBuildingsDropdown = () => this.setState({ addVtBuildingsOpen: true });
+  closeAddVtBuildingsDropdown = () => this.setState({ addVtBuildingsOpen: false });
+  saveAddVtDrawer = () => {
+    const name = this.state.addVtName.trim();
+    if (!name) { this.setState({ addVtNameError: true }); return; }
+    this.setState(s => { const buildings = s.addVtBuildings.length === s.buildings.length ? null : [...s.addVtBuildings]; return { visitTypes: [...s.visitTypes, { name, icon: "fa-id-badge", buildings }], addVtDrawerOpen: false, addVtName: "", addVtBuildings: [], addVtBuildingsOpen: false, addVtNameError: false }; });
+    this.toast(name + " visit type added");
+  };
+  openBuilderBuildingsDropdown = () => this.setState({ builderBuildingsOpen: true });
+  closeBuilderBuildingsDropdown = () => this.setState({ builderBuildingsOpen: false });
+  openBuilderVtDropdown = () => this.setState({ builderVtOpen: true });
+  closeBuilderVtDropdown = () => this.setState({ builderVtOpen: false });
+  openDocBuildingsDropdown = () => this.setState({ docBuildingsOpen: true });
+  closeDocBuildingsDropdown = () => this.setState({ docBuildingsOpen: false });
+  openDocVtDropdown = () => this.setState({ docVtOpen: true });
+  closeDocVtDropdown = () => this.setState({ docVtOpen: false });
   addVisitorRow = () => this.setState(s => ({ drawer: { ...s.drawer, visitors: [...s.drawer.visitors, { id: this.uid("p"), name: "", email: "" }] } }));
   removeVisitorRow = (id) => this.setState(s => ({ drawer: { ...s.drawer, visitors: s.drawer.visitors.filter(v => v.id !== id) } }));
   updVisitor = (id, patch) => this.setState(s => ({ drawer: { ...s.drawer, visitors: s.drawer.visitors.map(v => v.id === id ? { ...v, ...patch } : v) } }));
@@ -1659,8 +1827,25 @@ class Component extends DCLogic {
           toggleMulti: () => this.updateField(f.id, { multi: !f.multi }),
           guestBox: cb(f.guest), badgeBox: cb(f.badge), reqBox: cb(f.required), multiBox: cb(f.multi),
         })),
-        builderVisitTypes: s.visitTypes.map(t => ({ name: t.name, selected: b.visitTypes.includes(t.name), onToggle: () => this.toggleBuilderList("visitTypes", t.name), style: chip(b.visitTypes.includes(t.name)) })),
-        builderBuildings: s.buildings.map(bl => ({ name: bl, selected: b.buildings.includes(bl), onToggle: () => this.toggleBuilderList("buildings", bl), style: chip(b.buildings.includes(bl)) })),
+        builderBldTags: b.buildings.map(name => ({ name, onRemove: (e) => { if (e && e.stopPropagation) e.stopPropagation(); this.toggleBuilderList("buildings", name); } })),
+        builderBldEmpty: b.buildings.length === 0,
+        builderBldDropdownOpen: s.builderBuildingsOpen,
+        openBuilderBldDropdown: this.openBuilderBuildingsDropdown, closeBuilderBldDropdown: this.closeBuilderBuildingsDropdown,
+        builderBldAllSelected: b.buildings.length === s.buildings.length,
+        builderBldSomeSelected: b.buildings.length > 0 && b.buildings.length < s.buildings.length,
+        builderBldSelectAllCbStyle: "width:16px;height:16px;flex-shrink:0;border-radius:3px;display:inline-flex;align-items:center;justify-content:center;border:1px solid " + (b.buildings.length > 0 ? "var(--color-link)" : "var(--color-border)") + ";background:" + (b.buildings.length > 0 ? "var(--color-link)" : "#fff") + ";",
+        builderBldSelectAll: () => this.setState(st => ({ builderAssignError: false, builder: { ...st.builder, buildings: st.builder.buildings.length === st.buildings.length ? [] : [...st.buildings] } })),
+        builderBldOptions: s.buildings.map(bl => { const sel = b.buildings.includes(bl); return { name: bl, selected: sel, onToggle: () => this.toggleBuilderList("buildings", bl), cbStyle: cb(sel) }; }),
+        builderVtTags: b.visitTypes.map(name => { const t = s.visitTypes.find(x => x.name === name); const hasWarning = !!(t && t.buildings && t.buildings.some(bl => !b.buildings.includes(bl))); return { name, hasWarning, onRemove: (e) => { if (e && e.stopPropagation) e.stopPropagation(); this.toggleBuilderList("visitTypes", name); } }; }),
+        builderVtEmpty: b.visitTypes.length === 0,
+        builderVtDropdownOpen: s.builderVtOpen,
+        openBuilderVtDropdown: this.openBuilderVtDropdown, closeBuilderVtDropdown: this.closeBuilderVtDropdown,
+        builderVtAllSelected: b.visitTypes.length === s.visitTypes.length,
+        builderVtSomeSelected: b.visitTypes.length > 0 && b.visitTypes.length < s.visitTypes.length,
+        builderVtSelectAllCbStyle: "width:16px;height:16px;flex-shrink:0;border-radius:3px;display:inline-flex;align-items:center;justify-content:center;border:1px solid " + (b.visitTypes.length > 0 ? "var(--color-link)" : "var(--color-border)") + ";background:" + (b.visitTypes.length > 0 ? "var(--color-link)" : "#fff") + ";",
+        builderVtSelectAll: () => this.setState(st => ({ builderAssignError: false, builder: { ...st.builder, visitTypes: st.builder.visitTypes.length === st.visitTypes.length ? [] : st.visitTypes.map(t => t.name) } })),
+        builderVtOptions: s.visitTypes.map(t => { const sel = b.visitTypes.includes(t.name); const hasRestriction = t.buildings !== null; return { name: t.name, selected: sel, onToggle: () => this.toggleBuilderList("visitTypes", t.name), cbStyle: cb(sel), hasRestriction, restrictionLabel: hasRestriction ? "Only at: " + (t.buildings || []).join(", ") : "" }; }),
+        ...((() => { const missing = []; b.visitTypes.forEach(name => { const t = s.visitTypes.find(x => x.name === name); if (t && t.buildings) t.buildings.forEach(bl => { if (!b.buildings.includes(bl) && !missing.includes(bl)) missing.push(bl); }); }); const capMissing = missing.slice(); return { builderBldWarning: missing.length > 0, builderBldWarningMsg: missing.length ? "Some selected visit types are only available at " + missing.join(" and ") + ", which " + (missing.length === 1 ? "isn't" : "aren't") + " in your building selection." : "", builderAddMissingBuildings: () => this.setState(st => ({ builder: { ...st.builder, buildings: [...new Set([...st.builder.buildings, ...capMissing])] } })) }; })()),
         previewOpen: s.previewOpen,
         previewEmpty: b.fields.filter(f => f.label.trim()).length === 0,
         previewFields: b.fields.filter(f => f.label.trim()).map(f => this.fieldView(f, s.previewValues, this.setPreviewValue, this.togglePreviewMulti, this.setPreviewValue, "drawer")),
@@ -1850,8 +2035,25 @@ class Component extends DCLogic {
         onDocFile: this.onDocFile, removeDocFile: this.removeDocFile,
         docBuilderNameError: !!s.docBuilderNameError, docBuilderContentError: !!s.docBuilderContentError,
         docBuilderFileError: !!s.docBuilderFileError, docBuilderAssignError: !!s.docBuilderAssignError,
-        docBuilderVisitTypes: s.visitTypes.map(t => ({ name: t.name, selected: b.visitTypes.includes(t.name), onToggle: () => this.toggleDocBuilderList("visitTypes", t.name), style: chip(b.visitTypes.includes(t.name)) })),
-        docBuilderBuildings: s.buildings.map(bl => ({ name: bl, selected: b.buildings.includes(bl), onToggle: () => this.toggleDocBuilderList("buildings", bl), style: chip(b.buildings.includes(bl)) })),
+        docBldTags: b.buildings.map(name => ({ name, onRemove: (e) => { if (e && e.stopPropagation) e.stopPropagation(); this.toggleDocBuilderList("buildings", name); } })),
+        docBldEmpty: b.buildings.length === 0,
+        docBldDropdownOpen: s.docBuildingsOpen,
+        openDocBldDropdown: this.openDocBuildingsDropdown, closeDocBldDropdown: this.closeDocBuildingsDropdown,
+        docBldAllSelected: b.buildings.length === s.buildings.length,
+        docBldSomeSelected: b.buildings.length > 0 && b.buildings.length < s.buildings.length,
+        docBldSelectAllCbStyle: "width:16px;height:16px;flex-shrink:0;border-radius:3px;display:inline-flex;align-items:center;justify-content:center;border:1px solid " + (b.buildings.length > 0 ? "var(--color-link)" : "var(--color-border)") + ";background:" + (b.buildings.length > 0 ? "var(--color-link)" : "#fff") + ";",
+        docBldSelectAll: () => this.setState(st => ({ docBuilderAssignError: false, docBuilder: { ...st.docBuilder, buildings: st.docBuilder.buildings.length === st.buildings.length ? [] : [...st.buildings] } })),
+        docBldOptions: s.buildings.map(bl => { const sel = b.buildings.includes(bl); return { name: bl, selected: sel, onToggle: () => this.toggleDocBuilderList("buildings", bl), cbStyle: cb2(sel) }; }),
+        docVtTags: b.visitTypes.map(name => { const t = s.visitTypes.find(x => x.name === name); const hasWarning = !!(t && t.buildings && t.buildings.some(bl => !b.buildings.includes(bl))); return { name, hasWarning, onRemove: (e) => { if (e && e.stopPropagation) e.stopPropagation(); this.toggleDocBuilderList("visitTypes", name); } }; }),
+        docVtEmpty: b.visitTypes.length === 0,
+        docVtDropdownOpen: s.docVtOpen,
+        openDocVtDropdown: this.openDocVtDropdown, closeDocVtDropdown: this.closeDocVtDropdown,
+        docVtAllSelected: b.visitTypes.length === s.visitTypes.length,
+        docVtSomeSelected: b.visitTypes.length > 0 && b.visitTypes.length < s.visitTypes.length,
+        docVtSelectAllCbStyle: "width:16px;height:16px;flex-shrink:0;border-radius:3px;display:inline-flex;align-items:center;justify-content:center;border:1px solid " + (b.visitTypes.length > 0 ? "var(--color-link)" : "var(--color-border)") + ";background:" + (b.visitTypes.length > 0 ? "var(--color-link)" : "#fff") + ";",
+        docVtSelectAll: () => this.setState(st => ({ docBuilderAssignError: false, docBuilder: { ...st.docBuilder, visitTypes: st.docBuilder.visitTypes.length === st.visitTypes.length ? [] : st.visitTypes.map(t => t.name) } })),
+        docVtOptions: s.visitTypes.map(t => { const sel = b.visitTypes.includes(t.name); const hasRestriction = t.buildings !== null; return { name: t.name, selected: sel, onToggle: () => this.toggleDocBuilderList("visitTypes", t.name), cbStyle: cb2(sel), hasRestriction, restrictionLabel: hasRestriction ? "Only at: " + (t.buildings || []).join(", ") : "" }; }),
+        ...((() => { const missing = []; b.visitTypes.forEach(name => { const t = s.visitTypes.find(x => x.name === name); if (t && t.buildings) t.buildings.forEach(bl => { if (!b.buildings.includes(bl) && !missing.includes(bl)) missing.push(bl); }); }); const capMissing = missing.slice(); return { docBldWarning: missing.length > 0, docBldWarningMsg: missing.length ? "Some selected visit types are only available at " + missing.join(" and ") + ", which " + (missing.length === 1 ? "isn't" : "aren't") + " in your building selection." : "", docAddMissingBuildings: () => this.setState(st => ({ docBuilder: { ...st.docBuilder, buildings: [...new Set([...st.docBuilder.buildings, ...capMissing])] } })) }; })()),
         docRequireSig: !!(b.requireSignature), toggleDocRequireSig: () => this.updDocBuilder({ requireSignature: !b.requireSignature }),
         docReqSigBox: cb2(b.requireSignature),
       };
@@ -1922,7 +2124,15 @@ class Component extends DCLogic {
       documentsTabStyle: s.webTab === "Documents" ? tabOn : tabOff,
       formsTabStyle: s.webTab === "Custom visit forms" ? tabOn : tabOff,
       goVisits: this.goVisits, goVisitTypes: this.goVisitTypes, goDocuments: this.goDocuments, goForms: this.goForms,
-      visitTypeRows: s.visitTypes.map(vt => { const st = this.vtStyle(vt.name); return { name: vt.name, vtBg: st.bg, vtBd: st.bd, vtFg: st.fg }; }),
+      visitTypeRows: s.visitTypes.map(vt => { const st = this.vtStyle(vt.name); const allBld = vt.buildings === null || (vt.buildings && vt.buildings.length === s.buildings.length); const locationLabel = allBld ? "All buildings" : (vt.buildings || []).join(", "); return { name: vt.name, vtBg: st.bg, vtBd: st.bd, vtFg: st.fg, locationLabel }; }),
+      openAddVtDrawer: this.openAddVtDrawer, addVtDrawerOpen: s.addVtDrawerOpen, closeAddVtDrawer: this.closeAddVtDrawer, saveAddVtDrawer: this.saveAddVtDrawer,
+      addVtName: s.addVtName, onAddVtName: this.onAddVtName, addVtNameError: s.addVtNameError,
+      addVtNameBorderColor: s.addVtNameError ? "var(--color-error)" : "var(--color-border)",
+      addVtBuildingTags: s.addVtBuildings.map(b => ({ name: b, onRemove: (e) => this.removeAddVtBuilding(b, e) })),
+      addVtBuildingsEmpty: s.addVtBuildings.length === 0,
+      addVtBuildingsDropdownOpen: s.addVtBuildingsOpen,
+      openAddVtBuildingsDropdown: this.openAddVtBuildingsDropdown, closeAddVtBuildingsDropdown: this.closeAddVtBuildingsDropdown,
+      addVtBuildingDropdownOptions: s.buildings.map(bl => { const cb2loc = (on) => "width:16px;height:16px;flex-shrink:0;border-radius:3px;display:inline-flex;align-items:center;justify-content:center;border:1px solid " + (on ? "var(--color-link)" : "var(--color-border)") + ";background:" + (on ? "var(--color-link)" : "#fff") + ";"; return { name: bl, selected: s.addVtBuildings.includes(bl), onToggle: () => this.toggleAddVtBuilding(bl), cbStyle: cb2loc(s.addVtBuildings.includes(bl)) }; }),
       addDocDropdown: s.addDocDropdown, openAddDocDropdown: this.openAddDocDropdown, closeAddDocDropdown: this.closeAddDocDropdown,
       openAgreementBuilder: () => this.openDocBuilderNew("agreement"), openAttachmentBuilder: () => this.openDocBuilderNew("attachment"),
       docRows: s.documents.map(d => { const typeBg = d.docType === "agreement" ? "var(--blue-1)" : "var(--gray-1)"; const typeBd = d.docType === "agreement" ? "var(--color-info-border)" : "var(--color-border)"; const typeFg = d.docType === "agreement" ? "var(--color-link)" : "var(--gray-9)"; const statusBg = d.status === "live" ? "var(--green-1)" : "var(--gray-1)"; const statusBd = d.status === "live" ? "var(--color-success-border)" : "var(--color-border)"; const statusFg = d.status === "live" ? "var(--color-success)" : "var(--gray-6)"; const vtBadges = d.visitTypes.map(vt => { const st = this.vtStyle(vt); return { name: vt, bg: st.bg, bd: st.bd, fg: st.fg }; }); return { id: d.id, name: d.name, typeBg, typeBd, typeFg, typeLabel: d.docType === "agreement" ? "Agreement" : "Attachment", statusBg, statusBd, statusFg, statusLabel: d.status === "live" ? "Live" : "Archived", isArchived: d.status === "archived", addedOn: d.addedOn, vtBadges, noVtBadges: vtBadges.length === 0, buildingsLabel: d.buildings.join(", ") || "—", archiveIcon: d.status === "live" ? "fa-box-archive" : "fa-box-open", archiveTitle: d.status === "live" ? "Archive" : "Restore", onEdit: () => this.openDocBuilderEdit(d.id), onToggleStatus: () => this.toggleDocStatus(d.id), onDelete: () => this.deleteDocument(d.id) }; }),
