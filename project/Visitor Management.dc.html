@@ -59,9 +59,21 @@
         </sc-if>
         </sc-if>
         <!-- Standalone nav items -->
+        <sc-if value="{{ showNavCreateVisitor }}"><div onClick="{{ openDrawer }}" style="display:flex;align-items:center;justify-content:center;gap:8px;height:36px;margin:0 0 4px;border-radius:6px;font:500 14px var(--font-sans);background:var(--color-primary);color:#fff;cursor:pointer;"><i class="fa-solid fa-plus" style="font-size:12px;"></i>Create visitor</div></sc-if>
         <sc-if value="{{ showStandaloneVisitors }}"><div onClick="{{ goVisitorsPage }}" style="{{ visitorsNavStyle }}"><i class="fa-solid fa-id-badge" style="width:18px;text-align:center;"></i>Visitors</div></sc-if>
+        <sc-if value="{{ showVisitorExperienceNav }}">
+        <div onClick="{{ toggleVisitorExp }}" style="{{ visitorExpNavStyle }}"><i class="fa-solid fa-handshake" style="width:18px;text-align:center;"></i><span style="flex:1;">Visitor Experience</span><i class="fa-solid {{ visitorExpChevron }}" style="font-size:11px;opacity:.7;"></i></div>
+        <sc-if value="{{ visitorExpExpanded }}">
+        <div style="background:rgba(0,0,0,.18);margin:0 -4px;padding:4px;">
+          <div onClick="{{ goVisitTypesPage }}" style="{{ visitTypesSubStyle }}">Visit types</div>
+          <div onClick="{{ goDocumentsPage }}" style="{{ documentsSubStyle }}">Documents</div>
+          <div onClick="{{ goFormsPage }}" style="{{ customFormsSubStyle }}">Custom visit forms</div>
+        </div>
+        </sc-if>
+        </sc-if>
         <sc-if value="{{ showAnnouncementsNav }}"><div onClick="{{ goAnnouncementsPage }}" style="{{ announcementsNavStyle }}"><i class="fa-solid fa-bullhorn" style="width:18px;text-align:center;"></i>Announcements</div></sc-if>
         <sc-if value="{{ showDeliveriesNav }}"><div onClick="{{ goDeliveriesPage }}" style="{{ deliveriesNavStyle }}"><i class="fa-solid fa-box" style="width:18px;text-align:center;"></i>Deliveries</div></sc-if>
+        <sc-if value="{{ showDevicesNav }}"><div onClick="{{ goDevicesPage }}" style="{{ devicesNavStyle }}"><i class="fa-solid fa-print" style="width:18px;text-align:center;"></i>Devices</div></sc-if>
         <div style="display:flex;align-items:center;gap:12px;height:40px;padding:0 12px;border-radius:6px;color:rgba(255,255,255,.65);font-size:14px;"><i class="fa-solid fa-chart-line" style="width:18px;text-align:center;"></i>Analytics</div>
         <div onClick="{{ goManagePage }}" style="{{ manageNavStyle }}"><i class="fa-solid fa-gear" style="width:18px;text-align:center;"></i>Manage</div>
       </div>
@@ -76,17 +88,19 @@
     <div style="flex:1;overflow:auto;">
       <div style="max-width:1180px;margin:0 auto;padding:32px 40px 80px;">
         <div style="margin-bottom:18px;">
-          <h1 style="font:500 38px/46px var(--font-sans);letter-spacing:-.01em;margin:0;">Visitors</h1>
+          <h1 style="font:500 38px/46px var(--font-sans);letter-spacing:-.01em;margin:0;">{{ visitorsPageTitle }}</h1>
           
         </div>
 
         <!-- Tabs -->
+        <sc-if value="{{ showTabsBar }}">
         <div style="display:flex;gap:28px;border-bottom:1px solid var(--color-border-light);margin-bottom:20px;">
           <div onClick="{{ goVisits }}" style="{{ visitsTabStyle }}">Visits</div>
           <div onClick="{{ goVisitTypes }}" style="{{ visitTypesTabStyle }}">Visit types</div>
           <div onClick="{{ goDocuments }}" style="{{ documentsTabStyle }}">Documents</div>
           <div onClick="{{ goForms }}" style="{{ formsTabStyle }}">Custom visit forms</div>
         </div>
+        </sc-if>
 
         <!-- VISITS TAB -->
         <!-- Visits calendar popover -->
@@ -135,7 +149,7 @@
             </div>
             <div style="display:flex;gap:8px;align-items:center;">
               <button style="display:inline-flex;align-items:center;gap:8px;height:32px;padding:0 12px;border-radius:4px;font:500 14px/22px var(--font-sans);border:1px solid var(--color-border);background:#fff;color:var(--color-text);cursor:pointer;"><i class="fa-solid fa-arrow-up-from-bracket" style="font-size:12px;"></i>Export</button>
-              <button onClick="{{ openDrawer }}" style="display:inline-flex;align-items:center;gap:8px;height:32px;padding:0 16px;border-radius:4px;font:500 14px/22px var(--font-sans);border:1px solid transparent;background:var(--color-primary);color:#fff;cursor:pointer;"><i class="fa-solid fa-plus" style="font-size:12px;"></i>Create visitor</button>
+              <sc-if value="{{ showCreateVisitorInPage }}"><button onClick="{{ openDrawer }}" style="display:inline-flex;align-items:center;gap:8px;height:32px;padding:0 16px;border-radius:4px;font:500 14px/22px var(--font-sans);border:1px solid transparent;background:var(--color-primary);color:#fff;cursor:pointer;"><i class="fa-solid fa-plus" style="font-size:12px;"></i>Create visitor</button></sc-if>
             </div>
           </div>
           <sc-if value="{{ showBulkBar }}">
@@ -1210,6 +1224,7 @@ class Component extends DCLogic {
     webPage: "visitors",
     manageTab: "Organization",
     workplaceExpanded: true,
+    visitorExpExpanded: true,
     builderOpen: false, builder: null, editingFormId: null, previewOpen: false, previewValues: {},
     drawerOpen: false, drawer: null, checkInNow: false,
     addVtDrawerOpen: false, addVtName: "", addVtBuildings: [], addVtBuildingsOpen: false, addVtNameError: false, editingVtName: null,
@@ -1251,67 +1266,67 @@ class Component extends DCLogic {
         ],
       },
     ],
-    visits: [
-      { id: "v1", name: "Priya Nair", email: "priya@partnerco.com", host: "Amara Khan", visitType: "VIP", building: "54 State St.", date: "Jul 2, 2026", expected: "8:30 AM", checkIn: "8:40 AM", checkOut: "—", status: "Checked in", values: {}, source: "prereg" },
-      { id: "v2", name: "Dana Lopez", email: "dana@vendorco.com", host: "Tiffany Yu", visitType: "Vendor", building: "54 State St.", date: "Jul 2, 2026", expected: "2:00 PM", checkIn: "—", checkOut: "—", status: "Pre-registered", values: {}, source: "prereg" },
-      { id: "v3", name: "Marcus Bell", email: "marcus@applicant.com", host: "Jordan Miller", visitType: "Candidate", building: "54 State St.", date: "Jul 2, 2026", expected: "9:00 AM", checkIn: "9:12 AM", checkOut: "10:30 AM", status: "Checked in", values: { p1: "Engineering Manager", p2: "Final Round", p3: "", p4: "" }, source: "self" },
-      { id: "v4a", seriesId: "s-tw", name: "Tomás Wolf", email: "tomas@buildright.com", host: "Ravi Lal", visitType: "Contractor", building: "54 State St.", date: "Jul 6, 2026", expected: "7:30 AM", checkIn: "—", checkOut: "—", status: "Pre-registered", values: { c1: "BuildRight Inc." }, source: "prereg" },
-      { id: "v4b", seriesId: "s-tw", name: "Tomás Wolf", email: "tomas@buildright.com", host: "Ravi Lal", visitType: "Contractor", building: "54 State St.", date: "Jul 7, 2026", expected: "7:30 AM", checkIn: "—", checkOut: "—", status: "Pre-registered", values: { c1: "BuildRight Inc." }, source: "prereg" },
-      { id: "v5a", name: "Priya Sundaram", email: "priya.s@techcorp.com", host: "Ravi Lal", visitType: "Contractor", building: "54 State St.", date: "Jul 7, 2026", expected: "8:00 AM", checkIn: "8:06 AM", checkOut: "—", status: "Checked in", values: { c1: "TechCorp Services", c2: "CERT-2026-1142", c3: ["Lobby", "Server room"], c4: "415-555-0280" }, signatures: { doc1: { signedAt: "8:06 AM" } }, source: "prereg" },
-      { id: "v5b", name: "Derek Osei", email: "derek.osei@buildright.com", host: "David Park", visitType: "Contractor", building: "54 State St.", date: "Jul 7, 2026", expected: "9:15 AM", checkIn: "9:19 AM", checkOut: "—", status: "Checked in", values: { c1: "BuildRight Inc.", c2: "CERT-2025-9910", c3: ["Lobby", "Roof"], c4: "510-555-0147" }, signatures: { doc1: { signedAt: "9:19 AM" } }, source: "prereg" },
-      { id: "v6a", name: "Jordan Price", email: "jordan.price@applicant.com", host: "Jordan Miller", visitType: "Candidate", building: "54 State St.", date: "Jul 7, 2026", expected: "10:00 AM", checkIn: "—", checkOut: "—", status: "Pre-registered", values: { p1: "Frontend Engineer", p2: "2nd Round" }, source: "prereg" },
-      { id: "v4c", seriesId: "s-tw", name: "Tomás Wolf", email: "tomas@buildright.com", host: "Ravi Lal", visitType: "Contractor", building: "54 State St.", date: "Jul 8, 2026", expected: "7:30 AM", checkIn: "—", checkOut: "—", status: "Pre-registered", values: { c1: "BuildRight Inc." }, source: "prereg" },
-      { id: "t001", name: "Emily Carter", email: "emily.carter@partnerco.com", host: "Tiffany Yu", visitType: "VIP", building: "54 State St.", date: "Jul 6, 2026", expected: "7:00 AM", checkIn: "7:05 AM", checkOut: "—", status: "Checked in", values: {}, source: "prereg" },
-      { id: "t002", name: "James Wu", email: "james.wu@vendorco.com", host: "Amara Khan", visitType: "Vendor", building: "54 State St.", date: "Jul 6, 2026", expected: "7:15 AM", checkIn: "7:18 AM", checkOut: "—", status: "Checked in", values: {}, source: "prereg" },
-      { id: "t003", name: "Sophia Patel", email: "sophia.patel@buildright.com", host: "Ravi Lal", visitType: "Contractor", building: "54 State St.", date: "Jul 6, 2026", expected: "7:30 AM", checkIn: "7:34 AM", checkOut: "—", status: "Checked in", values: { c1: "BuildRight Inc.", c2: "CERT-2024-8821", c3: ["Lobby", "Server room"], c4: "415-555-0192" }, signatures: { doc1: { signedAt: "7:34 AM" } }, source: "prereg" },
-      { id: "t004", name: "Aiden Torres", email: "aiden.torres@recruit.com", host: "Jordan Miller", visitType: "Candidate", building: "54 State St.", date: "Jul 6, 2026", expected: "7:45 AM", checkIn: "7:49 AM", checkOut: "—", status: "Checked in", values: { p1: "Senior Software Engineer", p2: "2nd Round", p3: "LinkedIn", p4: "" }, source: "prereg" },
-      { id: "t005", name: "Isabella Clark", email: "isabella.clark@globalco.com", host: "Marcus Webb", visitType: "VIP", building: "Woolen Mills", date: "Jul 6, 2026", expected: "8:00 AM", checkIn: "8:02 AM", checkOut: "—", status: "Checked in", values: {}, source: "prereg" },
-      { id: "t006", name: "Noah Williams", email: "noah.williams@supplierco.com", host: "Sarah Chen", visitType: "Vendor", building: "54 State St.", date: "Jul 6, 2026", expected: "8:15 AM", checkIn: "8:19 AM", checkOut: "—", status: "Checked in", values: {}, source: "prereg" },
-      { id: "t007", name: "Mia Nguyen", email: "mia.nguyen@buildcorp.com", host: "David Park", visitType: "Contractor", building: "54 State St.", date: "Jul 6, 2026", expected: "8:30 AM", checkIn: "8:37 AM", checkOut: "—", status: "Checked in", values: { c1: "BuildCorp LLC", c2: "OSH-1092-B", c3: ["Lobby", "Loading dock"], c4: "" }, signatures: { doc1: { signedAt: "8:37 AM" } }, source: "prereg" },
-      { id: "t008", name: "William Harris", email: "will.harris@applicant.com", host: "Lisa Torres", visitType: "Candidate", building: "54 State St.", date: "Jul 6, 2026", expected: "8:45 AM", checkIn: "8:52 AM", checkOut: "—", status: "Checked in", values: { p1: "Product Designer", p2: "1st Round", p3: "Employee referral", p4: "Vegetarian" }, source: "prereg" },
-      { id: "t009", name: "Emma Rodriguez", email: "emma.r@partnerco.com", host: "Tiffany Yu", visitType: "VIP", building: "54 State St.", date: "Jul 6, 2026", expected: "9:00 AM", checkIn: "9:03 AM", checkOut: "—", status: "Checked in", values: {}, source: "prereg" },
-      { id: "t010", name: "Oliver Kim", email: "oliver.kim@vendorco.com", host: "Amara Khan", visitType: "Vendor", building: "54 State St.", date: "Jul 6, 2026", expected: "9:15 AM", checkIn: "9:21 AM", checkOut: "—", status: "Checked in", values: {}, source: "prereg" },
-      { id: "t011", name: "Ava Martinez", email: "ava.martinez@buildright.com", host: "Ravi Lal", visitType: "Contractor", building: "54 State St.", date: "Jul 6, 2026", expected: "9:30 AM", checkIn: "9:33 AM", checkOut: "—", status: "Checked in", values: { c1: "BuildRight Inc.", c2: "CERT-2025-3301", c3: ["Lobby", "Roof", "Server room"], c4: "408-555-0371" }, signatures: { doc1: { signedAt: "9:33 AM" } }, source: "prereg" },
-      { id: "t012", name: "Ethan Brown", email: "ethan.brown@talent.com", host: "Jordan Miller", visitType: "Candidate", building: "54 State St.", date: "Jul 6, 2026", expected: "9:45 AM", checkIn: "9:51 AM", checkOut: "—", status: "Checked in", values: { p1: "Senior Software Engineer", p2: "Final Round", p3: "Indeed", p4: "" }, source: "prereg" },
-      { id: "t013", name: "Charlotte Lee", email: "charlotte.lee@globalco.com", host: "Marcus Webb", visitType: "VIP", building: "54 State St.", date: "Jul 6, 2026", expected: "10:00 AM", checkIn: "10:06 AM", checkOut: "—", status: "Checked in", values: {}, source: "prereg" },
-      { id: "t014", name: "Mason Davis", email: "mason.davis@supplierco.com", host: "Sarah Chen", visitType: "Vendor", building: "54 State St.", date: "Jul 6, 2026", expected: "10:15 AM", checkIn: "10:19 AM", checkOut: "—", status: "Checked in", values: {}, source: "prereg" },
-      { id: "t015", name: "Amelia Wilson", email: "amelia.wilson@buildcorp.com", host: "David Park", visitType: "Contractor", building: "Woolen Mills", date: "Jul 6, 2026", expected: "10:30 AM", checkIn: "10:35 AM", checkOut: "—", status: "Checked in", values: {}, source: "prereg" },
-      { id: "t016", name: "Lucas Harris", email: "lucas.harris@recruit.com", host: "Lisa Torres", visitType: "Candidate", building: "54 State St.", date: "Jul 6, 2026", expected: "10:45 AM", checkIn: "—", checkOut: "—", status: "Pre-registered", values: { p1: "UX Designer", p2: "Phone Screen" }, source: "prereg" },
-      { id: "t017", name: "Harper Thompson", email: "harper.t@partnerco.com", host: "Tiffany Yu", visitType: "VIP", building: "54 State St.", date: "Jul 6, 2026", expected: "11:00 AM", checkIn: "—", checkOut: "—", status: "Pre-registered", values: {}, source: "prereg" },
-      { id: "t018", name: "Benjamin Jackson", email: "ben.jackson@vendorco.com", host: "Amara Khan", visitType: "Vendor", building: "54 State St.", date: "Jul 6, 2026", expected: "11:15 AM", checkIn: "—", checkOut: "—", status: "Pre-registered", values: {}, source: "prereg" },
-      { id: "t019", name: "Evelyn White", email: "evelyn.white@buildright.com", host: "Ravi Lal", visitType: "Contractor", building: "54 State St.", date: "Jul 6, 2026", expected: "11:30 AM", checkIn: "—", checkOut: "—", status: "Pre-registered", values: { c1: "BuildRight Inc." }, source: "prereg" },
-      { id: "t020", name: "Henry Martin", email: "henry.martin@talent.com", host: "Jordan Miller", visitType: "Candidate", building: "54 State St.", date: "Jul 6, 2026", expected: "11:45 AM", checkIn: "—", checkOut: "—", status: "Pre-registered", values: { p1: "Data Scientist", p2: "1st Round" }, source: "prereg" },
-      { id: "t021", name: "Abigail Taylor", email: "abigail.t@globalco.com", host: "Marcus Webb", visitType: "VIP", building: "54 State St.", date: "Jul 6, 2026", expected: "12:00 PM", checkIn: "—", checkOut: "—", status: "Pre-registered", values: {}, source: "prereg" },
-      { id: "t022", name: "Alexander Moore", email: "alex.moore@supplierco.com", host: "Sarah Chen", visitType: "Vendor", building: "54 State St.", date: "Jul 6, 2026", expected: "12:15 PM", checkIn: "—", checkOut: "—", status: "Pre-registered", values: {}, source: "prereg" },
-      { id: "t023", name: "Elizabeth Anderson", email: "liz.anderson@buildcorp.com", host: "David Park", visitType: "Contractor", building: "54 State St.", date: "Jul 6, 2026", expected: "12:30 PM", checkIn: "—", checkOut: "—", status: "Pre-registered", values: { c1: "BuildCorp LLC" }, source: "prereg" },
-      { id: "t024", name: "Daniel Thomas", email: "daniel.thomas@recruit.com", host: "Lisa Torres", visitType: "Candidate", building: "54 State St.", date: "Jul 6, 2026", expected: "12:45 PM", checkIn: "—", checkOut: "—", status: "Pre-registered", values: { p1: "DevOps Engineer", p2: "2nd Round" }, source: "prereg" },
-      { id: "t025", name: "Sofia Garcia", email: "sofia.garcia@partnerco.com", host: "Tiffany Yu", visitType: "VIP", building: "Woolen Mills", date: "Jul 6, 2026", expected: "1:00 PM", checkIn: "—", checkOut: "—", status: "Pre-registered", values: {}, source: "prereg" },
-      { id: "t026", name: "Matthew Chen", email: "matt.chen@vendorco.com", host: "Amara Khan", visitType: "Vendor", building: "54 State St.", date: "Jul 6, 2026", expected: "1:15 PM", checkIn: "—", checkOut: "—", status: "Pre-registered", values: {}, source: "prereg" },
-      { id: "t027", name: "Victoria Hall", email: "victoria.hall@buildright.com", host: "Ravi Lal", visitType: "Contractor", building: "54 State St.", date: "Jul 6, 2026", expected: "1:30 PM", checkIn: "—", checkOut: "—", status: "Pre-registered", values: { c1: "BuildRight Inc." }, source: "prereg" },
-      { id: "t028", name: "Jackson Lewis", email: "jackson.lewis@talent.com", host: "Jordan Miller", visitType: "Candidate", building: "54 State St.", date: "Jul 6, 2026", expected: "1:45 PM", checkIn: "—", checkOut: "—", status: "Pre-registered", values: { p1: "Senior Software Engineer", p2: "1st Round" }, source: "prereg" },
-      { id: "t029", name: "Scarlett Scott", email: "scarlett.s@globalco.com", host: "Marcus Webb", visitType: "VIP", building: "54 State St.", date: "Jul 6, 2026", expected: "2:00 PM", checkIn: "—", checkOut: "—", status: "Pre-registered", values: {}, source: "prereg" },
-      { id: "t030", name: "Aria Young", email: "aria.young@supplierco.com", host: "Sarah Chen", visitType: "Vendor", building: "54 State St.", date: "Jul 6, 2026", expected: "2:15 PM", checkIn: "—", checkOut: "—", status: "Pre-registered", values: {}, source: "prereg" },
-      { id: "t031", name: "Lucas Allen", email: "lucas.allen@buildcorp.com", host: "David Park", visitType: "Contractor", building: "54 State St.", date: "Jul 6, 2026", expected: "2:30 PM", checkIn: "—", checkOut: "—", status: "Pre-registered", values: { c1: "BuildCorp LLC" }, source: "prereg" },
-      { id: "t032", name: "Grace King", email: "grace.king@recruit.com", host: "Lisa Torres", visitType: "Candidate", building: "54 State St.", date: "Jul 6, 2026", expected: "2:45 PM", checkIn: "—", checkOut: "—", status: "Pre-registered", values: { p1: "Product Manager", p2: "Final Round" }, source: "prereg" },
-      { id: "t033", name: "Cameron Wright", email: "cam.wright@partnerco.com", host: "Tiffany Yu", visitType: "VIP", building: "54 State St.", date: "Jul 6, 2026", expected: "3:00 PM", checkIn: "—", checkOut: "—", status: "Pre-registered", values: {}, source: "prereg" },
-      { id: "t034", name: "Chloe Mitchell", email: "chloe.m@vendorco.com", host: "Amara Khan", visitType: "Vendor", building: "54 State St.", date: "Jul 6, 2026", expected: "3:15 PM", checkIn: "—", checkOut: "—", status: "Pre-registered", values: {}, source: "prereg" },
-      { id: "t035", name: "Nathan Baker", email: "nathan.baker@buildright.com", host: "Ravi Lal", visitType: "Contractor", building: "Woolen Mills", date: "Jul 6, 2026", expected: "3:30 PM", checkIn: "—", checkOut: "—", status: "Pre-registered", values: {}, source: "prereg" },
-      { id: "t036", name: "Stella Nelson", email: "stella.nelson@talent.com", host: "Jordan Miller", visitType: "Candidate", building: "54 State St.", date: "Jul 6, 2026", expected: "3:45 PM", checkIn: "—", checkOut: "—", status: "Pre-registered", values: { p1: "Marketing Manager", p2: "Phone Screen" }, source: "prereg" },
-      { id: "t037", name: "Isaac Rivera", email: "isaac.rivera@globalco.com", host: "Marcus Webb", visitType: "VIP", building: "54 State St.", date: "Jul 6, 2026", expected: "4:00 PM", checkIn: "—", checkOut: "—", status: "Pre-registered", values: {}, source: "prereg" },
-      { id: "t038", name: "Riley Hill", email: "riley.hill@supplierco.com", host: "Sarah Chen", visitType: "Vendor", building: "54 State St.", date: "Jul 6, 2026", expected: "4:15 PM", checkIn: "—", checkOut: "—", status: "Pre-registered", values: {}, source: "prereg" },
-      { id: "t039", name: "Zachary Campbell", email: "zach.c@buildcorp.com", host: "David Park", visitType: "Contractor", building: "54 State St.", date: "Jul 6, 2026", expected: "4:30 PM", checkIn: "—", checkOut: "—", status: "Pre-registered", values: { c1: "BuildCorp LLC" }, source: "prereg" },
-      { id: "t040", name: "Penelope Green", email: "pen.green@recruit.com", host: "Lisa Torres", visitType: "Candidate", building: "54 State St.", date: "Jul 6, 2026", expected: "4:45 PM", checkIn: "—", checkOut: "—", status: "Pre-registered", values: { p1: "Sales Engineer", p2: "1st Round" }, source: "prereg" },
-      { id: "t041", name: "Ryan Adams", email: "ryan.adams@partnerco.com", host: "Tiffany Yu", visitType: "VIP", building: "54 State St.", date: "Jul 6, 2026", expected: "5:00 PM", checkIn: "—", checkOut: "—", status: "Pre-registered", values: {}, source: "prereg" },
-      { id: "t042", name: "Luna Morrison", email: "luna.m@vendorco.com", host: "Amara Khan", visitType: "Vendor", building: "54 State St.", date: "Jul 6, 2026", expected: "5:15 PM", checkIn: "—", checkOut: "—", status: "Pre-registered", values: {}, source: "prereg" },
-      { id: "t043", name: "Tyler Carter", email: "tyler.carter@buildright.com", host: "Ravi Lal", visitType: "Contractor", building: "54 State St.", date: "Jul 6, 2026", expected: "5:30 PM", checkIn: "—", checkOut: "—", status: "Pre-registered", values: { c1: "BuildRight Inc." }, source: "prereg" },
-      { id: "t044", name: "Naomi Evans", email: "naomi.evans@talent.com", host: "Jordan Miller", visitType: "Candidate", building: "54 State St.", date: "Jul 6, 2026", expected: "5:45 PM", checkIn: "—", checkOut: "—", status: "Pre-registered", values: { p1: "Data Analyst", p2: "2nd Round" }, source: "prereg" },
-      { id: "t045", name: "Connor Mitchell", email: "connor.m@globalco.com", host: "Marcus Webb", visitType: "VIP", building: "Woolen Mills", date: "Jul 6, 2026", expected: "6:00 PM", checkIn: "—", checkOut: "—", status: "Pre-registered", values: {}, source: "prereg" },
-      { id: "t046", name: "Layla Phillips", email: "layla.p@supplierco.com", host: "Sarah Chen", visitType: "Vendor", building: "54 State St.", date: "Jul 6, 2026", expected: "6:15 PM", checkIn: "—", checkOut: "—", status: "Pre-registered", values: {}, source: "prereg" },
-      { id: "t047", name: "Jordan Roberts", email: "jordan.r@buildcorp.com", host: "David Park", visitType: "Contractor", building: "54 State St.", date: "Jul 6, 2026", expected: "6:30 PM", checkIn: "—", checkOut: "—", status: "Pre-registered", values: { c1: "BuildCorp LLC" }, source: "prereg" },
-      { id: "t048", name: "Maya Stewart", email: "maya.stewart@recruit.com", host: "Lisa Torres", visitType: "Candidate", building: "54 State St.", date: "Jul 6, 2026", expected: "6:45 PM", checkIn: "—", checkOut: "—", status: "Pre-registered", values: { p1: "Frontend Engineer", p2: "1st Round" }, source: "prereg" },
-      { id: "t049", name: "Owen Turner", email: "owen.turner@partnerco.com", host: "Tiffany Yu", visitType: "VIP", building: "54 State St.", date: "Jul 6, 2026", expected: "7:00 PM", checkIn: "—", checkOut: "—", status: "Pre-registered", values: {}, source: "prereg" },
-      { id: "t050", name: "Zara Hassan", email: "zara.hassan@vendorco.com", host: "Amara Khan", visitType: "Vendor", building: "54 State St.", date: "Jul 6, 2026", expected: "7:15 PM", checkIn: "—", checkOut: "—", status: "Pre-registered", values: {}, source: "prereg" },
-    ],
+    visits: (() => { const _d = (n) => { const d = new Date(); d.setDate(d.getDate() + n); return ["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"][d.getMonth()] + " " + d.getDate() + ", " + d.getFullYear(); }; return [
+      { id: "v1", name: "Priya Nair", email: "priya@partnerco.com", host: "Amara Khan", visitType: "VIP", building: "54 State St.", date: _d(0), expected: "8:30 AM", checkIn: "8:40 AM", checkOut: "—", status: "Checked in", values: {}, source: "prereg" },
+      { id: "v2", name: "Dana Lopez", email: "dana@vendorco.com", host: "Tiffany Yu", visitType: "Vendor", building: "54 State St.", date: _d(0), expected: "2:00 PM", checkIn: "—", checkOut: "—", status: "Pre-registered", values: {}, source: "prereg" },
+      { id: "v3", name: "Marcus Bell", email: "marcus@applicant.com", host: "Jordan Miller", visitType: "Candidate", building: "54 State St.", date: _d(0), expected: "9:00 AM", checkIn: "9:12 AM", checkOut: "10:30 AM", status: "Checked in", values: { p1: "Engineering Manager", p2: "Final Round", p3: "", p4: "" }, source: "self" },
+      { id: "v4a", seriesId: "s-tw", name: "Tomás Wolf", email: "tomas@buildright.com", host: "Ravi Lal", visitType: "Contractor", building: "54 State St.", date: _d(0), expected: "7:30 AM", checkIn: "—", checkOut: "—", status: "Pre-registered", values: { c1: "BuildRight Inc." }, source: "prereg" },
+      { id: "v4b", seriesId: "s-tw", name: "Tomás Wolf", email: "tomas@buildright.com", host: "Ravi Lal", visitType: "Contractor", building: "54 State St.", date: _d(1), expected: "7:30 AM", checkIn: "—", checkOut: "—", status: "Pre-registered", values: { c1: "BuildRight Inc." }, source: "prereg" },
+      { id: "v5a", name: "Priya Sundaram", email: "priya.s@techcorp.com", host: "Ravi Lal", visitType: "Contractor", building: "54 State St.", date: _d(1), expected: "8:00 AM", checkIn: "8:06 AM", checkOut: "—", status: "Checked in", values: { c1: "TechCorp Services", c2: "CERT-2026-1142", c3: ["Lobby", "Server room"], c4: "415-555-0280" }, signatures: { doc1: { signedAt: "8:06 AM" } }, source: "prereg" },
+      { id: "v5b", name: "Derek Osei", email: "derek.osei@buildright.com", host: "David Park", visitType: "Contractor", building: "54 State St.", date: _d(1), expected: "9:15 AM", checkIn: "9:19 AM", checkOut: "—", status: "Checked in", values: { c1: "BuildRight Inc.", c2: "CERT-2025-9910", c3: ["Lobby", "Roof"], c4: "510-555-0147" }, signatures: { doc1: { signedAt: "9:19 AM" } }, source: "prereg" },
+      { id: "v6a", name: "Jordan Price", email: "jordan.price@applicant.com", host: "Jordan Miller", visitType: "Candidate", building: "54 State St.", date: _d(1), expected: "10:00 AM", checkIn: "—", checkOut: "—", status: "Pre-registered", values: { p1: "Frontend Engineer", p2: "2nd Round" }, source: "prereg" },
+      { id: "v4c", seriesId: "s-tw", name: "Tomás Wolf", email: "tomas@buildright.com", host: "Ravi Lal", visitType: "Contractor", building: "54 State St.", date: _d(2), expected: "7:30 AM", checkIn: "—", checkOut: "—", status: "Pre-registered", values: { c1: "BuildRight Inc." }, source: "prereg" },
+      { id: "t001", name: "Emily Carter", email: "emily.carter@partnerco.com", host: "Tiffany Yu", visitType: "VIP", building: "54 State St.", date: _d(0), expected: "7:00 AM", checkIn: "7:05 AM", checkOut: "—", status: "Checked in", values: {}, source: "prereg" },
+      { id: "t002", name: "James Wu", email: "james.wu@vendorco.com", host: "Amara Khan", visitType: "Vendor", building: "54 State St.", date: _d(0), expected: "7:15 AM", checkIn: "7:18 AM", checkOut: "—", status: "Checked in", values: {}, source: "prereg" },
+      { id: "t003", name: "Sophia Patel", email: "sophia.patel@buildright.com", host: "Ravi Lal", visitType: "Contractor", building: "54 State St.", date: _d(0), expected: "7:30 AM", checkIn: "7:34 AM", checkOut: "—", status: "Checked in", values: { c1: "BuildRight Inc.", c2: "CERT-2024-8821", c3: ["Lobby", "Server room"], c4: "415-555-0192" }, signatures: { doc1: { signedAt: "7:34 AM" } }, source: "prereg" },
+      { id: "t004", name: "Aiden Torres", email: "aiden.torres@recruit.com", host: "Jordan Miller", visitType: "Candidate", building: "54 State St.", date: _d(0), expected: "7:45 AM", checkIn: "7:49 AM", checkOut: "—", status: "Checked in", values: { p1: "Senior Software Engineer", p2: "2nd Round", p3: "LinkedIn", p4: "" }, source: "prereg" },
+      { id: "t005", name: "Isabella Clark", email: "isabella.clark@globalco.com", host: "Marcus Webb", visitType: "VIP", building: "Woolen Mills", date: _d(0), expected: "8:00 AM", checkIn: "8:02 AM", checkOut: "—", status: "Checked in", values: {}, source: "prereg" },
+      { id: "t006", name: "Noah Williams", email: "noah.williams@supplierco.com", host: "Sarah Chen", visitType: "Vendor", building: "54 State St.", date: _d(0), expected: "8:15 AM", checkIn: "8:19 AM", checkOut: "—", status: "Checked in", values: {}, source: "prereg" },
+      { id: "t007", name: "Mia Nguyen", email: "mia.nguyen@buildcorp.com", host: "David Park", visitType: "Contractor", building: "54 State St.", date: _d(0), expected: "8:30 AM", checkIn: "8:37 AM", checkOut: "—", status: "Checked in", values: { c1: "BuildCorp LLC", c2: "OSH-1092-B", c3: ["Lobby", "Loading dock"], c4: "" }, signatures: { doc1: { signedAt: "8:37 AM" } }, source: "prereg" },
+      { id: "t008", name: "William Harris", email: "will.harris@applicant.com", host: "Lisa Torres", visitType: "Candidate", building: "54 State St.", date: _d(0), expected: "8:45 AM", checkIn: "8:52 AM", checkOut: "—", status: "Checked in", values: { p1: "Product Designer", p2: "1st Round", p3: "Employee referral", p4: "Vegetarian" }, source: "prereg" },
+      { id: "t009", name: "Emma Rodriguez", email: "emma.r@partnerco.com", host: "Tiffany Yu", visitType: "VIP", building: "54 State St.", date: _d(0), expected: "9:00 AM", checkIn: "9:03 AM", checkOut: "—", status: "Checked in", values: {}, source: "prereg" },
+      { id: "t010", name: "Oliver Kim", email: "oliver.kim@vendorco.com", host: "Amara Khan", visitType: "Vendor", building: "54 State St.", date: _d(0), expected: "9:15 AM", checkIn: "9:21 AM", checkOut: "—", status: "Checked in", values: {}, source: "prereg" },
+      { id: "t011", name: "Ava Martinez", email: "ava.martinez@buildright.com", host: "Ravi Lal", visitType: "Contractor", building: "54 State St.", date: _d(0), expected: "9:30 AM", checkIn: "9:33 AM", checkOut: "—", status: "Checked in", values: { c1: "BuildRight Inc.", c2: "CERT-2025-3301", c3: ["Lobby", "Roof", "Server room"], c4: "408-555-0371" }, signatures: { doc1: { signedAt: "9:33 AM" } }, source: "prereg" },
+      { id: "t012", name: "Ethan Brown", email: "ethan.brown@talent.com", host: "Jordan Miller", visitType: "Candidate", building: "54 State St.", date: _d(0), expected: "9:45 AM", checkIn: "9:51 AM", checkOut: "—", status: "Checked in", values: { p1: "Senior Software Engineer", p2: "Final Round", p3: "Indeed", p4: "" }, source: "prereg" },
+      { id: "t013", name: "Charlotte Lee", email: "charlotte.lee@globalco.com", host: "Marcus Webb", visitType: "VIP", building: "54 State St.", date: _d(0), expected: "10:00 AM", checkIn: "10:06 AM", checkOut: "—", status: "Checked in", values: {}, source: "prereg" },
+      { id: "t014", name: "Mason Davis", email: "mason.davis@supplierco.com", host: "Sarah Chen", visitType: "Vendor", building: "54 State St.", date: _d(0), expected: "10:15 AM", checkIn: "10:19 AM", checkOut: "—", status: "Checked in", values: {}, source: "prereg" },
+      { id: "t015", name: "Amelia Wilson", email: "amelia.wilson@buildcorp.com", host: "David Park", visitType: "Contractor", building: "Woolen Mills", date: _d(0), expected: "10:30 AM", checkIn: "10:35 AM", checkOut: "—", status: "Checked in", values: {}, source: "prereg" },
+      { id: "t016", name: "Lucas Harris", email: "lucas.harris@recruit.com", host: "Lisa Torres", visitType: "Candidate", building: "54 State St.", date: _d(0), expected: "10:45 AM", checkIn: "—", checkOut: "—", status: "Pre-registered", values: { p1: "UX Designer", p2: "Phone Screen" }, source: "prereg" },
+      { id: "t017", name: "Harper Thompson", email: "harper.t@partnerco.com", host: "Tiffany Yu", visitType: "VIP", building: "54 State St.", date: _d(0), expected: "11:00 AM", checkIn: "—", checkOut: "—", status: "Pre-registered", values: {}, source: "prereg" },
+      { id: "t018", name: "Benjamin Jackson", email: "ben.jackson@vendorco.com", host: "Amara Khan", visitType: "Vendor", building: "54 State St.", date: _d(0), expected: "11:15 AM", checkIn: "—", checkOut: "—", status: "Pre-registered", values: {}, source: "prereg" },
+      { id: "t019", name: "Evelyn White", email: "evelyn.white@buildright.com", host: "Ravi Lal", visitType: "Contractor", building: "54 State St.", date: _d(0), expected: "11:30 AM", checkIn: "—", checkOut: "—", status: "Pre-registered", values: { c1: "BuildRight Inc." }, source: "prereg" },
+      { id: "t020", name: "Henry Martin", email: "henry.martin@talent.com", host: "Jordan Miller", visitType: "Candidate", building: "54 State St.", date: _d(0), expected: "11:45 AM", checkIn: "—", checkOut: "—", status: "Pre-registered", values: { p1: "Data Scientist", p2: "1st Round" }, source: "prereg" },
+      { id: "t021", name: "Abigail Taylor", email: "abigail.t@globalco.com", host: "Marcus Webb", visitType: "VIP", building: "54 State St.", date: _d(0), expected: "12:00 PM", checkIn: "—", checkOut: "—", status: "Pre-registered", values: {}, source: "prereg" },
+      { id: "t022", name: "Alexander Moore", email: "alex.moore@supplierco.com", host: "Sarah Chen", visitType: "Vendor", building: "54 State St.", date: _d(0), expected: "12:15 PM", checkIn: "—", checkOut: "—", status: "Pre-registered", values: {}, source: "prereg" },
+      { id: "t023", name: "Elizabeth Anderson", email: "liz.anderson@buildcorp.com", host: "David Park", visitType: "Contractor", building: "54 State St.", date: _d(0), expected: "12:30 PM", checkIn: "—", checkOut: "—", status: "Pre-registered", values: { c1: "BuildCorp LLC" }, source: "prereg" },
+      { id: "t024", name: "Daniel Thomas", email: "daniel.thomas@recruit.com", host: "Lisa Torres", visitType: "Candidate", building: "54 State St.", date: _d(0), expected: "12:45 PM", checkIn: "—", checkOut: "—", status: "Pre-registered", values: { p1: "DevOps Engineer", p2: "2nd Round" }, source: "prereg" },
+      { id: "t025", name: "Sofia Garcia", email: "sofia.garcia@partnerco.com", host: "Tiffany Yu", visitType: "VIP", building: "Woolen Mills", date: _d(0), expected: "1:00 PM", checkIn: "—", checkOut: "—", status: "Pre-registered", values: {}, source: "prereg" },
+      { id: "t026", name: "Matthew Chen", email: "matt.chen@vendorco.com", host: "Amara Khan", visitType: "Vendor", building: "54 State St.", date: _d(0), expected: "1:15 PM", checkIn: "—", checkOut: "—", status: "Pre-registered", values: {}, source: "prereg" },
+      { id: "t027", name: "Victoria Hall", email: "victoria.hall@buildright.com", host: "Ravi Lal", visitType: "Contractor", building: "54 State St.", date: _d(0), expected: "1:30 PM", checkIn: "—", checkOut: "—", status: "Pre-registered", values: { c1: "BuildRight Inc." }, source: "prereg" },
+      { id: "t028", name: "Jackson Lewis", email: "jackson.lewis@talent.com", host: "Jordan Miller", visitType: "Candidate", building: "54 State St.", date: _d(0), expected: "1:45 PM", checkIn: "—", checkOut: "—", status: "Pre-registered", values: { p1: "Senior Software Engineer", p2: "1st Round" }, source: "prereg" },
+      { id: "t029", name: "Scarlett Scott", email: "scarlett.s@globalco.com", host: "Marcus Webb", visitType: "VIP", building: "54 State St.", date: _d(0), expected: "2:00 PM", checkIn: "—", checkOut: "—", status: "Pre-registered", values: {}, source: "prereg" },
+      { id: "t030", name: "Aria Young", email: "aria.young@supplierco.com", host: "Sarah Chen", visitType: "Vendor", building: "54 State St.", date: _d(0), expected: "2:15 PM", checkIn: "—", checkOut: "—", status: "Pre-registered", values: {}, source: "prereg" },
+      { id: "t031", name: "Lucas Allen", email: "lucas.allen@buildcorp.com", host: "David Park", visitType: "Contractor", building: "54 State St.", date: _d(0), expected: "2:30 PM", checkIn: "—", checkOut: "—", status: "Pre-registered", values: { c1: "BuildCorp LLC" }, source: "prereg" },
+      { id: "t032", name: "Grace King", email: "grace.king@recruit.com", host: "Lisa Torres", visitType: "Candidate", building: "54 State St.", date: _d(0), expected: "2:45 PM", checkIn: "—", checkOut: "—", status: "Pre-registered", values: { p1: "Product Manager", p2: "Final Round" }, source: "prereg" },
+      { id: "t033", name: "Cameron Wright", email: "cam.wright@partnerco.com", host: "Tiffany Yu", visitType: "VIP", building: "54 State St.", date: _d(0), expected: "3:00 PM", checkIn: "—", checkOut: "—", status: "Pre-registered", values: {}, source: "prereg" },
+      { id: "t034", name: "Chloe Mitchell", email: "chloe.m@vendorco.com", host: "Amara Khan", visitType: "Vendor", building: "54 State St.", date: _d(0), expected: "3:15 PM", checkIn: "—", checkOut: "—", status: "Pre-registered", values: {}, source: "prereg" },
+      { id: "t035", name: "Nathan Baker", email: "nathan.baker@buildright.com", host: "Ravi Lal", visitType: "Contractor", building: "Woolen Mills", date: _d(0), expected: "3:30 PM", checkIn: "—", checkOut: "—", status: "Pre-registered", values: {}, source: "prereg" },
+      { id: "t036", name: "Stella Nelson", email: "stella.nelson@talent.com", host: "Jordan Miller", visitType: "Candidate", building: "54 State St.", date: _d(0), expected: "3:45 PM", checkIn: "—", checkOut: "—", status: "Pre-registered", values: { p1: "Marketing Manager", p2: "Phone Screen" }, source: "prereg" },
+      { id: "t037", name: "Isaac Rivera", email: "isaac.rivera@globalco.com", host: "Marcus Webb", visitType: "VIP", building: "54 State St.", date: _d(0), expected: "4:00 PM", checkIn: "—", checkOut: "—", status: "Pre-registered", values: {}, source: "prereg" },
+      { id: "t038", name: "Riley Hill", email: "riley.hill@supplierco.com", host: "Sarah Chen", visitType: "Vendor", building: "54 State St.", date: _d(0), expected: "4:15 PM", checkIn: "—", checkOut: "—", status: "Pre-registered", values: {}, source: "prereg" },
+      { id: "t039", name: "Zachary Campbell", email: "zach.c@buildcorp.com", host: "David Park", visitType: "Contractor", building: "54 State St.", date: _d(0), expected: "4:30 PM", checkIn: "—", checkOut: "—", status: "Pre-registered", values: { c1: "BuildCorp LLC" }, source: "prereg" },
+      { id: "t040", name: "Penelope Green", email: "pen.green@recruit.com", host: "Lisa Torres", visitType: "Candidate", building: "54 State St.", date: _d(0), expected: "4:45 PM", checkIn: "—", checkOut: "—", status: "Pre-registered", values: { p1: "Sales Engineer", p2: "1st Round" }, source: "prereg" },
+      { id: "t041", name: "Ryan Adams", email: "ryan.adams@partnerco.com", host: "Tiffany Yu", visitType: "VIP", building: "54 State St.", date: _d(0), expected: "5:00 PM", checkIn: "—", checkOut: "—", status: "Pre-registered", values: {}, source: "prereg" },
+      { id: "t042", name: "Luna Morrison", email: "luna.m@vendorco.com", host: "Amara Khan", visitType: "Vendor", building: "54 State St.", date: _d(0), expected: "5:15 PM", checkIn: "—", checkOut: "—", status: "Pre-registered", values: {}, source: "prereg" },
+      { id: "t043", name: "Tyler Carter", email: "tyler.carter@buildright.com", host: "Ravi Lal", visitType: "Contractor", building: "54 State St.", date: _d(0), expected: "5:30 PM", checkIn: "—", checkOut: "—", status: "Pre-registered", values: { c1: "BuildRight Inc." }, source: "prereg" },
+      { id: "t044", name: "Naomi Evans", email: "naomi.evans@talent.com", host: "Jordan Miller", visitType: "Candidate", building: "54 State St.", date: _d(0), expected: "5:45 PM", checkIn: "—", checkOut: "—", status: "Pre-registered", values: { p1: "Data Analyst", p2: "2nd Round" }, source: "prereg" },
+      { id: "t045", name: "Connor Mitchell", email: "connor.m@globalco.com", host: "Marcus Webb", visitType: "VIP", building: "Woolen Mills", date: _d(0), expected: "6:00 PM", checkIn: "—", checkOut: "—", status: "Pre-registered", values: {}, source: "prereg" },
+      { id: "t046", name: "Layla Phillips", email: "layla.p@supplierco.com", host: "Sarah Chen", visitType: "Vendor", building: "54 State St.", date: _d(0), expected: "6:15 PM", checkIn: "—", checkOut: "—", status: "Pre-registered", values: {}, source: "prereg" },
+      { id: "t047", name: "Jordan Roberts", email: "jordan.r@buildcorp.com", host: "David Park", visitType: "Contractor", building: "54 State St.", date: _d(0), expected: "6:30 PM", checkIn: "—", checkOut: "—", status: "Pre-registered", values: { c1: "BuildCorp LLC" }, source: "prereg" },
+      { id: "t048", name: "Maya Stewart", email: "maya.stewart@recruit.com", host: "Lisa Torres", visitType: "Candidate", building: "54 State St.", date: _d(0), expected: "6:45 PM", checkIn: "—", checkOut: "—", status: "Pre-registered", values: { p1: "Frontend Engineer", p2: "1st Round" }, source: "prereg" },
+      { id: "t049", name: "Owen Turner", email: "owen.turner@partnerco.com", host: "Tiffany Yu", visitType: "VIP", building: "54 State St.", date: _d(0), expected: "7:00 PM", checkIn: "—", checkOut: "—", status: "Pre-registered", values: {}, source: "prereg" },
+      { id: "t050", name: "Zara Hassan", email: "zara.hassan@vendorco.com", host: "Amara Khan", visitType: "Vendor", building: "54 State St.", date: _d(0), expected: "7:15 PM", checkIn: "—", checkOut: "—", status: "Pre-registered", values: {}, source: "prereg" },
+    ]; })(),
     documents: [
       { id: "doc1", name: "Contractor Safety Agreement", docType: "agreement", status: "live", addedOn: "Jun 15, 2026", visitTypes: ["Contractor"], buildings: ["54 State St."], content: "By entering this facility, you acknowledge and agree to comply with all on-site safety procedures, including wearing required personal protective equipment, checking in at the security desk, and following all posted guidelines. Failure to comply may result in removal from the premises.", email: "safety@company.com", requireSignature: true },
       { id: "doc2", name: "NDA for VIP Visits", docType: "agreement", status: "live", addedOn: "May 3, 2026", visitTypes: ["VIP"], buildings: ["54 State St.", "Woolen Mills"], content: "This non-disclosure agreement governs the confidential information shared during your visit. By checking in you agree not to disclose any proprietary information you may encounter.", email: "legal@company.com", requireSignature: false },
@@ -1381,6 +1396,11 @@ class Component extends DCLogic {
   goDashboardPage = () => this.setState({ webPage: "dashboard" });
   goTicketsPage = () => this.setState({ webPage: "tickets" });
   toggleWorkplace = () => this.setState(s => ({ workplaceExpanded: !s.workplaceExpanded }));
+  toggleVisitorExp = () => this.setState(s => ({ visitorExpExpanded: !s.visitorExpExpanded }));
+  goVisitTypesPage = () => this.setState({ webPage: "visit-types" });
+  goDocumentsPage = () => this.setState({ webPage: "documents" });
+  goFormsPage = () => this.setState({ webPage: "custom-forms" });
+  goDevicesPage = () => this.setState({ webPage: "devices" });
   setManageTab = (tab) => this.setState({ manageTab: tab });
 
   // ---------- documents ----------
@@ -2060,6 +2080,11 @@ class Component extends DCLogic {
     const vcQInactive = vcQBase + "color:var(--color-text);";
 
     const standalone = (this.props.standaloneApp || "Off") === "On";
+    const veSubBase = "display:flex;align-items:center;height:36px;padding:0 12px 0 42px;border-radius:4px;font-size:14px;cursor:pointer;";
+    const veSubActive = veSubBase + "color:#fff;font-weight:500;background:rgba(255,255,255,.12);";
+    const veSubInactive = veSubBase + "color:rgba(255,255,255,.65);";
+    const standaloneVisitorSubpages = ["visit-types", "documents", "custom-forms"];
+    const standalonePageTitles = { "visitors": "Visitors", "visit-types": "Visit types", "documents": "Documents", "custom-forms": "Custom visit forms" };
     const manageTabs = ["Organization","Offices","Themes","Integrations","People","Group","Roles","Devices","Notifications","Billing"];
     const navItemBase = "display:flex;align-items:center;gap:12px;height:40px;padding:0 12px;border-radius:6px;font-size:14px;cursor:pointer;";
     const navActive = navItemBase + "background:rgba(255,255,255,.10);color:#fff;font-weight:500;";
@@ -2091,14 +2116,30 @@ class Component extends DCLogic {
       deliveriesNavStyle: (standalone && pgIs("deliveries")) ? navActive : navInactive,
       showAnnouncementsNav: standalone,
       showDeliveriesNav: standalone,
+      showNavCreateVisitor: standalone,
+      showVisitorExperienceNav: standalone,
+      visitorExpExpanded: s.visitorExpExpanded,
+      toggleVisitorExp: this.toggleVisitorExp,
+      visitorExpChevron: s.visitorExpExpanded ? "fa-chevron-up" : "fa-chevron-down",
+      visitorExpNavStyle: (pgIs("visit-types") || pgIs("documents") || pgIs("custom-forms")) ? navActive : navInactive,
+      visitTypesSubStyle: pgIs("visit-types") ? veSubActive : veSubInactive,
+      documentsSubStyle: pgIs("documents") ? veSubActive : veSubInactive,
+      customFormsSubStyle: pgIs("custom-forms") ? veSubActive : veSubInactive,
+      goVisitTypesPage: this.goVisitTypesPage, goDocumentsPage: this.goDocumentsPage, goFormsPage: this.goFormsPage,
+      showDevicesNav: standalone,
+      devicesNavStyle: pgIs("devices") ? navActive : navInactive,
+      goDevicesPage: this.goDevicesPage,
       goVisitorsPage: this.goVisitorsPage, goManagePage: this.goManagePage, goAnnouncementsPage: this.goAnnouncementsPage,
-      showVisitorsContent: pgIs("visitors"),
+      showVisitorsContent: pgIs("visitors") || (standalone && standaloneVisitorSubpages.includes(s.webPage)),
       showManageContent: standalone && pgIs("manage"),
-      showPlaceholderContent: !pgIs("visitors") && !(standalone && pgIs("manage")),
-      placeholderContentTitle: s.webPage.charAt(0).toUpperCase() + s.webPage.slice(1),
+      showPlaceholderContent: !pgIs("visitors") && !(standalone && standaloneVisitorSubpages.includes(s.webPage)) && !(standalone && pgIs("manage")),
+      placeholderContentTitle: standalonePageTitles[s.webPage] || (s.webPage.charAt(0).toUpperCase() + s.webPage.slice(1)),
+      visitorsPageTitle: standalone ? (standalonePageTitles[s.webPage] || "Visitors") : "Visitors",
+      showTabsBar: !standalone,
+      showCreateVisitorInPage: !standalone,
       manageSubItems: manageTabs.map(tab => ({ name: tab, style: s.manageTab === tab ? manageSubActive : manageSubInactive, onSelect: () => this.setManageTab(tab) })),
       manageTabTitle: s.manageTab,
-      visitsTab: s.webTab === "Visits", visitTypesTab: s.webTab === "Visit types", documentsTab: s.webTab === "Documents", formsTab: s.webTab === "Custom visit forms",
+      visitsTab: standalone ? pgIs("visitors") : s.webTab === "Visits", visitTypesTab: standalone ? pgIs("visit-types") : s.webTab === "Visit types", documentsTab: standalone ? pgIs("documents") : s.webTab === "Documents", formsTab: standalone ? pgIs("custom-forms") : s.webTab === "Custom visit forms",
       visitsTabStyle: s.webTab === "Visits" ? tabOn : tabOff,
       visitTypesTabStyle: s.webTab === "Visit types" ? tabOn : tabOff,
       documentsTabStyle: s.webTab === "Documents" ? tabOn : tabOff,
